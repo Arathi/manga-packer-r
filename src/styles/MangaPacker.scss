@@ -1,0 +1,110 @@
+$backgroundColor: #C5C5C5; 
+$borderColor: #484849;
+$shadowColor: #929293;
+
+.manga-packer-app {
+  position: fixed;
+  right: 8px;
+  top: 8px;
+  width: 320px;
+  height: 640px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+
+  background-color: $backgroundColor;
+  border: 1px solid $borderColor;
+  border-radius: 5px;
+  box-shadow: 1px 1px 3px $shadowColor;
+
+  padding: 8px;
+
+  &:hover {
+    opacity: 85%;
+  }
+
+  .buttons {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .overall {
+    width: 100%;
+  }
+
+  .filter {
+    width: 100%;
+  }
+
+  .tasks {
+    width: 100%;
+  }
+
+  .mgpk-button {
+    width: 56px;
+    margin: 4px;
+  }
+}
+
+.arc-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+}
+
+.arc-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+}
+
+.arc-checkbox {
+  user-select: none;
+}
+
+.task-filter {
+  display: flex;
+  flex-direction: row;
+
+  width: 100%;
+  justify-content: center;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.task-info {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 24px;
+  justify-content: start;
+  align-items: center;
+
+  .file-name {
+    width: 64px;
+    height: 100%;
+  }
+
+  .task-status {
+    width: 40px;
+    height: 100%;
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .progress {
+    flex: 1;
+    height: 100%;
+  }
+}

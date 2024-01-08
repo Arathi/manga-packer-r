@@ -1,0 +1,69 @@
+$colorPrimary: #3491FA;
+$colorSuccess: #00B42A;
+$colorWarning: #FF7D00;
+$colorError: #F53F3F;
+
+.arc-progress-bar {
+  width: 100%;
+  padding: 2px 0;
+
+  .progress-bar-container {
+    position: relative;
+    width: 100%;
+    height: 24px;
+
+    .progress-bar-layer {
+      position: absolute;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+  
+      .progress-bar-clip {
+        width: 100%;
+        height: 100%;
+        background-color: gray;
+        clip-path: inset(0 round 12px);
+
+        .progress-bar {
+          background-color: black;
+          width: 0;
+          height: 100%;
+        }
+
+        .bar-color-primary {
+          background-color: $colorPrimary;
+        }
+
+        .bar-color-success {
+          background-color: $colorSuccess;
+        }
+
+        .bar-color-warning {
+          background-color: $colorWarning;
+        }
+
+        .bar-color-error {
+          background-color: $colorError;
+        }
+      }
+    }
+  
+    .progress-text-layer {
+      position: absolute;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+
+      font-size: 1em;
+      
+      span {
+        color: black;
+      }
+    }
+  }
+}
