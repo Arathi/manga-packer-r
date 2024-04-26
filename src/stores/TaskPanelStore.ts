@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import Task, { TaskPatch, TaskStatus } from '../domains/Task';
+import Task, { TaskPatch, TaskStatus } from '@/domains/Task';
 
 type TaskAmounts = Record<string, number>;
 

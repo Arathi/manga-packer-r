@@ -1,9 +1,10 @@
 import { DownloadOutlined } from "@ant-design/icons";
 import { Button, ButtonProps, Flex, Progress, Tag, TagProps } from "antd";
-import Task, { TaskStatus } from "@/domains/Task";
 import { CSSProperties } from "react";
 import { PrimitiveAtom, useAtomValue } from 'jotai';
-import { taskStatusAtom } from "../../stores/TaskPanelStore";
+
+import Task, { TaskStatus } from "@/domains/Task";
+import { taskStatusAtom } from "@/stores/TaskPanelStore";
 
 type Props = {
   taskAtom?: PrimitiveAtom<Task>,

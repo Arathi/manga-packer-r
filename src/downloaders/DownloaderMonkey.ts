@@ -1,7 +1,7 @@
 import { GM_xmlhttpRequest } from "$";
-import ImageFile from "@/domains/ImageFile";
-import TaskResult from "../domains/TaskResult";
-import Task from "../domains/Task";
+
+import TaskResult from "@/domains/TaskResult";
+import Task from "@/domains/Task";
 import Downloader, { ProgressListener } from "./Downloader";
 
 type ResponseTypes = {

@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom/client';
-import MangaPacker from './MangaPacker';
 import { Provider } from 'jotai';
+
+import MangaPacker from './MangaPacker';
 
 ReactDOM.createRoot(
   (() => {

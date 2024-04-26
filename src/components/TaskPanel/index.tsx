@@ -1,21 +1,19 @@
-import { Button, Empty, Flex, Progress, Segmented } from "antd";
-import { CSSProperties, useEffect } from "react";
-import { saveAs } from "file-saver";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { zipSync } from 'fflate';
 import {
   DownloadOutlined, 
   FileZipOutlined, 
   RedoOutlined, 
   SettingOutlined 
 } from "@ant-design/icons";
+import { Button, Empty, Flex, Progress, Segmented } from "antd";
+import { zipSync } from 'fflate';
+import { saveAs } from "file-saver";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { CSSProperties, useEffect } from "react";
 
-import Task, { TaskID, TaskStatus } from "@/domains/Task";
-import TaskView from './TaskView';
 import AdapterFactory from "@/adapters/AdapterFactory";
-import DownloaderFactory from "@/downloaders/DownloaderFactory";
-import useWindowSize from "@/utils/hooks/useWindowSize";
+import Task, { TaskID, TaskStatus } from "@/domains/Task";
 import TaskResult from "@/domains/TaskResult";
+import DownloaderFactory from "@/downloaders/DownloaderFactory";
 import {
   tasksAtom,
   taskStatusAtom,
@@ -24,6 +22,9 @@ import {
   taskAmountsAtom,
   titleAtom,
 } from "@/stores/TaskPanelStore";
+import useWindowSize from "@/utils/hooks/useWindowSize";
+
+import TaskView from './TaskView';
 
 import './index.scss';
 
@@ -31,7 +32,6 @@ const adapter = AdapterFactory.create();
 const downloader = DownloaderFactory.getInstance();
 
 const gallery = adapter.fetchGallery();
-// const results: Record<string, TaskResult> = {};
 const files: Record<string, Uint8Array> = {};
 
 type Props = {
@@ -112,7 +112,7 @@ const TaskPanel: React.FC<Props> = ({
   }
 
   function pack() {
-    const zipBytes = zipSync(files);
+    const zipBytes = zipSync(files, { level: 0 });
     console.info(`压缩后字节数：${zipBytes.length}`);
     const zipBlob = new Blob([zipBytes], {
       type: 'application/zip',

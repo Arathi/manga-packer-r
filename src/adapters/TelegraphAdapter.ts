@@ -1,7 +1,8 @@
-import Gallery from "@/domains/Gallery";
-import Task, { TaskStatus } from "../domains/Task";
-import GenericAdapter from "./GenericAdapter";
 import { unsafeWindow } from "$";
+
+import Gallery from "@/domains/Gallery";
+import Task, { TaskStatus } from "@/domains/Task";
+import GenericAdapter from "./GenericAdapter";
 
 type TelegraphGallery = {
   apiUrl: string;

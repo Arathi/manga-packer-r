@@ -1,5 +1,6 @@
 import Gallery from "@/domains/Gallery";
-import Task from "../domains/Task";
+import Task from "@/domains/Task";
+
 import Adapter from "./Adapter";
 
 class GenericAdapter extends Adapter {
