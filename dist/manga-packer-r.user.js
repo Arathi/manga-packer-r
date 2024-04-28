@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name       manga-packer-r
 // @namespace  com.undsf.tmus.mgpk
-// @version    1.2.3
+// @version    1.2.4
 // @author     monkey
 // @icon       https://vitejs.dev/logo.svg
 // @match      https://telegra.ph/*
 // @match      https://nhentai.net/g/*/
+// @match      https://nhentai.xxx/g/*/
 // @require    https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js
 // @require    https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js
 // @grant      GM_addStyle
@@ -15,7 +16,7 @@
 
 (t=>{if(typeof GM_addStyle=="function"){GM_addStyle(t);return}const e=document.createElement("style");e.textContent=t,document.head.append(e)})(" .task-panel .total-progress,.task-list{color:#000}.task-list::-webkit-scrollbar{width:3px}.task-list::-webkit-scrollbar-thumb{background-color:#7878784d}.task-list .task-view .file-name{color:#000} ");
 
-(async function (React, ReactDOM__default) {
+(function (React, ReactDOM__default) {
   'use strict';
 
   function _interopNamespaceDefault(e) {
@@ -14685,7 +14686,7 @@
         tasks: []
       };
     }
-    async fetchTasks(gallery2) {
+    async fetchTasks(gallery) {
       return [];
     }
   }
@@ -14707,30 +14708,30 @@
       const tgGallery = _unsafeWindow.T;
       const header = document.querySelector("header.tl_article_header h1");
       const title = (header == null ? void 0 : header.innerText) ?? tgGallery.pageId;
-      const gallery2 = {
+      const gallery = {
         id: tgGallery.pageId,
         title,
         referer: window.location.href,
         tasks: []
       };
-      this.fetchTasks(gallery2);
-      return gallery2;
+      await this.fetchTasks(gallery);
+      return gallery;
     }
-    async fetchTasks(gallery2) {
+    async fetchTasks(gallery) {
       const imgs = document.querySelectorAll("figure img");
       let index2 = 0;
       for (let img of imgs) {
         let pageNumber = `${++index2}`.padStart(3, "0");
         let dotIndex = img.src.lastIndexOf(".");
         const extName = img.src.substring(dotIndex);
-        gallery2.tasks.push({
-          id: `tg-${gallery2.id}-${pageNumber}`,
+        gallery.tasks.push({
+          id: `tg-${gallery.id}-${pageNumber}`,
           url: img.src,
           fileName: `${pageNumber}${extName}`,
           status: TaskStatus.Pending
         });
       }
-      return gallery2.tasks;
+      return gallery.tasks;
     }
   }
   class NHentaiAdapter extends GenericAdapter {
@@ -14739,20 +14740,20 @@
     }
     async fetchGallery() {
       const nhGallery = _unsafeWindow._gallery;
-      const gallery2 = {
+      const gallery = {
         id: `${nhGallery.id}`,
         title: nhGallery.title.japanese ?? nhGallery.id,
         subtitle: nhGallery.title.english,
         referer: window.location.href,
         tasks: []
       };
-      this.fetchTasks(gallery2);
-      return gallery2;
+      await this.fetchTasks(gallery);
+      return gallery;
     }
-    async fetchTasks(gallery2) {
+    async fetchTasks(gallery) {
       const nhGallery = _unsafeWindow._gallery;
       const nhOptions = _unsafeWindow._n_app.options;
-      gallery2.tasks = nhGallery.images.pages.map((page, index2) => {
+      gallery.tasks = nhGallery.images.pages.map((page, index2) => {
         const pageNumber = `${index2 + 1}`;
         const serverId = nhOptions.media_server;
         const mediaId = nhGallery.media_id;
@@ -14771,13 +14772,140 @@
         }
         const fileName = `${pageNumber.padStart(3, "0")}.${extName}`;
         return {
-          id: `nh-${gallery2.id}-${pageNumber}`,
+          id: `nh-${gallery.id}-${pageNumber}`,
           url: `https://i${serverId}.nhentai.net/galleries/${mediaId}/${index2 + 1}.${extName}`,
           fileName,
           status
         };
       });
-      return gallery2.tasks;
+      return gallery.tasks;
+    }
+  }
+  function parseImage(merged) {
+    const splitted = merged.split(",");
+    if (splitted.length != 3) {
+      return null;
+    }
+    const [type, w, h2] = splitted;
+    const width = parseInt(w, 10);
+    const height = parseInt(h2, 10);
+    return {
+      type,
+      width,
+      height
+    };
+  }
+  class NHentaiXAdapter extends GenericAdapter {
+    constructor() {
+      super();
+    }
+    select(selector) {
+      const element = _unsafeWindow.document.querySelector(selector);
+      return element;
+    }
+    async fetchGallery() {
+      const header = this.select(".info h1");
+      const galleryIdInput = this.select("input#gallery_id");
+      let parseSuccess = false;
+      do {
+        if (header == null) {
+          console.warn(`未找到input#load_server`);
+          break;
+        }
+        if (galleryIdInput == null) {
+          console.warn(`未找到input#load_dir`);
+          break;
+        }
+        parseSuccess = true;
+      } while (false);
+      if (!parseSuccess) {
+        throw `页面解析失败`;
+      }
+      const id = galleryIdInput.value;
+      const title = header.innerText;
+      const gallery = {
+        id,
+        title,
+        referer: window.location.href,
+        tasks: []
+      };
+      await this.fetchTasks(gallery);
+      return gallery;
+    }
+    async wait(key, interval = 10, timeout = 3e3) {
+      return new Promise((resolve, reject) => {
+        const startAt = (/* @__PURE__ */ new Date()).getTime();
+        setTimeout(() => {
+          const res = _unsafeWindow[key];
+          if (res !== void 0) {
+            resolve(res);
+          }
+          const current = (/* @__PURE__ */ new Date()).getTime();
+          const duration = current - startAt;
+          if (duration > timeout) {
+            reject(`等待资源超时：${key}`);
+          }
+        }, interval);
+      });
+    }
+    async fetchTasks(gallery) {
+      const gth = await this.wait("g_th", 10, 3e4);
+      const loadServerInput = this.select("input#load_server");
+      const loadDirInput = this.select("input#load_dir");
+      const loadIdInput = this.select("input#load_id");
+      let parseSuccess = false;
+      do {
+        if (loadServerInput == null) {
+          console.warn(`未找到input#load_server`);
+          break;
+        }
+        if (loadDirInput == null) {
+          console.warn(`未找到input#load_dir`);
+          break;
+        }
+        if (loadIdInput == null) {
+          console.warn(`未找到input#load_id`);
+          break;
+        }
+        parseSuccess = true;
+      } while (false);
+      if (!parseSuccess) {
+        return [];
+      }
+      const loadServer = loadServerInput.value;
+      const loadDir = loadDirInput.value;
+      const loadId = loadIdInput.value;
+      const keys2 = Object.keys(gth.fl);
+      keys2.forEach((key) => {
+        const pageNumber = key.padStart(3, "0");
+        const merged = gth.fl[key];
+        const page = parseImage(merged);
+        if (page == null) {
+          return;
+        }
+        let extName = "jpg";
+        let status = TaskStatus.Pending;
+        switch (page.type) {
+          case "j":
+            extName = "jpg";
+            break;
+          case "p":
+            extName = "png";
+            break;
+          default:
+            console.warn(`未知的文件类型描述符：${page.type}`);
+            status = TaskStatus.Error;
+        }
+        const dir = `${loadDir}/${loadId}`;
+        const fileName = `${pageNumber}.${extName}`;
+        gallery.tasks.push({
+          id: `nhx-${gallery.id}-${pageNumber}`,
+          url: `https://i${loadServer}.nhentaimg.com/${dir}/${key}.${extName}`,
+          fileName,
+          status
+        });
+      });
+      return gallery.tasks;
     }
   }
   class EHentaiAdapter extends GenericAdapter {
@@ -14793,6 +14921,8 @@
           return new TelegraphAdapter();
         case "nhentai.net":
           return new NHentaiAdapter();
+        case "nhentai.xxx":
+          return new NHentaiXAdapter();
         case "e-hentai.net":
           return new EHentaiAdapter();
       }
@@ -14968,7 +15098,6 @@
   };
   const adapter = AdapterFactory.create();
   const downloader = DownloaderFactory.getInstance();
-  const gallery = await( adapter.fetchGallery());
   const files = {};
   const DefaultStyle = {
     position: "fixed",
@@ -14998,7 +15127,8 @@
       ...DefaultStyle,
       ...style2
     };
-    function fetchTasks() {
+    async function fetchTasks() {
+      const gallery = await adapter.fetchGallery();
       const { title: title2, tasks: tasks2 } = gallery;
       setTitle(title2);
       setTasks(tasks2);
@@ -15081,7 +15211,7 @@
         0
       );
       if (amount === 0) {
-        taskViews.push(/* @__PURE__ */ jsxRuntimeExports.jsx(Empty, { description: "未获取任务" }, gallery.id));
+        taskViews.push(/* @__PURE__ */ jsxRuntimeExports.jsx(Empty, { description: "未获取任务" }, title));
       }
     }
     return /* @__PURE__ */ jsxRuntimeExports.jsxs(
