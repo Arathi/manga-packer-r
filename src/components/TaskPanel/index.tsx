@@ -31,7 +31,6 @@ import './index.scss';
 const adapter = AdapterFactory.create();
 const downloader = DownloaderFactory.getInstance();
 
-const gallery = await adapter.fetchGallery();
 const files: Record<string, Uint8Array> = {};
 
 type Props = {
@@ -72,7 +71,8 @@ const TaskPanel: React.FC<Props> = ({
     ...style,
   }
 
-  function fetchTasks() {
+  async function fetchTasks() {
+    const gallery = await adapter.fetchGallery();
     const { title, tasks } = gallery;
     setTitle(title);
     setTasks(tasks);
@@ -163,7 +163,7 @@ const TaskPanel: React.FC<Props> = ({
       (prev, current) => prev+current, 0
     );
     if (amount === 0) {
-      taskViews.push(<Empty key={gallery.id} description="未获取任务" />);
+      taskViews.push(<Empty key={title} description="未获取任务" />);
     }
   }
 

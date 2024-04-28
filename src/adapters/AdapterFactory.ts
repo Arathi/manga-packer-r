@@ -13,6 +13,8 @@ class AdapterFactory {
         return new TelegraphAdapter();
       case 'nhentai.net':
         return new NHentaiAdapter();
+      case 'nhentai.xxx':
+        return new NHentaiXAdapter();
       case 'e-hentai.net':
         return new EHentaiAdapter();
     }

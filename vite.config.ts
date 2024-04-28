@@ -18,6 +18,7 @@ export default defineConfig({
         match: [
           'https://telegra.ph/*',
           'https://nhentai.net/g/*/',
+          'https://nhentai.xxx/g/*/',
         ],
       },
       build: {

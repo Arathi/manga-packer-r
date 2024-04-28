@@ -71,7 +71,7 @@ class NHentaiAdapter extends GenericAdapter {
       tasks: [],
     };
 
-    this.fetchTasks(gallery);
+    await this.fetchTasks(gallery);
     return gallery;
   }
 

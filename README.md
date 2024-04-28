@@ -7,7 +7,7 @@ Manga Packer，油猴插件，用于从网页上打包下载图片资源，目�
 ## 下载安装
 
 1. [安装TamperMonkey](https://chromewebstore.google.com/detail/%E7%AF%A1%E6%94%B9%E7%8C%B4/dhdgffkkebhmkfjojejmpbldmpobfkfo)
-2. [安装本脚本](https://github.com/Arathi/manga-packer-r/blob/master/dist/manga-packer-r.user.js)
+2. [安装本脚本](https://github.com/Arathi/manga-packer-r/raw/master/dist/manga-packer-r.user.js)
 
 ## 编译运行
 
