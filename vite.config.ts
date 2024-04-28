@@ -24,11 +24,10 @@ export default defineConfig({
         externalGlobals: {
           react: cdn.jsdelivr('React', 'umd/react.production.min.js'),
           'react-dom': cdn.jsdelivr(
-            'ReactDOM',
-            'umd/react-dom.production.min.js',
+            'ReactDOM', 'umd/react-dom.production.min.js',
           ),
-          // antd: cdn.jsdelivr('antd', 'dist/antd.min.js'),
         },
+        externalResource: {},
       },
     }),
   ],
