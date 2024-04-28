@@ -3,12 +3,12 @@ import GenericAdapter from "./GenericAdapter";
 import Task, { TaskStatus } from "@/domains/Task";
 import { unsafeWindow } from "$";
 
-class NHentaiAdapter extends GenericAdapter {
+class NHentaiXAdapter extends GenericAdapter {
   constructor() {
     super();
   }
   
-  fetchGallery(): Gallery {
+  async fetchGallery(): Promise<Gallery> {
     return {
       id: '',
       title: '',
@@ -17,7 +17,9 @@ class NHentaiAdapter extends GenericAdapter {
     };
   }
   
-  fetchTasks(gallery: Gallery): Task[] {
+  async fetchTasks(gallery: Gallery): Promise<Task[]> {
     return [];
   }
 }
+
+export default NHentaiXAdapter;

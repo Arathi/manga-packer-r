@@ -18,7 +18,7 @@ class TelegraphAdapter extends GenericAdapter {
     super();
   }
 
-  fetchGallery(): Gallery {
+  async fetchGallery(): Promise<Gallery> {
     // @ts-ignore
     const tgGallery: TelegraphGallery = unsafeWindow.T;
 
@@ -35,7 +35,7 @@ class TelegraphAdapter extends GenericAdapter {
     return gallery;
   }
 
-  fetchTasks(gallery: Gallery): Task[] {
+  async fetchTasks(gallery: Gallery): Promise<Task[]> {
     const imgs: NodeListOf<HTMLImageElement> = document.querySelectorAll("figure img");
     let index = 0;
     for (let img of imgs) {

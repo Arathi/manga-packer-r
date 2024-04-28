@@ -2,6 +2,7 @@ import Adapter from "./Adapter";
 import GenericAdapter from "./GenericAdapter";
 import TelegraphAdapter from "./TelegraphAdapter";
 import NHentaiAdapter from "./NHentaiAdapter";
+import NHentaiXAdapter from "./NHentaiXAdapter";
 import EHentaiAdapter from "./EHentaiAdapter";
 
 class AdapterFactory {

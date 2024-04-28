@@ -44,10 +44,14 @@ type Titles = {
 // endregion
 
 // region NHentaiApp
+type NHentaiApp = {
+  options: NHentaiOptions;
+};
+
 type NHentaiOptions = {
   csrf_token: string;
   media_server: number;
-}
+};
 // endregion
 
 class NHentaiAdapter extends GenericAdapter {
@@ -55,7 +59,7 @@ class NHentaiAdapter extends GenericAdapter {
     super();
   }
 
-  fetchGallery(): Gallery {
+  async fetchGallery(): Promise<Gallery> {
     // @ts-ignore
     const nhGallery: NHentaiGallery = unsafeWindow._gallery;
 
@@ -71,12 +75,12 @@ class NHentaiAdapter extends GenericAdapter {
     return gallery;
   }
 
-  fetchTasks(gallery: Gallery): Task[] {
+  async fetchTasks(gallery: Gallery): Promise<Task[]> {
     // @ts-ignore
     const nhGallery: NHentaiGallery = unsafeWindow._gallery;
 
     // @ts-ignore
-    const nhOptions: NHentaiOptions = window._n_app.options;
+    const nhOptions: NHentaiOptions = unsafeWindow._n_app.options;
 
     gallery.tasks = nhGallery.images.pages.map((page, index) => {
       const pageNumber = `${index + 1}`;

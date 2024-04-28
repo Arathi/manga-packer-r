@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name       manga-packer-r
 // @namespace  com.undsf.tmus.mgpk
-// @version    1.2.2
+// @version    1.2.3
 // @author     monkey
 // @icon       https://vitejs.dev/logo.svg
 // @match      https://telegra.ph/*
@@ -15,7 +15,7 @@
 
 (t=>{if(typeof GM_addStyle=="function"){GM_addStyle(t);return}const e=document.createElement("style");e.textContent=t,document.head.append(e)})(" .task-panel .total-progress,.task-list{color:#000}.task-list::-webkit-scrollbar{width:3px}.task-list::-webkit-scrollbar-thumb{background-color:#7878784d}.task-list .task-view .file-name{color:#000} ");
 
-(function (React, ReactDOM__default) {
+(async function (React, ReactDOM__default) {
   'use strict';
 
   function _interopNamespaceDefault(e) {
@@ -14677,7 +14677,7 @@
     constructor() {
       super();
     }
-    fetchGallery() {
+    async fetchGallery() {
       return {
         id: "",
         title: "",
@@ -14685,7 +14685,7 @@
         tasks: []
       };
     }
-    fetchTasks(gallery2) {
+    async fetchTasks(gallery2) {
       return [];
     }
   }
@@ -14703,7 +14703,7 @@
     constructor() {
       super();
     }
-    fetchGallery() {
+    async fetchGallery() {
       const tgGallery = _unsafeWindow.T;
       const header = document.querySelector("header.tl_article_header h1");
       const title = (header == null ? void 0 : header.innerText) ?? tgGallery.pageId;
@@ -14716,7 +14716,7 @@
       this.fetchTasks(gallery2);
       return gallery2;
     }
-    fetchTasks(gallery2) {
+    async fetchTasks(gallery2) {
       const imgs = document.querySelectorAll("figure img");
       let index2 = 0;
       for (let img of imgs) {
@@ -14737,7 +14737,7 @@
     constructor() {
       super();
     }
-    fetchGallery() {
+    async fetchGallery() {
       const nhGallery = _unsafeWindow._gallery;
       const gallery2 = {
         id: `${nhGallery.id}`,
@@ -14749,9 +14749,9 @@
       this.fetchTasks(gallery2);
       return gallery2;
     }
-    fetchTasks(gallery2) {
+    async fetchTasks(gallery2) {
       const nhGallery = _unsafeWindow._gallery;
-      const nhOptions = window._n_app.options;
+      const nhOptions = _unsafeWindow._n_app.options;
       gallery2.tasks = nhGallery.images.pages.map((page, index2) => {
         const pageNumber = `${index2 + 1}`;
         const serverId = nhOptions.media_server;
@@ -14968,7 +14968,7 @@
   };
   const adapter = AdapterFactory.create();
   const downloader = DownloaderFactory.getInstance();
-  const gallery = adapter.fetchGallery();
+  const gallery = await( adapter.fetchGallery());
   const files = {};
   const DefaultStyle = {
     position: "fixed",

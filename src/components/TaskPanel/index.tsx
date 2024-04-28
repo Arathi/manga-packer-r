@@ -31,7 +31,7 @@ import './index.scss';
 const adapter = AdapterFactory.create();
 const downloader = DownloaderFactory.getInstance();
 
-const gallery = adapter.fetchGallery();
+const gallery = await adapter.fetchGallery();
 const files: Record<string, Uint8Array> = {};
 
 type Props = {

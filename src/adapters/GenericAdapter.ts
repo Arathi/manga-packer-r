@@ -8,7 +8,7 @@ class GenericAdapter extends Adapter {
     super();
   }
 
-  fetchGallery(): Gallery {
+  async fetchGallery(): Promise<Gallery> {
     return {
       id: '',
       title: '',
@@ -17,7 +17,7 @@ class GenericAdapter extends Adapter {
     };
   }
 
-  fetchTasks(gallery: Gallery): Task[] {
+  async fetchTasks(gallery: Gallery): Promise<Task[]> {
     return [];
   }
 }
