@@ -5,7 +5,7 @@ type TaskAmounts = Record<string, number>;
 
 export const tasksAtom = atom<Task[]>([]);
 export const taskStatusAtom = atom<TaskStatus>(TaskStatus.Pending);
-export const titleAtom = atom('');
+export const titleAtom = atom<string>('');
 
 export const totalProgressAtom = atom(get => {
   const tasks = get(tasksAtom);
@@ -49,3 +49,5 @@ export const taskAmountsAtom = atom(get => {
   tasks.forEach(task => result[task.status]++);
   return result;
 });
+
+export const minimizedAtom = atom<boolean>(false);

@@ -14,7 +14,12 @@ export default defineConfig({
       entry: 'src/main.tsx',
       userscript: {
         icon: 'https://vitejs.dev/logo.svg',
+        name: 'Manga Packer R',
         namespace: 'com.undsf.tmus.mgpk',
+        author: 'Arathi of Nebnizilla',
+        homepageURL: 'https://github.com/Arathi/manga-packer-r',
+        downloadURL: 'https://github.com/Arathi/manga-packer-r/raw/master/dist/manga-packer-r.user.js',
+        updateURL: 'https://github.com/Arathi/manga-packer-r/raw/master/dist/manga-packer-r.user.js',
         match: [
           'https://telegra.ph/*',
           'https://nhentai.net/g/*/',

@@ -1,20 +1,23 @@
 // ==UserScript==
-// @name       manga-packer-r
-// @namespace  com.undsf.tmus.mgpk
-// @version    1.2.4
-// @author     monkey
-// @icon       https://vitejs.dev/logo.svg
-// @match      https://telegra.ph/*
-// @match      https://nhentai.net/g/*/
-// @match      https://nhentai.xxx/g/*/
-// @require    https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js
-// @require    https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js
-// @grant      GM_addStyle
-// @grant      GM_xmlhttpRequest
-// @grant      unsafeWindow
+// @name         Manga Packer R
+// @namespace    com.undsf.tmus.mgpk
+// @version      1.2.5
+// @author       Arathi of Nebnizilla
+// @icon         https://vitejs.dev/logo.svg
+// @homepageURL  https://github.com/Arathi/manga-packer-r
+// @downloadURL  https://github.com/Arathi/manga-packer-r/raw/master/dist/manga-packer-r.user.js
+// @updateURL    https://github.com/Arathi/manga-packer-r/raw/master/dist/manga-packer-r.user.js
+// @match        https://telegra.ph/*
+// @match        https://nhentai.net/g/*/
+// @match        https://nhentai.xxx/g/*/
+// @require      https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js
+// @require      https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js
+// @grant        GM_addStyle
+// @grant        GM_xmlhttpRequest
+// @grant        unsafeWindow
 // ==/UserScript==
 
-(t=>{if(typeof GM_addStyle=="function"){GM_addStyle(t);return}const e=document.createElement("style");e.textContent=t,document.head.append(e)})(" .task-panel .total-progress,.task-list{color:#000}.task-list::-webkit-scrollbar{width:3px}.task-list::-webkit-scrollbar-thumb{background-color:#7878784d}.task-list .task-view .file-name{color:#000} ");
+(t=>{if(typeof GM_addStyle=="function"){GM_addStyle(t);return}const e=document.createElement("style");e.textContent=t,document.head.append(e)})(" .task-panel .plugin-version{color:gray}.task-panel .total-progress,.task-list{color:#000}.task-list::-webkit-scrollbar{width:3px}.task-list::-webkit-scrollbar-thumb{background-color:#7878784d}.task-list .task-view .file-name{color:#000} ");
 
 (function (React, ReactDOM__default) {
   'use strict';
@@ -79,707 +82,6 @@
   {
     client.createRoot = m$1.createRoot;
     client.hydrateRoot = m$1.hydrateRoot;
-  }
-  var define_import_meta_env_default$1 = { BASE_URL: "/", MODE: "production", DEV: false, PROD: true, SSR: false };
-  let keyCount = 0;
-  function atom(read, write) {
-    const key = `atom${++keyCount}`;
-    const config = {
-      toString: () => key
-    };
-    if (typeof read === "function") {
-      config.read = read;
-    } else {
-      config.init = read;
-      config.read = defaultRead;
-      config.write = defaultWrite;
-    }
-    if (write) {
-      config.write = write;
-    }
-    return config;
-  }
-  function defaultRead(get2) {
-    return get2(this);
-  }
-  function defaultWrite(get2, set2, arg) {
-    return set2(
-      this,
-      typeof arg === "function" ? arg(get2(this)) : arg
-    );
-  }
-  const isSelfAtom = (atom2, a) => atom2.unstable_is ? atom2.unstable_is(a) : a === atom2;
-  const hasInitialValue = (atom2) => "init" in atom2;
-  const isActuallyWritableAtom = (atom2) => !!atom2.write;
-  const cancelPromiseMap = /* @__PURE__ */ new WeakMap();
-  const registerCancelPromise = (promise, cancel) => {
-    cancelPromiseMap.set(promise, cancel);
-    promise.catch(() => {
-    }).finally(() => cancelPromiseMap.delete(promise));
-  };
-  const cancelPromise = (promise, next2) => {
-    const cancel = cancelPromiseMap.get(promise);
-    if (cancel) {
-      cancelPromiseMap.delete(promise);
-      cancel(next2);
-    }
-  };
-  const resolvePromise = (promise, value) => {
-    promise.status = "fulfilled";
-    promise.value = value;
-  };
-  const rejectPromise = (promise, e2) => {
-    promise.status = "rejected";
-    promise.reason = e2;
-  };
-  const isPromiseLike$1 = (x) => typeof (x == null ? void 0 : x.then) === "function";
-  const isEqualAtomValue = (a, b2) => !!a && "v" in a && "v" in b2 && Object.is(a.v, b2.v);
-  const isEqualAtomError = (a, b2) => !!a && "e" in a && "e" in b2 && Object.is(a.e, b2.e);
-  const hasPromiseAtomValue = (a) => !!a && "v" in a && a.v instanceof Promise;
-  const isEqualPromiseAtomValue = (a, b2) => "v" in a && "v" in b2 && a.v.orig && a.v.orig === b2.v.orig;
-  const returnAtomValue = (atomState) => {
-    if ("e" in atomState) {
-      throw atomState.e;
-    }
-    return atomState.v;
-  };
-  const createStore$1 = () => {
-    const atomStateMap = /* @__PURE__ */ new WeakMap();
-    const mountedMap = /* @__PURE__ */ new WeakMap();
-    const pendingStack = [];
-    const pendingMap = /* @__PURE__ */ new WeakMap();
-    let devListenersRev2;
-    let mountedAtoms;
-    if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-      devListenersRev2 = /* @__PURE__ */ new Set();
-      mountedAtoms = /* @__PURE__ */ new Set();
-    }
-    const getAtomState = (atom2) => atomStateMap.get(atom2);
-    const addPendingDependent = (atom2, atomState) => {
-      atomState.d.forEach((_, a) => {
-        var _a2;
-        if (!pendingMap.has(a)) {
-          const aState = getAtomState(a);
-          (_a2 = pendingStack[pendingStack.length - 1]) == null ? void 0 : _a2.add(a);
-          pendingMap.set(a, [aState, /* @__PURE__ */ new Set()]);
-          if (aState) {
-            addPendingDependent(a, aState);
-          }
-        }
-        pendingMap.get(a)[1].add(atom2);
-      });
-    };
-    const setAtomState = (atom2, atomState) => {
-      var _a2;
-      if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-        Object.freeze(atomState);
-      }
-      const prevAtomState = getAtomState(atom2);
-      atomStateMap.set(atom2, atomState);
-      if (!pendingMap.has(atom2)) {
-        (_a2 = pendingStack[pendingStack.length - 1]) == null ? void 0 : _a2.add(atom2);
-        pendingMap.set(atom2, [prevAtomState, /* @__PURE__ */ new Set()]);
-        addPendingDependent(atom2, atomState);
-      }
-      if (hasPromiseAtomValue(prevAtomState)) {
-        const next2 = "v" in atomState ? atomState.v instanceof Promise ? atomState.v : Promise.resolve(atomState.v) : Promise.reject(atomState.e);
-        if (prevAtomState.v !== next2) {
-          cancelPromise(prevAtomState.v, next2);
-        }
-      }
-    };
-    const updateDependencies = (atom2, nextAtomState, nextDependencies, keepPreviousDependencies) => {
-      const dependencies = new Map(
-        keepPreviousDependencies ? nextAtomState.d : null
-      );
-      let changed = false;
-      nextDependencies.forEach((aState, a) => {
-        if (!aState && isSelfAtom(atom2, a)) {
-          aState = nextAtomState;
-        }
-        if (aState) {
-          dependencies.set(a, aState);
-          if (nextAtomState.d.get(a) !== aState) {
-            changed = true;
-          }
-        } else if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-          console.warn("[Bug] atom state not found");
-        }
-      });
-      if (changed || nextAtomState.d.size !== dependencies.size) {
-        nextAtomState.d = dependencies;
-      }
-    };
-    const setAtomValue = (atom2, value, nextDependencies, keepPreviousDependencies) => {
-      const prevAtomState = getAtomState(atom2);
-      const nextAtomState = {
-        d: (prevAtomState == null ? void 0 : prevAtomState.d) || /* @__PURE__ */ new Map(),
-        v: value
-      };
-      if (nextDependencies) {
-        updateDependencies(
-          atom2,
-          nextAtomState,
-          nextDependencies,
-          keepPreviousDependencies
-        );
-      }
-      if (isEqualAtomValue(prevAtomState, nextAtomState) && prevAtomState.d === nextAtomState.d) {
-        return prevAtomState;
-      }
-      if (hasPromiseAtomValue(prevAtomState) && hasPromiseAtomValue(nextAtomState) && isEqualPromiseAtomValue(prevAtomState, nextAtomState)) {
-        if (prevAtomState.d === nextAtomState.d) {
-          return prevAtomState;
-        } else {
-          nextAtomState.v = prevAtomState.v;
-        }
-      }
-      setAtomState(atom2, nextAtomState);
-      return nextAtomState;
-    };
-    const setAtomValueOrPromise = (atom2, valueOrPromise, nextDependencies, abortPromise) => {
-      if (isPromiseLike$1(valueOrPromise)) {
-        let continuePromise;
-        const updatePromiseDependencies = () => {
-          const prevAtomState = getAtomState(atom2);
-          if (!hasPromiseAtomValue(prevAtomState) || prevAtomState.v !== promise) {
-            return;
-          }
-          const nextAtomState = setAtomValue(
-            atom2,
-            promise,
-            nextDependencies
-          );
-          if (mountedMap.has(atom2) && prevAtomState.d !== nextAtomState.d) {
-            mountDependencies(atom2, nextAtomState, prevAtomState.d);
-          }
-        };
-        const promise = new Promise((resolve, reject) => {
-          let settled = false;
-          valueOrPromise.then(
-            (v2) => {
-              if (!settled) {
-                settled = true;
-                resolvePromise(promise, v2);
-                resolve(v2);
-                updatePromiseDependencies();
-              }
-            },
-            (e2) => {
-              if (!settled) {
-                settled = true;
-                rejectPromise(promise, e2);
-                reject(e2);
-                updatePromiseDependencies();
-              }
-            }
-          );
-          continuePromise = (next2) => {
-            if (!settled) {
-              settled = true;
-              next2.then(
-                (v2) => resolvePromise(promise, v2),
-                (e2) => rejectPromise(promise, e2)
-              );
-              resolve(next2);
-            }
-          };
-        });
-        promise.orig = valueOrPromise;
-        promise.status = "pending";
-        registerCancelPromise(promise, (next2) => {
-          if (next2) {
-            continuePromise(next2);
-          }
-          abortPromise == null ? void 0 : abortPromise();
-        });
-        return setAtomValue(atom2, promise, nextDependencies, true);
-      }
-      return setAtomValue(atom2, valueOrPromise, nextDependencies);
-    };
-    const setAtomError = (atom2, error, nextDependencies) => {
-      const prevAtomState = getAtomState(atom2);
-      const nextAtomState = {
-        d: (prevAtomState == null ? void 0 : prevAtomState.d) || /* @__PURE__ */ new Map(),
-        e: error
-      };
-      if (nextDependencies) {
-        updateDependencies(atom2, nextAtomState, nextDependencies);
-      }
-      if (isEqualAtomError(prevAtomState, nextAtomState) && prevAtomState.d === nextAtomState.d) {
-        return prevAtomState;
-      }
-      setAtomState(atom2, nextAtomState);
-      return nextAtomState;
-    };
-    const readAtomState = (atom2, force) => {
-      const atomState = getAtomState(atom2);
-      if (!force && atomState) {
-        if (mountedMap.has(atom2)) {
-          return atomState;
-        }
-        if (Array.from(atomState.d).every(([a, s]) => {
-          if (a === atom2) {
-            return true;
-          }
-          const aState = readAtomState(a);
-          return aState === s || isEqualAtomValue(aState, s);
-        })) {
-          return atomState;
-        }
-      }
-      const nextDependencies = /* @__PURE__ */ new Map();
-      let isSync = true;
-      const getter = (a) => {
-        if (isSelfAtom(atom2, a)) {
-          const aState2 = getAtomState(a);
-          if (aState2) {
-            nextDependencies.set(a, aState2);
-            return returnAtomValue(aState2);
-          }
-          if (hasInitialValue(a)) {
-            nextDependencies.set(a, void 0);
-            return a.init;
-          }
-          throw new Error("no atom init");
-        }
-        const aState = readAtomState(a);
-        nextDependencies.set(a, aState);
-        return returnAtomValue(aState);
-      };
-      let controller;
-      let setSelf;
-      const options = {
-        get signal() {
-          if (!controller) {
-            controller = new AbortController();
-          }
-          return controller.signal;
-        },
-        get setSelf() {
-          if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production" && !isActuallyWritableAtom(atom2)) {
-            console.warn("setSelf function cannot be used with read-only atom");
-          }
-          if (!setSelf && isActuallyWritableAtom(atom2)) {
-            setSelf = (...args) => {
-              if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production" && isSync) {
-                console.warn("setSelf function cannot be called in sync");
-              }
-              if (!isSync) {
-                return writeAtom(atom2, ...args);
-              }
-            };
-          }
-          return setSelf;
-        }
-      };
-      try {
-        const valueOrPromise = atom2.read(getter, options);
-        return setAtomValueOrPromise(
-          atom2,
-          valueOrPromise,
-          nextDependencies,
-          () => controller == null ? void 0 : controller.abort()
-        );
-      } catch (error) {
-        return setAtomError(atom2, error, nextDependencies);
-      } finally {
-        isSync = false;
-      }
-    };
-    const readAtom = (atom2) => returnAtomValue(readAtomState(atom2));
-    const recomputeDependents = (atom2) => {
-      const getDependents = (a) => {
-        var _a2, _b2;
-        const dependents = new Set((_a2 = mountedMap.get(a)) == null ? void 0 : _a2.t);
-        (_b2 = pendingMap.get(a)) == null ? void 0 : _b2[1].forEach((dependent) => {
-          dependents.add(dependent);
-        });
-        return dependents;
-      };
-      const topsortedAtoms = new Array();
-      const markedAtoms = /* @__PURE__ */ new Set();
-      const visit = (n2) => {
-        if (markedAtoms.has(n2)) {
-          return;
-        }
-        markedAtoms.add(n2);
-        for (const m2 of getDependents(n2)) {
-          if (n2 !== m2) {
-            visit(m2);
-          }
-        }
-        topsortedAtoms.push(n2);
-      };
-      visit(atom2);
-      const changedAtoms = /* @__PURE__ */ new Set([atom2]);
-      for (let i = topsortedAtoms.length - 1; i >= 0; --i) {
-        const a = topsortedAtoms[i];
-        const prevAtomState = getAtomState(a);
-        if (!prevAtomState) {
-          continue;
-        }
-        let hasChangedDeps = false;
-        for (const dep of prevAtomState.d.keys()) {
-          if (dep !== a && changedAtoms.has(dep)) {
-            hasChangedDeps = true;
-            break;
-          }
-        }
-        if (hasChangedDeps) {
-          const nextAtomState = readAtomState(a, true);
-          if (!isEqualAtomValue(prevAtomState, nextAtomState)) {
-            changedAtoms.add(a);
-          }
-        }
-      }
-    };
-    const writeAtomState = (atom2, ...args) => {
-      const getter = (a) => returnAtomValue(readAtomState(a));
-      const setter = (a, ...args2) => {
-        const isSync = pendingStack.length > 0;
-        if (!isSync) {
-          pendingStack.push(/* @__PURE__ */ new Set([a]));
-        }
-        let r;
-        if (isSelfAtom(atom2, a)) {
-          if (!hasInitialValue(a)) {
-            throw new Error("atom not writable");
-          }
-          const prevAtomState = getAtomState(a);
-          const nextAtomState = setAtomValueOrPromise(a, args2[0]);
-          if (!isEqualAtomValue(prevAtomState, nextAtomState)) {
-            recomputeDependents(a);
-          }
-        } else {
-          r = writeAtomState(a, ...args2);
-        }
-        if (!isSync) {
-          const flushed = flushPending(pendingStack.pop());
-          if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-            devListenersRev2.forEach(
-              (l2) => l2({ type: "async-write", flushed })
-            );
-          }
-        }
-        return r;
-      };
-      const result = atom2.write(getter, setter, ...args);
-      return result;
-    };
-    const writeAtom = (atom2, ...args) => {
-      pendingStack.push(/* @__PURE__ */ new Set([atom2]));
-      const result = writeAtomState(atom2, ...args);
-      const flushed = flushPending(pendingStack.pop());
-      if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-        devListenersRev2.forEach((l2) => l2({ type: "write", flushed }));
-      }
-      return result;
-    };
-    const mountAtom = (atom2, initialDependent, onMountQueue) => {
-      var _a2;
-      const existingMount = mountedMap.get(atom2);
-      if (existingMount) {
-        if (initialDependent) {
-          existingMount.t.add(initialDependent);
-        }
-        return existingMount;
-      }
-      const queue = onMountQueue || [];
-      (_a2 = getAtomState(atom2)) == null ? void 0 : _a2.d.forEach((_, a) => {
-        if (a !== atom2) {
-          mountAtom(a, atom2, queue);
-        }
-      });
-      readAtomState(atom2);
-      const mounted = {
-        t: new Set(initialDependent && [initialDependent]),
-        l: /* @__PURE__ */ new Set()
-      };
-      mountedMap.set(atom2, mounted);
-      if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-        mountedAtoms.add(atom2);
-      }
-      if (isActuallyWritableAtom(atom2) && atom2.onMount) {
-        const { onMount } = atom2;
-        queue.push(() => {
-          const onUnmount = onMount((...args) => writeAtom(atom2, ...args));
-          if (onUnmount) {
-            mounted.u = onUnmount;
-          }
-        });
-      }
-      if (!onMountQueue) {
-        queue.forEach((f2) => f2());
-      }
-      return mounted;
-    };
-    const canUnmountAtom = (atom2, mounted) => !mounted.l.size && (!mounted.t.size || mounted.t.size === 1 && mounted.t.has(atom2));
-    const tryUnmountAtom = (atom2, mounted) => {
-      if (!canUnmountAtom(atom2, mounted)) {
-        return;
-      }
-      const onUnmount = mounted.u;
-      if (onUnmount) {
-        onUnmount();
-      }
-      mountedMap.delete(atom2);
-      if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-        mountedAtoms.delete(atom2);
-      }
-      const atomState = getAtomState(atom2);
-      if (atomState) {
-        if (hasPromiseAtomValue(atomState)) {
-          cancelPromise(atomState.v);
-        }
-        atomState.d.forEach((_, a) => {
-          if (a !== atom2) {
-            const mountedDep = mountedMap.get(a);
-            if (mountedDep) {
-              mountedDep.t.delete(atom2);
-              tryUnmountAtom(a, mountedDep);
-            }
-          }
-        });
-      } else if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-        console.warn("[Bug] could not find atom state to unmount", atom2);
-      }
-    };
-    const mountDependencies = (atom2, atomState, prevDependencies) => {
-      const depSet = new Set(atomState.d.keys());
-      const maybeUnmountAtomSet = /* @__PURE__ */ new Set();
-      prevDependencies == null ? void 0 : prevDependencies.forEach((_, a) => {
-        if (depSet.has(a)) {
-          depSet.delete(a);
-          return;
-        }
-        maybeUnmountAtomSet.add(a);
-        const mounted = mountedMap.get(a);
-        if (mounted) {
-          mounted.t.delete(atom2);
-        }
-      });
-      depSet.forEach((a) => {
-        mountAtom(a, atom2);
-      });
-      maybeUnmountAtomSet.forEach((a) => {
-        const mounted = mountedMap.get(a);
-        if (mounted) {
-          tryUnmountAtom(a, mounted);
-        }
-      });
-    };
-    const flushPending = (pendingAtoms) => {
-      let flushed;
-      if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-        flushed = /* @__PURE__ */ new Set();
-      }
-      const pending = [];
-      const collectPending = (pendingAtom) => {
-        var _a2;
-        if (!pendingMap.has(pendingAtom)) {
-          return;
-        }
-        const [prevAtomState, dependents] = pendingMap.get(pendingAtom);
-        pendingMap.delete(pendingAtom);
-        pending.push([pendingAtom, prevAtomState]);
-        dependents.forEach(collectPending);
-        (_a2 = getAtomState(pendingAtom)) == null ? void 0 : _a2.d.forEach((_, a) => collectPending(a));
-      };
-      pendingAtoms.forEach(collectPending);
-      pending.forEach(([atom2, prevAtomState]) => {
-        const atomState = getAtomState(atom2);
-        if (!atomState) {
-          if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-            console.warn("[Bug] no atom state to flush");
-          }
-          return;
-        }
-        if (atomState !== prevAtomState) {
-          const mounted = mountedMap.get(atom2);
-          if (mounted && atomState.d !== (prevAtomState == null ? void 0 : prevAtomState.d)) {
-            mountDependencies(atom2, atomState, prevAtomState == null ? void 0 : prevAtomState.d);
-          }
-          if (mounted && !// TODO This seems pretty hacky. Hope to fix it.
-          // Maybe we could `mountDependencies` in `setAtomState`?
-          (!hasPromiseAtomValue(prevAtomState) && (isEqualAtomValue(prevAtomState, atomState) || isEqualAtomError(prevAtomState, atomState)))) {
-            mounted.l.forEach((listener) => listener());
-            if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-              flushed.add(atom2);
-            }
-          }
-        }
-      });
-      if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-        return flushed;
-      }
-    };
-    const subscribeAtom = (atom2, listener) => {
-      const mounted = mountAtom(atom2);
-      const flushed = flushPending([atom2]);
-      const listeners = mounted.l;
-      listeners.add(listener);
-      if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-        devListenersRev2.forEach(
-          (l2) => l2({ type: "sub", flushed })
-        );
-      }
-      return () => {
-        listeners.delete(listener);
-        tryUnmountAtom(atom2, mounted);
-        if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-          devListenersRev2.forEach((l2) => l2({ type: "unsub" }));
-        }
-      };
-    };
-    if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-      return {
-        get: readAtom,
-        set: writeAtom,
-        sub: subscribeAtom,
-        // store dev methods (these are tentative and subject to change without notice)
-        dev_subscribe_store: (l2) => {
-          devListenersRev2.add(l2);
-          return () => {
-            devListenersRev2.delete(l2);
-          };
-        },
-        dev_get_mounted_atoms: () => mountedAtoms.values(),
-        dev_get_atom_state: (a) => atomStateMap.get(a),
-        dev_get_mounted: (a) => mountedMap.get(a),
-        dev_restore_atoms: (values) => {
-          pendingStack.push(/* @__PURE__ */ new Set());
-          for (const [atom2, valueOrPromise] of values) {
-            if (hasInitialValue(atom2)) {
-              setAtomValueOrPromise(atom2, valueOrPromise);
-              recomputeDependents(atom2);
-            }
-          }
-          const flushed = flushPending(pendingStack.pop());
-          devListenersRev2.forEach(
-            (l2) => l2({ type: "restore", flushed })
-          );
-        }
-      };
-    }
-    return {
-      get: readAtom,
-      set: writeAtom,
-      sub: subscribeAtom
-    };
-  };
-  let defaultStore;
-  const getDefaultStore$1 = () => {
-    if (!defaultStore) {
-      defaultStore = createStore$1();
-      if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-        globalThis.__JOTAI_DEFAULT_STORE__ || (globalThis.__JOTAI_DEFAULT_STORE__ = defaultStore);
-        if (globalThis.__JOTAI_DEFAULT_STORE__ !== defaultStore) {
-          console.warn(
-            "Detected multiple Jotai instances. It may cause unexpected behavior with the default store. https://github.com/pmndrs/jotai/discussions/2044"
-          );
-        }
-      }
-    }
-    return defaultStore;
-  };
-  const createStore = createStore$1;
-  const getDefaultStore = getDefaultStore$1;
-  var define_import_meta_env_default = { BASE_URL: "/", MODE: "production", DEV: false, PROD: true, SSR: false };
-  const StoreContext = React.createContext(
-    void 0
-  );
-  const useStore = (options) => {
-    const store = React.useContext(StoreContext);
-    return store || getDefaultStore();
-  };
-  const Provider = ({
-    children,
-    store
-  }) => {
-    const storeRef = React.useRef();
-    if (!store && !storeRef.current) {
-      storeRef.current = createStore();
-    }
-    return React.createElement(
-      StoreContext.Provider,
-      {
-        value: store || storeRef.current
-      },
-      children
-    );
-  };
-  const isPromiseLike = (x) => typeof (x == null ? void 0 : x.then) === "function";
-  const use = React.use || ((promise) => {
-    if (promise.status === "pending") {
-      throw promise;
-    } else if (promise.status === "fulfilled") {
-      return promise.value;
-    } else if (promise.status === "rejected") {
-      throw promise.reason;
-    } else {
-      promise.status = "pending";
-      promise.then(
-        (v2) => {
-          promise.status = "fulfilled";
-          promise.value = v2;
-        },
-        (e2) => {
-          promise.status = "rejected";
-          promise.reason = e2;
-        }
-      );
-      throw promise;
-    }
-  });
-  function useAtomValue(atom2, options) {
-    const store = useStore();
-    const [[valueFromReducer, storeFromReducer, atomFromReducer], rerender] = React.useReducer(
-      (prev2) => {
-        const nextValue = store.get(atom2);
-        if (Object.is(prev2[0], nextValue) && prev2[1] === store && prev2[2] === atom2) {
-          return prev2;
-        }
-        return [nextValue, store, atom2];
-      },
-      void 0,
-      () => [store.get(atom2), store, atom2]
-    );
-    let value = valueFromReducer;
-    if (storeFromReducer !== store || atomFromReducer !== atom2) {
-      rerender();
-      value = store.get(atom2);
-    }
-    const delay = void 0;
-    React.useEffect(() => {
-      const unsub = store.sub(atom2, () => {
-        rerender();
-      });
-      rerender();
-      return unsub;
-    }, [store, atom2, delay]);
-    React.useDebugValue(value);
-    return isPromiseLike(value) ? use(value) : value;
-  }
-  function useSetAtom(atom2, options) {
-    const store = useStore();
-    const setAtom = React.useCallback(
-      (...args) => {
-        if ((define_import_meta_env_default ? "production" : void 0) !== "production" && !("write" in atom2)) {
-          throw new Error("not writable atom");
-        }
-        return store.set(atom2, ...args);
-      },
-      [store, atom2]
-    );
-    return setAtom;
-  }
-  function useAtom(atom2, options) {
-    return [
-      useAtomValue(atom2),
-      // We do wrong type assertion here, which results in throwing an error.
-      useSetAtom(atom2)
-    ];
   }
   var IconContext = /* @__PURE__ */ React.createContext({});
   function _extends() {
@@ -2096,8 +1398,8 @@
     }
     return prepend ? "prepend" : "append";
   }
-  function findStyles(container) {
-    return Array.from((containerCache.get(container) || container).children).filter(function(node2) {
+  function findStyles(container2) {
+    return Array.from((containerCache.get(container2) || container2).children).filter(function(node2) {
       return node2.tagName === "STYLE";
     });
   }
@@ -2118,11 +1420,11 @@
       styleNode.nonce = csp === null || csp === void 0 ? void 0 : csp.nonce;
     }
     styleNode.innerHTML = css;
-    var container = getContainer(option);
-    var firstChild = container.firstChild;
+    var container2 = getContainer(option);
+    var firstChild = container2.firstChild;
     if (prepend) {
       if (isPrependQueue) {
-        var existStyle = (option.styles || findStyles(container)).filter(function(node2) {
+        var existStyle = (option.styles || findStyles(container2)).filter(function(node2) {
           if (!["prepend", "prependQueue"].includes(node2.getAttribute(APPEND_ORDER))) {
             return false;
           }
@@ -2130,20 +1432,20 @@
           return priority >= nodePriority;
         });
         if (existStyle.length) {
-          container.insertBefore(styleNode, existStyle[existStyle.length - 1].nextSibling);
+          container2.insertBefore(styleNode, existStyle[existStyle.length - 1].nextSibling);
           return styleNode;
         }
       }
-      container.insertBefore(styleNode, firstChild);
+      container2.insertBefore(styleNode, firstChild);
     } else {
-      container.appendChild(styleNode);
+      container2.appendChild(styleNode);
     }
     return styleNode;
   }
   function findExistNode(key) {
     var option = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
-    var container = getContainer(option);
-    return (option.styles || findStyles(container)).find(function(node2) {
+    var container2 = getContainer(option);
+    return (option.styles || findStyles(container2)).find(function(node2) {
       return node2.getAttribute(getMark(option)) === key;
     });
   }
@@ -2151,27 +1453,27 @@
     var option = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
     var existNode = findExistNode(key, option);
     if (existNode) {
-      var container = getContainer(option);
-      container.removeChild(existNode);
+      var container2 = getContainer(option);
+      container2.removeChild(existNode);
     }
   }
-  function syncRealContainer(container, option) {
-    var cachedRealContainer = containerCache.get(container);
+  function syncRealContainer(container2, option) {
+    var cachedRealContainer = containerCache.get(container2);
     if (!cachedRealContainer || !contains(document, cachedRealContainer)) {
       var placeholderStyle = injectCSS("", option);
       var parentNode = placeholderStyle.parentNode;
-      containerCache.set(container, parentNode);
-      container.removeChild(placeholderStyle);
+      containerCache.set(container2, parentNode);
+      container2.removeChild(placeholderStyle);
     }
   }
   function updateCSS(css, key) {
     var originOption = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : {};
-    var container = getContainer(originOption);
-    var styles = findStyles(container);
+    var container2 = getContainer(originOption);
+    var styles = findStyles(container2);
     var option = _objectSpread2(_objectSpread2({}, originOption), {}, {
       styles
     });
-    syncRealContainer(container, option);
+    syncRealContainer(container2, option);
     var existNode = findExistNode(key, option);
     if (existNode) {
       var _option$csp, _option$csp2;
@@ -2389,6 +1691,14 @@
   Icon.displayName = "AntdIcon";
   Icon.getTwoToneColor = getTwoToneColor;
   Icon.setTwoToneColor = setTwoToneColor;
+  var BorderOutlined$1 = { "icon": { "tag": "svg", "attrs": { "viewBox": "64 64 896 896", "focusable": "false" }, "children": [{ "tag": "path", "attrs": { "d": "M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zm-40 728H184V184h656v656z" } }] }, "name": "border", "theme": "outlined" };
+  var BorderOutlined = function BorderOutlined2(props, ref) {
+    return /* @__PURE__ */ React__namespace.createElement(Icon, _extends({}, props, {
+      ref,
+      icon: BorderOutlined$1
+    }));
+  };
+  var RefIcon$a = /* @__PURE__ */ React__namespace.forwardRef(BorderOutlined);
   var CheckCircleFilled$1 = { "icon": { "tag": "svg", "attrs": { "viewBox": "64 64 896 896", "focusable": "false" }, "children": [{ "tag": "path", "attrs": { "d": "M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm193.5 301.7l-210.6 292a31.8 31.8 0 01-51.7 0L318.5 484.9c-3.8-5.3 0-12.7 6.5-12.7h46.9c10.2 0 19.9 4.9 25.9 13.3l71.2 98.8 157.2-218c6-8.3 15.6-13.3 25.9-13.3H699c6.5 0 10.3 7.4 6.5 12.7z" } }] }, "name": "check-circle", "theme": "filled" };
   var CheckCircleFilled = function CheckCircleFilled2(props, ref) {
     return /* @__PURE__ */ React__namespace.createElement(Icon, _extends({}, props, {
@@ -2396,7 +1706,7 @@
       icon: CheckCircleFilled$1
     }));
   };
-  var RefIcon$8 = /* @__PURE__ */ React__namespace.forwardRef(CheckCircleFilled);
+  var RefIcon$9 = /* @__PURE__ */ React__namespace.forwardRef(CheckCircleFilled);
   var CheckOutlined$1 = { "icon": { "tag": "svg", "attrs": { "viewBox": "64 64 896 896", "focusable": "false" }, "children": [{ "tag": "path", "attrs": { "d": "M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 00-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z" } }] }, "name": "check", "theme": "outlined" };
   var CheckOutlined = function CheckOutlined2(props, ref) {
     return /* @__PURE__ */ React__namespace.createElement(Icon, _extends({}, props, {
@@ -2404,7 +1714,7 @@
       icon: CheckOutlined$1
     }));
   };
-  var RefIcon$7 = /* @__PURE__ */ React__namespace.forwardRef(CheckOutlined);
+  var RefIcon$8 = /* @__PURE__ */ React__namespace.forwardRef(CheckOutlined);
   var CloseCircleFilled$1 = { "icon": { "tag": "svg", "attrs": { "fill-rule": "evenodd", "viewBox": "64 64 896 896", "focusable": "false" }, "children": [{ "tag": "path", "attrs": { "d": "M512 64c247.4 0 448 200.6 448 448S759.4 960 512 960 64 759.4 64 512 264.6 64 512 64zm127.98 274.82h-.04l-.08.06L512 466.75 384.14 338.88c-.04-.05-.06-.06-.08-.06a.12.12 0 00-.07 0c-.03 0-.05.01-.09.05l-45.02 45.02a.2.2 0 00-.05.09.12.12 0 000 .07v.02a.27.27 0 00.06.06L466.75 512 338.88 639.86c-.05.04-.06.06-.06.08a.12.12 0 000 .07c0 .03.01.05.05.09l45.02 45.02a.2.2 0 00.09.05.12.12 0 00.07 0c.02 0 .04-.01.08-.05L512 557.25l127.86 127.87c.04.04.06.05.08.05a.12.12 0 00.07 0c.03 0 .05-.01.09-.05l45.02-45.02a.2.2 0 00.05-.09.12.12 0 000-.07v-.02a.27.27 0 00-.05-.06L557.25 512l127.87-127.86c.04-.04.05-.06.05-.08a.12.12 0 000-.07c0-.03-.01-.05-.05-.09l-45.02-45.02a.2.2 0 00-.09-.05.12.12 0 00-.07 0z" } }] }, "name": "close-circle", "theme": "filled" };
   var CloseCircleFilled = function CloseCircleFilled2(props, ref) {
     return /* @__PURE__ */ React__namespace.createElement(Icon, _extends({}, props, {
@@ -2412,7 +1722,7 @@
       icon: CloseCircleFilled$1
     }));
   };
-  var RefIcon$6 = /* @__PURE__ */ React__namespace.forwardRef(CloseCircleFilled);
+  var RefIcon$7 = /* @__PURE__ */ React__namespace.forwardRef(CloseCircleFilled);
   var CloseOutlined$1 = { "icon": { "tag": "svg", "attrs": { "fill-rule": "evenodd", "viewBox": "64 64 896 896", "focusable": "false" }, "children": [{ "tag": "path", "attrs": { "d": "M799.86 166.31c.02 0 .04.02.08.06l57.69 57.7c.04.03.05.05.06.08a.12.12 0 010 .06c0 .03-.02.05-.06.09L569.93 512l287.7 287.7c.04.04.05.06.06.09a.12.12 0 010 .07c0 .02-.02.04-.06.08l-57.7 57.69c-.03.04-.05.05-.07.06a.12.12 0 01-.07 0c-.03 0-.05-.02-.09-.06L512 569.93l-287.7 287.7c-.04.04-.06.05-.09.06a.12.12 0 01-.07 0c-.02 0-.04-.02-.08-.06l-57.69-57.7c-.04-.03-.05-.05-.06-.07a.12.12 0 010-.07c0-.03.02-.05.06-.09L454.07 512l-287.7-287.7c-.04-.04-.05-.06-.06-.09a.12.12 0 010-.07c0-.02.02-.04.06-.08l57.7-57.69c.03-.04.05-.05.07-.06a.12.12 0 01.07 0c.03 0 .05.02.09.06L512 454.07l287.7-287.7c.04-.04.06-.05.09-.06a.12.12 0 01.07 0z" } }] }, "name": "close", "theme": "outlined" };
   var CloseOutlined = function CloseOutlined2(props, ref) {
     return /* @__PURE__ */ React__namespace.createElement(Icon, _extends({}, props, {
@@ -2420,7 +1730,7 @@
       icon: CloseOutlined$1
     }));
   };
-  var RefIcon$5 = /* @__PURE__ */ React__namespace.forwardRef(CloseOutlined);
+  var RefIcon$6 = /* @__PURE__ */ React__namespace.forwardRef(CloseOutlined);
   var DownloadOutlined$1 = { "icon": { "tag": "svg", "attrs": { "viewBox": "64 64 896 896", "focusable": "false" }, "children": [{ "tag": "path", "attrs": { "d": "M505.7 661a8 8 0 0012.6 0l112-141.7c4.1-5.2.4-12.9-6.3-12.9h-74.1V168c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v338.3H400c-6.7 0-10.4 7.7-6.3 12.9l112 141.8zM878 626h-60c-4.4 0-8 3.6-8 8v154H214V634c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v198c0 17.7 14.3 32 32 32h684c17.7 0 32-14.3 32-32V634c0-4.4-3.6-8-8-8z" } }] }, "name": "download", "theme": "outlined" };
   var DownloadOutlined = function DownloadOutlined2(props, ref) {
     return /* @__PURE__ */ React__namespace.createElement(Icon, _extends({}, props, {
@@ -2428,7 +1738,7 @@
       icon: DownloadOutlined$1
     }));
   };
-  var RefIcon$4 = /* @__PURE__ */ React__namespace.forwardRef(DownloadOutlined);
+  var RefIcon$5 = /* @__PURE__ */ React__namespace.forwardRef(DownloadOutlined);
   var FileZipOutlined$1 = { "icon": { "tag": "svg", "attrs": { "viewBox": "64 64 896 896", "focusable": "false" }, "children": [{ "tag": "path", "attrs": { "d": "M296 392h64v64h-64zm0 190v160h128V582h-64v-62h-64v62zm80 48v64h-32v-64h32zm-16-302h64v64h-64zm-64-64h64v64h-64zm64 192h64v64h-64zm0-256h64v64h-64zm494.6 88.6L639.4 73.4c-6-6-14.1-9.4-22.6-9.4H192c-17.7 0-32 14.3-32 32v832c0 17.7 14.3 32 32 32h640c17.7 0 32-14.3 32-32V311.3c0-8.5-3.4-16.7-9.4-22.7zM790.2 326H602V137.8L790.2 326zm1.8 562H232V136h64v64h64v-64h174v216a42 42 0 0042 42h216v494z" } }] }, "name": "file-zip", "theme": "outlined" };
   var FileZipOutlined = function FileZipOutlined2(props, ref) {
     return /* @__PURE__ */ React__namespace.createElement(Icon, _extends({}, props, {
@@ -2436,7 +1746,7 @@
       icon: FileZipOutlined$1
     }));
   };
-  var RefIcon$3 = /* @__PURE__ */ React__namespace.forwardRef(FileZipOutlined);
+  var RefIcon$4 = /* @__PURE__ */ React__namespace.forwardRef(FileZipOutlined);
   var LoadingOutlined$1 = { "icon": { "tag": "svg", "attrs": { "viewBox": "0 0 1024 1024", "focusable": "false" }, "children": [{ "tag": "path", "attrs": { "d": "M988 548c-19.9 0-36-16.1-36-36 0-59.4-11.6-117-34.6-171.3a440.45 440.45 0 00-94.3-139.9 437.71 437.71 0 00-139.9-94.3C629 83.6 571.4 72 512 72c-19.9 0-36-16.1-36-36s16.1-36 36-36c69.1 0 136.2 13.5 199.3 40.3C772.3 66 827 103 874 150c47 47 83.9 101.8 109.7 162.7 26.7 63.1 40.2 130.2 40.2 199.3.1 19.9-16 36-35.9 36z" } }] }, "name": "loading", "theme": "outlined" };
   var LoadingOutlined = function LoadingOutlined2(props, ref) {
     return /* @__PURE__ */ React__namespace.createElement(Icon, _extends({}, props, {
@@ -2444,7 +1754,15 @@
       icon: LoadingOutlined$1
     }));
   };
-  var RefIcon$2 = /* @__PURE__ */ React__namespace.forwardRef(LoadingOutlined);
+  var RefIcon$3 = /* @__PURE__ */ React__namespace.forwardRef(LoadingOutlined);
+  var MinusOutlined$1 = { "icon": { "tag": "svg", "attrs": { "viewBox": "64 64 896 896", "focusable": "false" }, "children": [{ "tag": "path", "attrs": { "d": "M872 474H152c-4.4 0-8 3.6-8 8v60c0 4.4 3.6 8 8 8h720c4.4 0 8-3.6 8-8v-60c0-4.4-3.6-8-8-8z" } }] }, "name": "minus", "theme": "outlined" };
+  var MinusOutlined = function MinusOutlined2(props, ref) {
+    return /* @__PURE__ */ React__namespace.createElement(Icon, _extends({}, props, {
+      ref,
+      icon: MinusOutlined$1
+    }));
+  };
+  var RefIcon$2 = /* @__PURE__ */ React__namespace.forwardRef(MinusOutlined);
   var RedoOutlined$1 = { "icon": { "tag": "svg", "attrs": { "viewBox": "64 64 896 896", "focusable": "false" }, "children": [{ "tag": "path", "attrs": { "d": "M758.2 839.1C851.8 765.9 912 651.9 912 523.9 912 303 733.5 124.3 512.6 124 291.4 123.7 112 302.8 112 523.9c0 125.2 57.5 236.9 147.6 310.2 3.5 2.8 8.6 2.2 11.4-1.3l39.4-50.5c2.7-3.4 2.1-8.3-1.2-11.1-8.1-6.6-15.9-13.7-23.4-21.2a318.64 318.64 0 01-68.6-101.7C200.4 609 192 567.1 192 523.9s8.4-85.1 25.1-124.5c16.1-38.1 39.2-72.3 68.6-101.7 29.4-29.4 63.6-52.5 101.7-68.6C426.9 212.4 468.8 204 512 204s85.1 8.4 124.5 25.1c38.1 16.1 72.3 39.2 101.7 68.6 29.4 29.4 52.5 63.6 68.6 101.7 16.7 39.4 25.1 81.3 25.1 124.5s-8.4 85.1-25.1 124.5a318.64 318.64 0 01-68.6 101.7c-9.3 9.3-19.1 18-29.3 26L668.2 724a8 8 0 00-14.1 3l-39.6 162.2c-1.2 5 2.6 9.9 7.7 9.9l167 .8c6.7 0 10.5-7.7 6.3-12.9l-37.3-47.9z" } }] }, "name": "redo", "theme": "outlined" };
   var RedoOutlined = function RedoOutlined2(props, ref) {
     return /* @__PURE__ */ React__namespace.createElement(Icon, _extends({}, props, {
@@ -4014,7 +3332,7 @@
   var TOKEN_PREFIX = "token";
   function useCacheToken(theme, tokens) {
     var option = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : {};
-    var _useContext = React.useContext(StyleContext), instanceId = _useContext.cache.instanceId, container = _useContext.container;
+    var _useContext = React.useContext(StyleContext), instanceId = _useContext.cache.instanceId, container2 = _useContext.container;
     var _option$salt = option.salt, salt = _option$salt === void 0 ? "" : _option$salt, _option$override = option.override, override = _option$override === void 0 ? EMPTY_OVERRIDE : _option$override, formatToken2 = option.formatToken, compute = option.getComputedToken, cssVar = option.cssVar;
     var mergedToken = memoResult(function() {
       return Object.assign.apply(Object, [{}].concat(_toConsumableArray(tokens)));
@@ -4055,7 +3373,7 @@
         var style2 = updateCSS(cssVarsStr, murmur2("css-variables-".concat(token2._themeKey)), {
           mark: ATTR_MARK,
           prepend: "queue",
-          attachTo: container,
+          attachTo: container2,
           priority: -999
         });
         style2[CSS_IN_JS_INSTANCE] = instanceId;
@@ -4630,7 +3948,7 @@
     var token2 = info.token, path = info.path, hashId = info.hashId, layer = info.layer, nonce = info.nonce, clientOnly = info.clientOnly, _info$order = info.order, order = _info$order === void 0 ? 0 : _info$order;
     var _React$useContext = React__namespace.useContext(StyleContext), autoClear = _React$useContext.autoClear;
     _React$useContext.mock;
-    var defaultCache = _React$useContext.defaultCache, hashPriority = _React$useContext.hashPriority, container = _React$useContext.container, ssrInline = _React$useContext.ssrInline, transformers = _React$useContext.transformers, linters = _React$useContext.linters, cache = _React$useContext.cache, enableLayer = _React$useContext.layer;
+    var defaultCache = _React$useContext.defaultCache, hashPriority = _React$useContext.hashPriority, container2 = _React$useContext.container, ssrInline = _React$useContext.ssrInline, transformers = _React$useContext.transformers, linters = _React$useContext.linters, cache = _React$useContext.cache, enableLayer = _React$useContext.layer;
     var tokenKey = token2._tokenKey;
     var fullPath = [tokenKey];
     if (enableLayer) {
@@ -4681,7 +3999,7 @@
           var mergedCSSConfig = {
             mark: ATTR_MARK,
             prepend: enableLayer ? false : "queue",
-            attachTo: container,
+            attachTo: container2,
             priority: order
           };
           var nonceStr = typeof nonce === "function" ? nonce() : nonce;
@@ -4759,7 +4077,7 @@
   var CSS_VAR_PREFIX = "cssVar";
   var useCSSVarRegister = function useCSSVarRegister2(config, fn) {
     var key = config.key, prefix = config.prefix, unitless2 = config.unitless, ignore2 = config.ignore, token2 = config.token, _config$scope = config.scope, scope = _config$scope === void 0 ? "" : _config$scope;
-    var _useContext = React.useContext(StyleContext), instanceId = _useContext.cache.instanceId, container = _useContext.container;
+    var _useContext = React.useContext(StyleContext), instanceId = _useContext.cache.instanceId, container2 = _useContext.container;
     var tokenKey = token2._tokenKey;
     var stylePath = [].concat(_toConsumableArray(config.path), [key, scope, tokenKey]);
     var cache = useGlobalCache(CSS_VAR_PREFIX, stylePath, function() {
@@ -4787,7 +4105,7 @@
       var style2 = updateCSS(cssVarsStr, styleId, {
         mark: ATTR_MARK,
         prepend: "queue",
-        attachTo: container,
+        attachTo: container2,
         priority: -999
       });
       style2[CSS_IN_JS_INSTANCE] = instanceId;
@@ -5690,7 +5008,7 @@
     };
   }
   const PresetColors = ["blue", "purple", "cyan", "green", "magenta", "pink", "red", "orange", "yellow", "volcano", "geekblue", "lime", "gold"];
-  const version$1 = "5.16.4";
+  const version$2 = "5.16.4";
   function isStableColor(color) {
     return color >= 0 && color <= 255;
   }
@@ -5992,7 +5310,7 @@
       override,
       cssVar
     } = React.useContext(DesignTokenContext);
-    const salt = `${version$1}-${hashed || ""}`;
+    const salt = `${version$2}-${hashed || ""}`;
     const mergedTheme = theme || defaultTheme;
     const [token2, hashId, realToken] = useCacheToken(mergedTheme, [seedToken, rootDesignToken], {
       salt,
@@ -8049,10 +7367,10 @@
     };
   }
   var fullClone = _objectSpread2({}, ReactDOM__default__namespace);
-  var version = fullClone.version, reactRender = fullClone.render, unmountComponentAtNode = fullClone.unmountComponentAtNode;
+  var version$1 = fullClone.version, reactRender = fullClone.render, unmountComponentAtNode = fullClone.unmountComponentAtNode;
   var createRoot;
   try {
-    var mainVersion = Number((version || "").split(".")[0]);
+    var mainVersion = Number((version$1 || "").split(".")[0]);
     if (mainVersion >= 18) {
       createRoot = fullClone.createRoot;
     }
@@ -8065,36 +7383,36 @@
     }
   }
   var MARK = "__rc_react_root__";
-  function modernRender(node2, container) {
+  function modernRender(node2, container2) {
     toggleWarning(true);
-    var root = container[MARK] || createRoot(container);
+    var root = container2[MARK] || createRoot(container2);
     toggleWarning(false);
     root.render(node2);
-    container[MARK] = root;
+    container2[MARK] = root;
   }
-  function legacyRender(node2, container) {
-    reactRender(node2, container);
+  function legacyRender(node2, container2) {
+    reactRender(node2, container2);
   }
-  function render(node2, container) {
+  function render(node2, container2) {
     if (createRoot) {
-      modernRender(node2, container);
+      modernRender(node2, container2);
       return;
     }
-    legacyRender(node2, container);
+    legacyRender(node2, container2);
   }
   function modernUnmount(_x) {
     return _modernUnmount.apply(this, arguments);
   }
   function _modernUnmount() {
-    _modernUnmount = _asyncToGenerator(/* @__PURE__ */ _regeneratorRuntime().mark(function _callee(container) {
+    _modernUnmount = _asyncToGenerator(/* @__PURE__ */ _regeneratorRuntime().mark(function _callee(container2) {
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1)
           switch (_context.prev = _context.next) {
             case 0:
               return _context.abrupt("return", Promise.resolve().then(function() {
                 var _container$MARK;
-                (_container$MARK = container[MARK]) === null || _container$MARK === void 0 || _container$MARK.unmount();
-                delete container[MARK];
+                (_container$MARK = container2[MARK]) === null || _container$MARK === void 0 || _container$MARK.unmount();
+                delete container2[MARK];
               }));
             case 1:
             case "end":
@@ -8104,14 +7422,14 @@
     }));
     return _modernUnmount.apply(this, arguments);
   }
-  function legacyUnmount(container) {
-    unmountComponentAtNode(container);
+  function legacyUnmount(container2) {
+    unmountComponentAtNode(container2);
   }
   function unmount(_x2) {
     return _unmount.apply(this, arguments);
   }
   function _unmount() {
-    _unmount = _asyncToGenerator(/* @__PURE__ */ _regeneratorRuntime().mark(function _callee2(container) {
+    _unmount = _asyncToGenerator(/* @__PURE__ */ _regeneratorRuntime().mark(function _callee2(container2) {
       return _regeneratorRuntime().wrap(function _callee2$(_context2) {
         while (1)
           switch (_context2.prev = _context2.next) {
@@ -8120,9 +7438,9 @@
                 _context2.next = 2;
                 break;
               }
-              return _context2.abrupt("return", modernUnmount(container));
+              return _context2.abrupt("return", modernUnmount(container2));
             case 2:
-              legacyUnmount(container);
+              legacyUnmount(container2);
             case 3:
             case "end":
               return _context2.stop();
@@ -8563,7 +7881,7 @@
       className: mergedIconCls,
       style: style2,
       ref
-    }, /* @__PURE__ */ React.createElement(RefIcon$2, {
+    }, /* @__PURE__ */ React.createElement(RefIcon$3, {
       className: iconClassName
     }));
   });
@@ -9699,7 +9017,7 @@
     const propCloseConfig = useClosableConfig(propCloseCollection);
     const contextCloseConfig = useClosableConfig(contextCloseCollection);
     const mergedFallbackCloseCollection = React.useMemo(() => Object.assign({
-      closeIcon: /* @__PURE__ */ React.createElement(RefIcon$5, null)
+      closeIcon: /* @__PURE__ */ React.createElement(RefIcon$6, null)
     }, fallbackCloseCollection), [fallbackCloseCollection]);
     const mergedClosableConfig = React.useMemo(() => {
       if (propCloseConfig === false) {
@@ -13140,9 +12458,9 @@
       if (format || progressStatus !== "exception" && progressStatus !== "success") {
         text = textFormatter(validProgress(percent), validProgress(successPercent));
       } else if (progressStatus === "exception") {
-        text = isLineType ? /* @__PURE__ */ React__namespace.createElement(RefIcon$6, null) : /* @__PURE__ */ React__namespace.createElement(RefIcon$5, null);
+        text = isLineType ? /* @__PURE__ */ React__namespace.createElement(RefIcon$7, null) : /* @__PURE__ */ React__namespace.createElement(RefIcon$6, null);
       } else if (progressStatus === "success") {
-        text = isLineType ? /* @__PURE__ */ React__namespace.createElement(RefIcon$8, null) : /* @__PURE__ */ React__namespace.createElement(RefIcon$7, null);
+        text = isLineType ? /* @__PURE__ */ React__namespace.createElement(RefIcon$9, null) : /* @__PURE__ */ React__namespace.createElement(RefIcon$8, null);
       }
       return /* @__PURE__ */ React__namespace.createElement("span", {
         className: `${prefixCls}-text`,
@@ -14672,6 +13990,691 @@
     });
   })(FileSaver_min);
   var FileSaver_minExports = FileSaver_min.exports;
+  var define_import_meta_env_default$1 = { BASE_URL: "/", MODE: "production", DEV: false, PROD: true, SSR: false };
+  let keyCount = 0;
+  function atom(read, write) {
+    const key = `atom${++keyCount}`;
+    const config = {
+      toString: () => key
+    };
+    if (typeof read === "function") {
+      config.read = read;
+    } else {
+      config.init = read;
+      config.read = defaultRead;
+      config.write = defaultWrite;
+    }
+    if (write) {
+      config.write = write;
+    }
+    return config;
+  }
+  function defaultRead(get2) {
+    return get2(this);
+  }
+  function defaultWrite(get2, set2, arg) {
+    return set2(
+      this,
+      typeof arg === "function" ? arg(get2(this)) : arg
+    );
+  }
+  const isSelfAtom = (atom2, a) => atom2.unstable_is ? atom2.unstable_is(a) : a === atom2;
+  const hasInitialValue = (atom2) => "init" in atom2;
+  const isActuallyWritableAtom = (atom2) => !!atom2.write;
+  const cancelPromiseMap = /* @__PURE__ */ new WeakMap();
+  const registerCancelPromise = (promise, cancel) => {
+    cancelPromiseMap.set(promise, cancel);
+    promise.catch(() => {
+    }).finally(() => cancelPromiseMap.delete(promise));
+  };
+  const cancelPromise = (promise, next2) => {
+    const cancel = cancelPromiseMap.get(promise);
+    if (cancel) {
+      cancelPromiseMap.delete(promise);
+      cancel(next2);
+    }
+  };
+  const resolvePromise = (promise, value) => {
+    promise.status = "fulfilled";
+    promise.value = value;
+  };
+  const rejectPromise = (promise, e2) => {
+    promise.status = "rejected";
+    promise.reason = e2;
+  };
+  const isPromiseLike$1 = (x) => typeof (x == null ? void 0 : x.then) === "function";
+  const isEqualAtomValue = (a, b2) => !!a && "v" in a && "v" in b2 && Object.is(a.v, b2.v);
+  const isEqualAtomError = (a, b2) => !!a && "e" in a && "e" in b2 && Object.is(a.e, b2.e);
+  const hasPromiseAtomValue = (a) => !!a && "v" in a && a.v instanceof Promise;
+  const isEqualPromiseAtomValue = (a, b2) => "v" in a && "v" in b2 && a.v.orig && a.v.orig === b2.v.orig;
+  const returnAtomValue = (atomState) => {
+    if ("e" in atomState) {
+      throw atomState.e;
+    }
+    return atomState.v;
+  };
+  const createStore$1 = () => {
+    const atomStateMap = /* @__PURE__ */ new WeakMap();
+    const mountedMap = /* @__PURE__ */ new WeakMap();
+    const pendingStack = [];
+    const pendingMap = /* @__PURE__ */ new WeakMap();
+    let devListenersRev2;
+    let mountedAtoms;
+    if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
+      devListenersRev2 = /* @__PURE__ */ new Set();
+      mountedAtoms = /* @__PURE__ */ new Set();
+    }
+    const getAtomState = (atom2) => atomStateMap.get(atom2);
+    const addPendingDependent = (atom2, atomState) => {
+      atomState.d.forEach((_, a) => {
+        var _a2;
+        if (!pendingMap.has(a)) {
+          const aState = getAtomState(a);
+          (_a2 = pendingStack[pendingStack.length - 1]) == null ? void 0 : _a2.add(a);
+          pendingMap.set(a, [aState, /* @__PURE__ */ new Set()]);
+          if (aState) {
+            addPendingDependent(a, aState);
+          }
+        }
+        pendingMap.get(a)[1].add(atom2);
+      });
+    };
+    const setAtomState = (atom2, atomState) => {
+      var _a2;
+      if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
+        Object.freeze(atomState);
+      }
+      const prevAtomState = getAtomState(atom2);
+      atomStateMap.set(atom2, atomState);
+      if (!pendingMap.has(atom2)) {
+        (_a2 = pendingStack[pendingStack.length - 1]) == null ? void 0 : _a2.add(atom2);
+        pendingMap.set(atom2, [prevAtomState, /* @__PURE__ */ new Set()]);
+        addPendingDependent(atom2, atomState);
+      }
+      if (hasPromiseAtomValue(prevAtomState)) {
+        const next2 = "v" in atomState ? atomState.v instanceof Promise ? atomState.v : Promise.resolve(atomState.v) : Promise.reject(atomState.e);
+        if (prevAtomState.v !== next2) {
+          cancelPromise(prevAtomState.v, next2);
+        }
+      }
+    };
+    const updateDependencies = (atom2, nextAtomState, nextDependencies, keepPreviousDependencies) => {
+      const dependencies = new Map(
+        keepPreviousDependencies ? nextAtomState.d : null
+      );
+      let changed = false;
+      nextDependencies.forEach((aState, a) => {
+        if (!aState && isSelfAtom(atom2, a)) {
+          aState = nextAtomState;
+        }
+        if (aState) {
+          dependencies.set(a, aState);
+          if (nextAtomState.d.get(a) !== aState) {
+            changed = true;
+          }
+        } else if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
+          console.warn("[Bug] atom state not found");
+        }
+      });
+      if (changed || nextAtomState.d.size !== dependencies.size) {
+        nextAtomState.d = dependencies;
+      }
+    };
+    const setAtomValue = (atom2, value, nextDependencies, keepPreviousDependencies) => {
+      const prevAtomState = getAtomState(atom2);
+      const nextAtomState = {
+        d: (prevAtomState == null ? void 0 : prevAtomState.d) || /* @__PURE__ */ new Map(),
+        v: value
+      };
+      if (nextDependencies) {
+        updateDependencies(
+          atom2,
+          nextAtomState,
+          nextDependencies,
+          keepPreviousDependencies
+        );
+      }
+      if (isEqualAtomValue(prevAtomState, nextAtomState) && prevAtomState.d === nextAtomState.d) {
+        return prevAtomState;
+      }
+      if (hasPromiseAtomValue(prevAtomState) && hasPromiseAtomValue(nextAtomState) && isEqualPromiseAtomValue(prevAtomState, nextAtomState)) {
+        if (prevAtomState.d === nextAtomState.d) {
+          return prevAtomState;
+        } else {
+          nextAtomState.v = prevAtomState.v;
+        }
+      }
+      setAtomState(atom2, nextAtomState);
+      return nextAtomState;
+    };
+    const setAtomValueOrPromise = (atom2, valueOrPromise, nextDependencies, abortPromise) => {
+      if (isPromiseLike$1(valueOrPromise)) {
+        let continuePromise;
+        const updatePromiseDependencies = () => {
+          const prevAtomState = getAtomState(atom2);
+          if (!hasPromiseAtomValue(prevAtomState) || prevAtomState.v !== promise) {
+            return;
+          }
+          const nextAtomState = setAtomValue(
+            atom2,
+            promise,
+            nextDependencies
+          );
+          if (mountedMap.has(atom2) && prevAtomState.d !== nextAtomState.d) {
+            mountDependencies(atom2, nextAtomState, prevAtomState.d);
+          }
+        };
+        const promise = new Promise((resolve, reject) => {
+          let settled = false;
+          valueOrPromise.then(
+            (v2) => {
+              if (!settled) {
+                settled = true;
+                resolvePromise(promise, v2);
+                resolve(v2);
+                updatePromiseDependencies();
+              }
+            },
+            (e2) => {
+              if (!settled) {
+                settled = true;
+                rejectPromise(promise, e2);
+                reject(e2);
+                updatePromiseDependencies();
+              }
+            }
+          );
+          continuePromise = (next2) => {
+            if (!settled) {
+              settled = true;
+              next2.then(
+                (v2) => resolvePromise(promise, v2),
+                (e2) => rejectPromise(promise, e2)
+              );
+              resolve(next2);
+            }
+          };
+        });
+        promise.orig = valueOrPromise;
+        promise.status = "pending";
+        registerCancelPromise(promise, (next2) => {
+          if (next2) {
+            continuePromise(next2);
+          }
+          abortPromise == null ? void 0 : abortPromise();
+        });
+        return setAtomValue(atom2, promise, nextDependencies, true);
+      }
+      return setAtomValue(atom2, valueOrPromise, nextDependencies);
+    };
+    const setAtomError = (atom2, error, nextDependencies) => {
+      const prevAtomState = getAtomState(atom2);
+      const nextAtomState = {
+        d: (prevAtomState == null ? void 0 : prevAtomState.d) || /* @__PURE__ */ new Map(),
+        e: error
+      };
+      if (nextDependencies) {
+        updateDependencies(atom2, nextAtomState, nextDependencies);
+      }
+      if (isEqualAtomError(prevAtomState, nextAtomState) && prevAtomState.d === nextAtomState.d) {
+        return prevAtomState;
+      }
+      setAtomState(atom2, nextAtomState);
+      return nextAtomState;
+    };
+    const readAtomState = (atom2, force) => {
+      const atomState = getAtomState(atom2);
+      if (!force && atomState) {
+        if (mountedMap.has(atom2)) {
+          return atomState;
+        }
+        if (Array.from(atomState.d).every(([a, s]) => {
+          if (a === atom2) {
+            return true;
+          }
+          const aState = readAtomState(a);
+          return aState === s || isEqualAtomValue(aState, s);
+        })) {
+          return atomState;
+        }
+      }
+      const nextDependencies = /* @__PURE__ */ new Map();
+      let isSync = true;
+      const getter = (a) => {
+        if (isSelfAtom(atom2, a)) {
+          const aState2 = getAtomState(a);
+          if (aState2) {
+            nextDependencies.set(a, aState2);
+            return returnAtomValue(aState2);
+          }
+          if (hasInitialValue(a)) {
+            nextDependencies.set(a, void 0);
+            return a.init;
+          }
+          throw new Error("no atom init");
+        }
+        const aState = readAtomState(a);
+        nextDependencies.set(a, aState);
+        return returnAtomValue(aState);
+      };
+      let controller;
+      let setSelf;
+      const options = {
+        get signal() {
+          if (!controller) {
+            controller = new AbortController();
+          }
+          return controller.signal;
+        },
+        get setSelf() {
+          if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production" && !isActuallyWritableAtom(atom2)) {
+            console.warn("setSelf function cannot be used with read-only atom");
+          }
+          if (!setSelf && isActuallyWritableAtom(atom2)) {
+            setSelf = (...args) => {
+              if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production" && isSync) {
+                console.warn("setSelf function cannot be called in sync");
+              }
+              if (!isSync) {
+                return writeAtom(atom2, ...args);
+              }
+            };
+          }
+          return setSelf;
+        }
+      };
+      try {
+        const valueOrPromise = atom2.read(getter, options);
+        return setAtomValueOrPromise(
+          atom2,
+          valueOrPromise,
+          nextDependencies,
+          () => controller == null ? void 0 : controller.abort()
+        );
+      } catch (error) {
+        return setAtomError(atom2, error, nextDependencies);
+      } finally {
+        isSync = false;
+      }
+    };
+    const readAtom = (atom2) => returnAtomValue(readAtomState(atom2));
+    const recomputeDependents = (atom2) => {
+      const getDependents = (a) => {
+        var _a2, _b2;
+        const dependents = new Set((_a2 = mountedMap.get(a)) == null ? void 0 : _a2.t);
+        (_b2 = pendingMap.get(a)) == null ? void 0 : _b2[1].forEach((dependent) => {
+          dependents.add(dependent);
+        });
+        return dependents;
+      };
+      const topsortedAtoms = new Array();
+      const markedAtoms = /* @__PURE__ */ new Set();
+      const visit = (n2) => {
+        if (markedAtoms.has(n2)) {
+          return;
+        }
+        markedAtoms.add(n2);
+        for (const m2 of getDependents(n2)) {
+          if (n2 !== m2) {
+            visit(m2);
+          }
+        }
+        topsortedAtoms.push(n2);
+      };
+      visit(atom2);
+      const changedAtoms = /* @__PURE__ */ new Set([atom2]);
+      for (let i = topsortedAtoms.length - 1; i >= 0; --i) {
+        const a = topsortedAtoms[i];
+        const prevAtomState = getAtomState(a);
+        if (!prevAtomState) {
+          continue;
+        }
+        let hasChangedDeps = false;
+        for (const dep of prevAtomState.d.keys()) {
+          if (dep !== a && changedAtoms.has(dep)) {
+            hasChangedDeps = true;
+            break;
+          }
+        }
+        if (hasChangedDeps) {
+          const nextAtomState = readAtomState(a, true);
+          if (!isEqualAtomValue(prevAtomState, nextAtomState)) {
+            changedAtoms.add(a);
+          }
+        }
+      }
+    };
+    const writeAtomState = (atom2, ...args) => {
+      const getter = (a) => returnAtomValue(readAtomState(a));
+      const setter = (a, ...args2) => {
+        const isSync = pendingStack.length > 0;
+        if (!isSync) {
+          pendingStack.push(/* @__PURE__ */ new Set([a]));
+        }
+        let r;
+        if (isSelfAtom(atom2, a)) {
+          if (!hasInitialValue(a)) {
+            throw new Error("atom not writable");
+          }
+          const prevAtomState = getAtomState(a);
+          const nextAtomState = setAtomValueOrPromise(a, args2[0]);
+          if (!isEqualAtomValue(prevAtomState, nextAtomState)) {
+            recomputeDependents(a);
+          }
+        } else {
+          r = writeAtomState(a, ...args2);
+        }
+        if (!isSync) {
+          const flushed = flushPending(pendingStack.pop());
+          if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
+            devListenersRev2.forEach(
+              (l2) => l2({ type: "async-write", flushed })
+            );
+          }
+        }
+        return r;
+      };
+      const result = atom2.write(getter, setter, ...args);
+      return result;
+    };
+    const writeAtom = (atom2, ...args) => {
+      pendingStack.push(/* @__PURE__ */ new Set([atom2]));
+      const result = writeAtomState(atom2, ...args);
+      const flushed = flushPending(pendingStack.pop());
+      if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
+        devListenersRev2.forEach((l2) => l2({ type: "write", flushed }));
+      }
+      return result;
+    };
+    const mountAtom = (atom2, initialDependent, onMountQueue) => {
+      var _a2;
+      const existingMount = mountedMap.get(atom2);
+      if (existingMount) {
+        if (initialDependent) {
+          existingMount.t.add(initialDependent);
+        }
+        return existingMount;
+      }
+      const queue = onMountQueue || [];
+      (_a2 = getAtomState(atom2)) == null ? void 0 : _a2.d.forEach((_, a) => {
+        if (a !== atom2) {
+          mountAtom(a, atom2, queue);
+        }
+      });
+      readAtomState(atom2);
+      const mounted = {
+        t: new Set(initialDependent && [initialDependent]),
+        l: /* @__PURE__ */ new Set()
+      };
+      mountedMap.set(atom2, mounted);
+      if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
+        mountedAtoms.add(atom2);
+      }
+      if (isActuallyWritableAtom(atom2) && atom2.onMount) {
+        const { onMount } = atom2;
+        queue.push(() => {
+          const onUnmount = onMount((...args) => writeAtom(atom2, ...args));
+          if (onUnmount) {
+            mounted.u = onUnmount;
+          }
+        });
+      }
+      if (!onMountQueue) {
+        queue.forEach((f2) => f2());
+      }
+      return mounted;
+    };
+    const canUnmountAtom = (atom2, mounted) => !mounted.l.size && (!mounted.t.size || mounted.t.size === 1 && mounted.t.has(atom2));
+    const tryUnmountAtom = (atom2, mounted) => {
+      if (!canUnmountAtom(atom2, mounted)) {
+        return;
+      }
+      const onUnmount = mounted.u;
+      if (onUnmount) {
+        onUnmount();
+      }
+      mountedMap.delete(atom2);
+      if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
+        mountedAtoms.delete(atom2);
+      }
+      const atomState = getAtomState(atom2);
+      if (atomState) {
+        if (hasPromiseAtomValue(atomState)) {
+          cancelPromise(atomState.v);
+        }
+        atomState.d.forEach((_, a) => {
+          if (a !== atom2) {
+            const mountedDep = mountedMap.get(a);
+            if (mountedDep) {
+              mountedDep.t.delete(atom2);
+              tryUnmountAtom(a, mountedDep);
+            }
+          }
+        });
+      } else if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
+        console.warn("[Bug] could not find atom state to unmount", atom2);
+      }
+    };
+    const mountDependencies = (atom2, atomState, prevDependencies) => {
+      const depSet = new Set(atomState.d.keys());
+      const maybeUnmountAtomSet = /* @__PURE__ */ new Set();
+      prevDependencies == null ? void 0 : prevDependencies.forEach((_, a) => {
+        if (depSet.has(a)) {
+          depSet.delete(a);
+          return;
+        }
+        maybeUnmountAtomSet.add(a);
+        const mounted = mountedMap.get(a);
+        if (mounted) {
+          mounted.t.delete(atom2);
+        }
+      });
+      depSet.forEach((a) => {
+        mountAtom(a, atom2);
+      });
+      maybeUnmountAtomSet.forEach((a) => {
+        const mounted = mountedMap.get(a);
+        if (mounted) {
+          tryUnmountAtom(a, mounted);
+        }
+      });
+    };
+    const flushPending = (pendingAtoms) => {
+      let flushed;
+      if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
+        flushed = /* @__PURE__ */ new Set();
+      }
+      const pending = [];
+      const collectPending = (pendingAtom) => {
+        var _a2;
+        if (!pendingMap.has(pendingAtom)) {
+          return;
+        }
+        const [prevAtomState, dependents] = pendingMap.get(pendingAtom);
+        pendingMap.delete(pendingAtom);
+        pending.push([pendingAtom, prevAtomState]);
+        dependents.forEach(collectPending);
+        (_a2 = getAtomState(pendingAtom)) == null ? void 0 : _a2.d.forEach((_, a) => collectPending(a));
+      };
+      pendingAtoms.forEach(collectPending);
+      pending.forEach(([atom2, prevAtomState]) => {
+        const atomState = getAtomState(atom2);
+        if (!atomState) {
+          if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
+            console.warn("[Bug] no atom state to flush");
+          }
+          return;
+        }
+        if (atomState !== prevAtomState) {
+          const mounted = mountedMap.get(atom2);
+          if (mounted && atomState.d !== (prevAtomState == null ? void 0 : prevAtomState.d)) {
+            mountDependencies(atom2, atomState, prevAtomState == null ? void 0 : prevAtomState.d);
+          }
+          if (mounted && !// TODO This seems pretty hacky. Hope to fix it.
+          // Maybe we could `mountDependencies` in `setAtomState`?
+          (!hasPromiseAtomValue(prevAtomState) && (isEqualAtomValue(prevAtomState, atomState) || isEqualAtomError(prevAtomState, atomState)))) {
+            mounted.l.forEach((listener) => listener());
+            if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
+              flushed.add(atom2);
+            }
+          }
+        }
+      });
+      if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
+        return flushed;
+      }
+    };
+    const subscribeAtom = (atom2, listener) => {
+      const mounted = mountAtom(atom2);
+      const flushed = flushPending([atom2]);
+      const listeners = mounted.l;
+      listeners.add(listener);
+      if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
+        devListenersRev2.forEach(
+          (l2) => l2({ type: "sub", flushed })
+        );
+      }
+      return () => {
+        listeners.delete(listener);
+        tryUnmountAtom(atom2, mounted);
+        if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
+          devListenersRev2.forEach((l2) => l2({ type: "unsub" }));
+        }
+      };
+    };
+    if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
+      return {
+        get: readAtom,
+        set: writeAtom,
+        sub: subscribeAtom,
+        // store dev methods (these are tentative and subject to change without notice)
+        dev_subscribe_store: (l2) => {
+          devListenersRev2.add(l2);
+          return () => {
+            devListenersRev2.delete(l2);
+          };
+        },
+        dev_get_mounted_atoms: () => mountedAtoms.values(),
+        dev_get_atom_state: (a) => atomStateMap.get(a),
+        dev_get_mounted: (a) => mountedMap.get(a),
+        dev_restore_atoms: (values) => {
+          pendingStack.push(/* @__PURE__ */ new Set());
+          for (const [atom2, valueOrPromise] of values) {
+            if (hasInitialValue(atom2)) {
+              setAtomValueOrPromise(atom2, valueOrPromise);
+              recomputeDependents(atom2);
+            }
+          }
+          const flushed = flushPending(pendingStack.pop());
+          devListenersRev2.forEach(
+            (l2) => l2({ type: "restore", flushed })
+          );
+        }
+      };
+    }
+    return {
+      get: readAtom,
+      set: writeAtom,
+      sub: subscribeAtom
+    };
+  };
+  let defaultStore;
+  const getDefaultStore$1 = () => {
+    if (!defaultStore) {
+      defaultStore = createStore$1();
+      if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
+        globalThis.__JOTAI_DEFAULT_STORE__ || (globalThis.__JOTAI_DEFAULT_STORE__ = defaultStore);
+        if (globalThis.__JOTAI_DEFAULT_STORE__ !== defaultStore) {
+          console.warn(
+            "Detected multiple Jotai instances. It may cause unexpected behavior with the default store. https://github.com/pmndrs/jotai/discussions/2044"
+          );
+        }
+      }
+    }
+    return defaultStore;
+  };
+  const getDefaultStore = getDefaultStore$1;
+  var define_import_meta_env_default = { BASE_URL: "/", MODE: "production", DEV: false, PROD: true, SSR: false };
+  const StoreContext = React.createContext(
+    void 0
+  );
+  const useStore = (options) => {
+    const store = React.useContext(StoreContext);
+    return store || getDefaultStore();
+  };
+  const isPromiseLike = (x) => typeof (x == null ? void 0 : x.then) === "function";
+  const use = React.use || ((promise) => {
+    if (promise.status === "pending") {
+      throw promise;
+    } else if (promise.status === "fulfilled") {
+      return promise.value;
+    } else if (promise.status === "rejected") {
+      throw promise.reason;
+    } else {
+      promise.status = "pending";
+      promise.then(
+        (v2) => {
+          promise.status = "fulfilled";
+          promise.value = v2;
+        },
+        (e2) => {
+          promise.status = "rejected";
+          promise.reason = e2;
+        }
+      );
+      throw promise;
+    }
+  });
+  function useAtomValue(atom2, options) {
+    const store = useStore();
+    const [[valueFromReducer, storeFromReducer, atomFromReducer], rerender] = React.useReducer(
+      (prev2) => {
+        const nextValue = store.get(atom2);
+        if (Object.is(prev2[0], nextValue) && prev2[1] === store && prev2[2] === atom2) {
+          return prev2;
+        }
+        return [nextValue, store, atom2];
+      },
+      void 0,
+      () => [store.get(atom2), store, atom2]
+    );
+    let value = valueFromReducer;
+    if (storeFromReducer !== store || atomFromReducer !== atom2) {
+      rerender();
+      value = store.get(atom2);
+    }
+    const delay = void 0;
+    React.useEffect(() => {
+      const unsub = store.sub(atom2, () => {
+        rerender();
+      });
+      rerender();
+      return unsub;
+    }, [store, atom2, delay]);
+    React.useDebugValue(value);
+    return isPromiseLike(value) ? use(value) : value;
+  }
+  function useSetAtom(atom2, options) {
+    const store = useStore();
+    const setAtom = React.useCallback(
+      (...args) => {
+        if ((define_import_meta_env_default ? "production" : void 0) !== "production" && !("write" in atom2)) {
+          throw new Error("not writable atom");
+        }
+        return store.set(atom2, ...args);
+      },
+      [store, atom2]
+    );
+    return setAtom;
+  }
+  function useAtom(atom2, options) {
+    return [
+      useAtomValue(atom2),
+      // We do wrong type assertion here, which results in throwing an error.
+      useSetAtom(atom2)
+    ];
+  }
+  const version = "1.2.5";
   class Adapter {
   }
   class GenericAdapter extends Adapter {
@@ -15017,34 +15020,15 @@
     tasks.forEach((task) => result[task.status]++);
     return result;
   });
-  const useWindowSize = () => {
-    const [windowSize, setWindowSize] = React.useState({
-      width: window.innerWidth,
-      height: window.innerHeight,
-      scale: window.devicePixelRatio
-    });
-    React.useEffect(() => {
-      const updateWindowSize = () => setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-        scale: window.devicePixelRatio
-      });
-      window.addEventListener("resize", updateWindowSize);
-      return () => window.removeEventListener("resize", updateWindowSize);
-    }, []);
-    return windowSize;
-  };
+  const minimizedAtom = atom(false);
   const DefaultStyle$1 = {};
   const TaskView = ({
-    taskAtom,
-    fileName,
-    status,
-    completed,
-    total,
+    task,
     onDownload,
     style: style2
   }) => {
     const taskStatus = useAtomValue(taskStatusAtom);
+    const { total, completed, status, fileName } = task;
     let percent = 0;
     if (total !== void 0 && total > 0) {
       if (completed !== void 0 && completed > 0) {
@@ -15091,10 +15075,100 @@
           /* @__PURE__ */ jsxRuntimeExports.jsx(Flex, { children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "file-name", children: fileName }) }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(Tag, { color: statusColor, bordered: true, children: statusName }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(Flex, { flex: 1, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Progress, { percent }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Flex, { gap: 4, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { onClick: onDownload, size: "small", children: /* @__PURE__ */ jsxRuntimeExports.jsx(RefIcon$4, {}) }) })
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Flex, { gap: 4, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { onClick: (e2) => onDownload(task), size: "small", children: /* @__PURE__ */ jsxRuntimeExports.jsx(RefIcon$5, {}) }) })
         ]
       }
     );
+  };
+  const useWindowSize = () => {
+    const [windowSize, setWindowSize] = React.useState({
+      width: window.innerWidth,
+      height: window.innerHeight,
+      scale: window.devicePixelRatio
+    });
+    React.useEffect(() => {
+      const updateWindowSize = () => setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+        scale: window.devicePixelRatio
+      });
+      window.addEventListener("resize", updateWindowSize);
+      return () => window.removeEventListener("resize", updateWindowSize);
+    }, []);
+    return windowSize;
+  };
+  const TaskList = ({ tasks, onDownload }) => {
+    const windowSize = useWindowSize();
+    const taskAmounts = useAtomValue(taskAmountsAtom);
+    const [taskStatus, setTaskStatus] = useAtom(taskStatusAtom);
+    const title = useAtomValue(titleAtom);
+    const minimized = useAtomValue(minimizedAtom);
+    if (minimized) {
+      return null;
+    }
+    const taskStatusOptions = [{
+      label: `所有(${taskAmounts[TaskStatus.All]})`,
+      value: TaskStatus.All
+    }, {
+      label: `等待(${taskAmounts[TaskStatus.Pending]})`,
+      value: TaskStatus.Pending
+    }, {
+      label: `下载(${taskAmounts[TaskStatus.Running]})`,
+      value: TaskStatus.Running
+    }, {
+      label: `错误(${taskAmounts[TaskStatus.Error]})`,
+      value: TaskStatus.Error
+    }, {
+      label: `完成(${taskAmounts[TaskStatus.Done]})`,
+      value: TaskStatus.Done
+    }];
+    let taskViews = [];
+    taskViews = tasks.map((task) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+      TaskView,
+      {
+        task,
+        onDownload
+      },
+      `${task.id}`
+    ));
+    if (taskStatus !== TaskStatus.All) {
+      const amount = tasks.map(
+        (t2) => t2.status === taskStatus ? 1 : 0
+      ).reduce(
+        (prev2, current) => prev2 + current,
+        0
+      );
+      if (amount === 0) {
+        taskViews.push(/* @__PURE__ */ jsxRuntimeExports.jsx(Empty, { description: "未获取任务" }, title));
+      }
+    }
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Segmented,
+        {
+          options: taskStatusOptions,
+          value: taskStatus,
+          onChange: (value) => {
+            console.info(`选择任务状态: ${value}`);
+            setTaskStatus(value);
+          }
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Flex,
+        {
+          className: "task-list",
+          vertical: true,
+          gap: 3,
+          style: {
+            height: windowSize.height - 150,
+            overflowX: "hidden",
+            overflowY: "auto"
+          },
+          children: taskViews
+        }
+      )
+    ] });
   };
   const adapter = AdapterFactory.create();
   const downloader = DownloaderFactory.getInstance();
@@ -15116,13 +15190,11 @@
   const TaskPanel = ({
     style: style2 = DefaultStyle
   }) => {
-    const windowSize = useWindowSize();
     const [tasks, setTasks] = useAtom(tasksAtom);
-    const [taskStatus, setTaskStatus] = useAtom(taskStatusAtom);
     const totalProgress = useAtomValue(totalProgressAtom);
-    const taskAmounts = useAtomValue(taskAmountsAtom);
     const patchTask = useSetAtom(patchTaskAtom);
     const [title, setTitle] = useAtom(titleAtom);
+    const [minimized, setMinimized] = useAtom(minimizedAtom);
     const mergedStyle = {
       ...DefaultStyle,
       ...style2
@@ -15172,48 +15244,12 @@
     }
     function setting() {
     }
+    function sizeToggle() {
+      setMinimized(!minimized);
+    }
     React.useEffect(() => {
       fetchTasks();
     }, []);
-    let taskViews = [];
-    taskViews = tasks.map((task) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-      TaskView,
-      {
-        fileName: task.fileName,
-        status: task.status,
-        completed: task.completed,
-        total: task.total,
-        onDownload: () => download(task)
-      },
-      `${task.id}`
-    ));
-    const taskStatusOptions = [{
-      label: `所有(${taskAmounts[TaskStatus.All]})`,
-      value: TaskStatus.All
-    }, {
-      label: `等待(${taskAmounts[TaskStatus.Pending]})`,
-      value: TaskStatus.Pending
-    }, {
-      label: `下载(${taskAmounts[TaskStatus.Running]})`,
-      value: TaskStatus.Running
-    }, {
-      label: `错误(${taskAmounts[TaskStatus.Error]})`,
-      value: TaskStatus.Error
-    }, {
-      label: `完成(${taskAmounts[TaskStatus.Done]})`,
-      value: TaskStatus.Done
-    }];
-    if (taskStatus !== TaskStatus.All) {
-      const amount = tasks.map(
-        (t2) => t2.status === taskStatus ? 1 : 0
-      ).reduce(
-        (prev2, current) => prev2 + current,
-        0
-      );
-      if (amount === 0) {
-        taskViews.push(/* @__PURE__ */ jsxRuntimeExports.jsx(Empty, { description: "未获取任务" }, title));
-      }
-    }
     return /* @__PURE__ */ jsxRuntimeExports.jsxs(
       Flex,
       {
@@ -15222,21 +15258,22 @@
         vertical: true,
         style: mergedStyle,
         children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(Flex, { justify: "start", gap: 16, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(Flex, { justify: "start", gap: 12, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               Button,
               {
                 size: "small",
                 icon: /* @__PURE__ */ jsxRuntimeExports.jsx(RefIcon$1, {}),
                 disabled: tasks.length > 0,
-                onClick: fetchTasks
+                onClick: fetchTasks,
+                style: { display: "none" }
               }
             ),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               Button,
               {
                 size: "small",
-                icon: /* @__PURE__ */ jsxRuntimeExports.jsx(RefIcon$4, {}),
+                icon: /* @__PURE__ */ jsxRuntimeExports.jsx(RefIcon$5, {}),
                 onClick: downloadAll
               }
             ),
@@ -15244,7 +15281,7 @@
               Button,
               {
                 size: "small",
-                icon: /* @__PURE__ */ jsxRuntimeExports.jsx(RefIcon$3, {}),
+                icon: /* @__PURE__ */ jsxRuntimeExports.jsx(RefIcon$4, {}),
                 disabled: tasks.length > 0 && tasks.length !== Object.keys(files).length,
                 onClick: pack
               }
@@ -15254,9 +15291,24 @@
               {
                 size: "small",
                 icon: /* @__PURE__ */ jsxRuntimeExports.jsx(RefIcon, {}),
-                onClick: setting
+                onClick: setting,
+                style: { display: "none" }
               }
-            )
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(Flex, { flex: 1, justify: "end", align: "center", gap: 12, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "plugin-version", children: [
+                "v",
+                version
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                Button,
+                {
+                  size: "small",
+                  icon: minimized ? /* @__PURE__ */ jsxRuntimeExports.jsx(RefIcon$a, {}) : /* @__PURE__ */ jsxRuntimeExports.jsx(RefIcon$2, {}),
+                  onClick: sizeToggle
+                }
+              )
+            ] })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs(Flex, { align: "center", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(Flex, { children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "total-progress", children: "总下载进度：" }) }),
@@ -15268,46 +15320,16 @@
               }
             ) })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Segmented,
-            {
-              options: taskStatusOptions,
-              value: taskStatus,
-              onChange: (value) => {
-                console.info(`选择任务状态: ${value}`);
-                setTaskStatus(value);
-              }
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Flex,
-            {
-              className: "task-list",
-              vertical: true,
-              gap: 3,
-              style: {
-                height: windowSize.height - 150,
-                overflowX: "hidden",
-                overflowY: "auto"
-              },
-              children: taskViews
-            }
-          )
+          /* @__PURE__ */ jsxRuntimeExports.jsx(TaskList, { tasks, onDownload: download })
         ]
       }
     );
   };
-  const MangaPacker = () => {
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(TaskPanel, {});
-  };
-  client.createRoot(
-    (() => {
-      const app = document.createElement("div");
-      document.body.append(app);
-      return app;
-    })()
-  ).render(
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Provider, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(MangaPacker, {}) })
+  const container = document.createElement("div");
+  container.id = "mgpk-container";
+  document.body.append(container);
+  client.createRoot(container).render(
+    /* @__PURE__ */ jsxRuntimeExports.jsx(TaskPanel, {})
   );
 
 })(React, ReactDOM);

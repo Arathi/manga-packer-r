@@ -1,16 +1,10 @@
 import ReactDOM from 'react-dom/client';
-import { Provider } from 'jotai';
+import TaskPanel from './components/TaskPanel';
 
-import MangaPacker from './MangaPacker';
+const container = document.createElement('div');
+container.id = 'mgpk-container';
+document.body.append(container);
 
-ReactDOM.createRoot(
-  (() => {
-    const app = document.createElement('div');
-    document.body.append(app);
-    return app;
-  })(),
-).render(
-  <Provider>
-    <MangaPacker />
-  </Provider>,
+ReactDOM.createRoot(container).render(
+  <TaskPanel />,
 );

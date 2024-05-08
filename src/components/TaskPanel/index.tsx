@@ -1,14 +1,17 @@
 import {
-  DownloadOutlined, 
-  FileZipOutlined, 
-  RedoOutlined, 
-  SettingOutlined 
+  BorderOutlined,
+  DownloadOutlined,
+  FileZipOutlined,
+  MinusOutlined,
+  RedoOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
-import { Button, Empty, Flex, Progress, Segmented } from "antd";
+import { Button, Flex, Progress } from "antd";
 import { zipSync } from 'fflate';
 import { saveAs } from "file-saver";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { CSSProperties, useEffect } from "react";
+import { version } from '@/../package.json';
 
 import AdapterFactory from "@/adapters/AdapterFactory";
 import Task, { TaskID, TaskStatus } from "@/domains/Task";
@@ -16,15 +19,14 @@ import TaskResult from "@/domains/TaskResult";
 import DownloaderFactory from "@/downloaders/DownloaderFactory";
 import {
   tasksAtom,
-  taskStatusAtom,
   totalProgressAtom,
   patchTaskAtom,
-  taskAmountsAtom,
   titleAtom,
-} from "@/stores/TaskPanelStore";
-import useWindowSize from "@/utils/hooks/useWindowSize";
+  minimizedAtom,
+} from "@/stores";
 
 import TaskView from './TaskView';
+import TaskList from './TaskList';
 
 import './index.scss';
 
@@ -58,13 +60,11 @@ const DefaultStyle: CSSProperties = {
 const TaskPanel: React.FC<Props> = ({
   style = DefaultStyle,
 }) => {
-  const windowSize = useWindowSize();
   const [tasks, setTasks] = useAtom(tasksAtom);
-  const [taskStatus, setTaskStatus] = useAtom(taskStatusAtom);
   const totalProgress = useAtomValue(totalProgressAtom);
-  const taskAmounts = useAtomValue(taskAmountsAtom);
   const patchTask = useSetAtom(patchTaskAtom);
   const [title, setTitle] = useAtom(titleAtom);
+  const [minimized, setMinimized] = useAtom(minimizedAtom);
 
   const mergedStyle = {
     ...DefaultStyle,
@@ -125,47 +125,13 @@ const TaskPanel: React.FC<Props> = ({
     //
   }
 
+  function sizeToggle() {
+    setMinimized(!minimized);
+  }
+
   useEffect(() => {
     fetchTasks();
   }, []);
-
-  let taskViews: React.ReactNode[] = [];
-  taskViews = tasks.map(task => <TaskView
-    key={`${task.id}`}
-    fileName={task.fileName}
-    status={task.status}
-    completed={task.completed}
-    total={task.total}
-    onDownload={() => download(task)}
-  />);
-
-  const taskStatusOptions = [{
-    label: `所有(${taskAmounts[TaskStatus.All]})`,
-    value: TaskStatus.All,
-  }, {
-    label: `等待(${taskAmounts[TaskStatus.Pending]})`,
-    value: TaskStatus.Pending,
-  }, {
-    label: `下载(${taskAmounts[TaskStatus.Running]})`,
-    value: TaskStatus.Running,
-  }, {
-    label: `错误(${taskAmounts[TaskStatus.Error]})`,
-    value: TaskStatus.Error,
-  }, {
-    label: `完成(${taskAmounts[TaskStatus.Done]})`,
-    value: TaskStatus.Done,
-  }];
-
-  if (taskStatus !== TaskStatus.All) {
-    const amount = tasks.map(
-      t => t.status === taskStatus ? 1 : 0
-    ).reduce<number>(
-      (prev, current) => prev+current, 0
-    );
-    if (amount === 0) {
-      taskViews.push(<Empty key={title} description="未获取任务" />);
-    }
-  }
 
   return (
     <Flex
@@ -174,12 +140,13 @@ const TaskPanel: React.FC<Props> = ({
       vertical 
       style={mergedStyle}
     >
-      <Flex justify="start" gap={16}>
+      <Flex justify="start" gap={12}>
         <Button 
           size={'small'} 
-          icon={<RedoOutlined />} 
+          icon={<RedoOutlined />}
           disabled={tasks.length > 0}
-          onClick={fetchTasks} 
+          onClick={fetchTasks}
+          style={{ display: "none" }}
         />
         <Button 
           size={'small'}
@@ -198,7 +165,16 @@ const TaskPanel: React.FC<Props> = ({
           size={'small'} 
           icon={<SettingOutlined />}
           onClick={setting} 
+          style={{ display: "none" }}
         />
+        <Flex flex={1} justify="end" align="center" gap={12}>
+          <span className="plugin-version">v{version}</span>
+          <Button
+            size={'small'}
+            icon={ minimized ? <BorderOutlined /> : <MinusOutlined />}
+            onClick={sizeToggle}
+          />
+        </Flex>
       </Flex>
 
       <Flex align={'center'}>
@@ -211,27 +187,7 @@ const TaskPanel: React.FC<Props> = ({
         </Flex>
       </Flex>
 
-      <Segmented
-        options={taskStatusOptions}
-        value={taskStatus}
-        onChange={(value) => {
-          console.info(`选择任务状态: ${value}`);
-          setTaskStatus(value);
-        }}
-      />
-
-      <Flex 
-        className='task-list' 
-        vertical
-        gap={3}
-        style={{
-          height: windowSize.height - 150,
-          overflowX: 'hidden',
-          overflowY: 'auto',
-        }}
-      >
-        { taskViews }
-      </Flex>
+      <TaskList tasks={tasks} onDownload={download} />
     </Flex>
   )
 };
@@ -239,4 +195,5 @@ const TaskPanel: React.FC<Props> = ({
 export default TaskPanel;
 export {
   TaskView,
+  TaskList,
 };

@@ -1,18 +1,14 @@
 import { DownloadOutlined } from "@ant-design/icons";
-import { Button, ButtonProps, Flex, Progress, Tag, TagProps } from "antd";
+import { Button, Flex, Progress, Tag, TagProps } from "antd";
 import { CSSProperties } from "react";
-import { PrimitiveAtom, useAtomValue } from 'jotai';
+import { useAtomValue } from 'jotai';
 
 import Task, { TaskStatus } from "@/domains/Task";
-import { taskStatusAtom } from "@/stores/TaskPanelStore";
+import { taskStatusAtom } from "@/stores";
 
 type Props = {
-  taskAtom?: PrimitiveAtom<Task>,
-  fileName: string,
-  status: TaskStatus,
-  completed?: number,
-  total?: number,
-  onDownload?: ButtonProps['onClick'];
+  task: Task;
+  onDownload: (task: Task) => void;
   style?: CSSProperties;
 };
 
@@ -22,15 +18,12 @@ const DefaultStyle: CSSProperties = {};
  * 任务视图
  */
 const TaskView: React.FC<Props> = ({
-  taskAtom,
-  fileName,
-  status,
-  completed,
-  total,
+  task,
   onDownload,
   style
 }) => {
   const taskStatus = useAtomValue(taskStatusAtom);
+  const { total, completed, status, fileName } = task;
 
   let percent = 0;
   if (total !== undefined && total > 0) {
@@ -85,7 +78,7 @@ const TaskView: React.FC<Props> = ({
         <Progress percent={percent} />
       </Flex>
       <Flex gap={4}>
-        <Button onClick={onDownload} size={'small'}>
+        <Button onClick={e => onDownload(task)} size={'small'}>
           <DownloadOutlined />
         </Button>
       </Flex>
