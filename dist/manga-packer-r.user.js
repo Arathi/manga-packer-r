@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Manga Packer R
 // @namespace    com.undsf.tmus.mgpk
-// @version      1.3.0
+// @version      1.3.1
 // @author       Arathi of Nebnizilla
 // @icon         https://vitejs.dev/logo.svg
 // @homepageURL  https://github.com/Arathi/manga-packer-r
@@ -1697,7 +1697,7 @@
       icon: BorderOutlined$1
     }));
   };
-  var RefIcon$a = /* @__PURE__ */ React__namespace.forwardRef(BorderOutlined);
+  var RefIcon$8 = /* @__PURE__ */ React__namespace.forwardRef(BorderOutlined);
   var CheckCircleFilled$1 = { "icon": { "tag": "svg", "attrs": { "viewBox": "64 64 896 896", "focusable": "false" }, "children": [{ "tag": "path", "attrs": { "d": "M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm193.5 301.7l-210.6 292a31.8 31.8 0 01-51.7 0L318.5 484.9c-3.8-5.3 0-12.7 6.5-12.7h46.9c10.2 0 19.9 4.9 25.9 13.3l71.2 98.8 157.2-218c6-8.3 15.6-13.3 25.9-13.3H699c6.5 0 10.3 7.4 6.5 12.7z" } }] }, "name": "check-circle", "theme": "filled" };
   var CheckCircleFilled = function CheckCircleFilled2(props, ref) {
     return /* @__PURE__ */ React__namespace.createElement(Icon, _extends({}, props, {
@@ -1705,7 +1705,7 @@
       icon: CheckCircleFilled$1
     }));
   };
-  var RefIcon$9 = /* @__PURE__ */ React__namespace.forwardRef(CheckCircleFilled);
+  var RefIcon$7 = /* @__PURE__ */ React__namespace.forwardRef(CheckCircleFilled);
   var CheckOutlined$1 = { "icon": { "tag": "svg", "attrs": { "viewBox": "64 64 896 896", "focusable": "false" }, "children": [{ "tag": "path", "attrs": { "d": "M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 00-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z" } }] }, "name": "check", "theme": "outlined" };
   var CheckOutlined = function CheckOutlined2(props, ref) {
     return /* @__PURE__ */ React__namespace.createElement(Icon, _extends({}, props, {
@@ -1713,7 +1713,7 @@
       icon: CheckOutlined$1
     }));
   };
-  var RefIcon$8 = /* @__PURE__ */ React__namespace.forwardRef(CheckOutlined);
+  var RefIcon$6 = /* @__PURE__ */ React__namespace.forwardRef(CheckOutlined);
   var CloseCircleFilled$1 = { "icon": { "tag": "svg", "attrs": { "fill-rule": "evenodd", "viewBox": "64 64 896 896", "focusable": "false" }, "children": [{ "tag": "path", "attrs": { "d": "M512 64c247.4 0 448 200.6 448 448S759.4 960 512 960 64 759.4 64 512 264.6 64 512 64zm127.98 274.82h-.04l-.08.06L512 466.75 384.14 338.88c-.04-.05-.06-.06-.08-.06a.12.12 0 00-.07 0c-.03 0-.05.01-.09.05l-45.02 45.02a.2.2 0 00-.05.09.12.12 0 000 .07v.02a.27.27 0 00.06.06L466.75 512 338.88 639.86c-.05.04-.06.06-.06.08a.12.12 0 000 .07c0 .03.01.05.05.09l45.02 45.02a.2.2 0 00.09.05.12.12 0 00.07 0c.02 0 .04-.01.08-.05L512 557.25l127.86 127.87c.04.04.06.05.08.05a.12.12 0 00.07 0c.03 0 .05-.01.09-.05l45.02-45.02a.2.2 0 00.05-.09.12.12 0 000-.07v-.02a.27.27 0 00-.05-.06L557.25 512l127.87-127.86c.04-.04.05-.06.05-.08a.12.12 0 000-.07c0-.03-.01-.05-.05-.09l-45.02-45.02a.2.2 0 00-.09-.05.12.12 0 00-.07 0z" } }] }, "name": "close-circle", "theme": "filled" };
   var CloseCircleFilled = function CloseCircleFilled2(props, ref) {
     return /* @__PURE__ */ React__namespace.createElement(Icon, _extends({}, props, {
@@ -1721,7 +1721,7 @@
       icon: CloseCircleFilled$1
     }));
   };
-  var RefIcon$7 = /* @__PURE__ */ React__namespace.forwardRef(CloseCircleFilled);
+  var RefIcon$5 = /* @__PURE__ */ React__namespace.forwardRef(CloseCircleFilled);
   var CloseOutlined$1 = { "icon": { "tag": "svg", "attrs": { "fill-rule": "evenodd", "viewBox": "64 64 896 896", "focusable": "false" }, "children": [{ "tag": "path", "attrs": { "d": "M799.86 166.31c.02 0 .04.02.08.06l57.69 57.7c.04.03.05.05.06.08a.12.12 0 010 .06c0 .03-.02.05-.06.09L569.93 512l287.7 287.7c.04.04.05.06.06.09a.12.12 0 010 .07c0 .02-.02.04-.06.08l-57.7 57.69c-.03.04-.05.05-.07.06a.12.12 0 01-.07 0c-.03 0-.05-.02-.09-.06L512 569.93l-287.7 287.7c-.04.04-.06.05-.09.06a.12.12 0 01-.07 0c-.02 0-.04-.02-.08-.06l-57.69-57.7c-.04-.03-.05-.05-.06-.07a.12.12 0 010-.07c0-.03.02-.05.06-.09L454.07 512l-287.7-287.7c-.04-.04-.05-.06-.06-.09a.12.12 0 010-.07c0-.02.02-.04.06-.08l57.7-57.69c.03-.04.05-.05.07-.06a.12.12 0 01.07 0c.03 0 .05.02.09.06L512 454.07l287.7-287.7c.04-.04.06-.05.09-.06a.12.12 0 01.07 0z" } }] }, "name": "close", "theme": "outlined" };
   var CloseOutlined = function CloseOutlined2(props, ref) {
     return /* @__PURE__ */ React__namespace.createElement(Icon, _extends({}, props, {
@@ -1729,7 +1729,7 @@
       icon: CloseOutlined$1
     }));
   };
-  var RefIcon$6 = /* @__PURE__ */ React__namespace.forwardRef(CloseOutlined);
+  var RefIcon$4 = /* @__PURE__ */ React__namespace.forwardRef(CloseOutlined);
   var DownloadOutlined$1 = { "icon": { "tag": "svg", "attrs": { "viewBox": "64 64 896 896", "focusable": "false" }, "children": [{ "tag": "path", "attrs": { "d": "M505.7 661a8 8 0 0012.6 0l112-141.7c4.1-5.2.4-12.9-6.3-12.9h-74.1V168c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v338.3H400c-6.7 0-10.4 7.7-6.3 12.9l112 141.8zM878 626h-60c-4.4 0-8 3.6-8 8v154H214V634c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v198c0 17.7 14.3 32 32 32h684c17.7 0 32-14.3 32-32V634c0-4.4-3.6-8-8-8z" } }] }, "name": "download", "theme": "outlined" };
   var DownloadOutlined = function DownloadOutlined2(props, ref) {
     return /* @__PURE__ */ React__namespace.createElement(Icon, _extends({}, props, {
@@ -1737,7 +1737,7 @@
       icon: DownloadOutlined$1
     }));
   };
-  var RefIcon$5 = /* @__PURE__ */ React__namespace.forwardRef(DownloadOutlined);
+  var RefIcon$3 = /* @__PURE__ */ React__namespace.forwardRef(DownloadOutlined);
   var FileZipOutlined$1 = { "icon": { "tag": "svg", "attrs": { "viewBox": "64 64 896 896", "focusable": "false" }, "children": [{ "tag": "path", "attrs": { "d": "M296 392h64v64h-64zm0 190v160h128V582h-64v-62h-64v62zm80 48v64h-32v-64h32zm-16-302h64v64h-64zm-64-64h64v64h-64zm64 192h64v64h-64zm0-256h64v64h-64zm494.6 88.6L639.4 73.4c-6-6-14.1-9.4-22.6-9.4H192c-17.7 0-32 14.3-32 32v832c0 17.7 14.3 32 32 32h640c17.7 0 32-14.3 32-32V311.3c0-8.5-3.4-16.7-9.4-22.7zM790.2 326H602V137.8L790.2 326zm1.8 562H232V136h64v64h64v-64h174v216a42 42 0 0042 42h216v494z" } }] }, "name": "file-zip", "theme": "outlined" };
   var FileZipOutlined = function FileZipOutlined2(props, ref) {
     return /* @__PURE__ */ React__namespace.createElement(Icon, _extends({}, props, {
@@ -1745,7 +1745,7 @@
       icon: FileZipOutlined$1
     }));
   };
-  var RefIcon$4 = /* @__PURE__ */ React__namespace.forwardRef(FileZipOutlined);
+  var RefIcon$2 = /* @__PURE__ */ React__namespace.forwardRef(FileZipOutlined);
   var LoadingOutlined$1 = { "icon": { "tag": "svg", "attrs": { "viewBox": "0 0 1024 1024", "focusable": "false" }, "children": [{ "tag": "path", "attrs": { "d": "M988 548c-19.9 0-36-16.1-36-36 0-59.4-11.6-117-34.6-171.3a440.45 440.45 0 00-94.3-139.9 437.71 437.71 0 00-139.9-94.3C629 83.6 571.4 72 512 72c-19.9 0-36-16.1-36-36s16.1-36 36-36c69.1 0 136.2 13.5 199.3 40.3C772.3 66 827 103 874 150c47 47 83.9 101.8 109.7 162.7 26.7 63.1 40.2 130.2 40.2 199.3.1 19.9-16 36-35.9 36z" } }] }, "name": "loading", "theme": "outlined" };
   var LoadingOutlined = function LoadingOutlined2(props, ref) {
     return /* @__PURE__ */ React__namespace.createElement(Icon, _extends({}, props, {
@@ -1753,7 +1753,7 @@
       icon: LoadingOutlined$1
     }));
   };
-  var RefIcon$3 = /* @__PURE__ */ React__namespace.forwardRef(LoadingOutlined);
+  var RefIcon$1 = /* @__PURE__ */ React__namespace.forwardRef(LoadingOutlined);
   var MinusOutlined$1 = { "icon": { "tag": "svg", "attrs": { "viewBox": "64 64 896 896", "focusable": "false" }, "children": [{ "tag": "path", "attrs": { "d": "M872 474H152c-4.4 0-8 3.6-8 8v60c0 4.4 3.6 8 8 8h720c4.4 0 8-3.6 8-8v-60c0-4.4-3.6-8-8-8z" } }] }, "name": "minus", "theme": "outlined" };
   var MinusOutlined = function MinusOutlined2(props, ref) {
     return /* @__PURE__ */ React__namespace.createElement(Icon, _extends({}, props, {
@@ -1761,23 +1761,7 @@
       icon: MinusOutlined$1
     }));
   };
-  var RefIcon$2 = /* @__PURE__ */ React__namespace.forwardRef(MinusOutlined);
-  var RedoOutlined$1 = { "icon": { "tag": "svg", "attrs": { "viewBox": "64 64 896 896", "focusable": "false" }, "children": [{ "tag": "path", "attrs": { "d": "M758.2 839.1C851.8 765.9 912 651.9 912 523.9 912 303 733.5 124.3 512.6 124 291.4 123.7 112 302.8 112 523.9c0 125.2 57.5 236.9 147.6 310.2 3.5 2.8 8.6 2.2 11.4-1.3l39.4-50.5c2.7-3.4 2.1-8.3-1.2-11.1-8.1-6.6-15.9-13.7-23.4-21.2a318.64 318.64 0 01-68.6-101.7C200.4 609 192 567.1 192 523.9s8.4-85.1 25.1-124.5c16.1-38.1 39.2-72.3 68.6-101.7 29.4-29.4 63.6-52.5 101.7-68.6C426.9 212.4 468.8 204 512 204s85.1 8.4 124.5 25.1c38.1 16.1 72.3 39.2 101.7 68.6 29.4 29.4 52.5 63.6 68.6 101.7 16.7 39.4 25.1 81.3 25.1 124.5s-8.4 85.1-25.1 124.5a318.64 318.64 0 01-68.6 101.7c-9.3 9.3-19.1 18-29.3 26L668.2 724a8 8 0 00-14.1 3l-39.6 162.2c-1.2 5 2.6 9.9 7.7 9.9l167 .8c6.7 0 10.5-7.7 6.3-12.9l-37.3-47.9z" } }] }, "name": "redo", "theme": "outlined" };
-  var RedoOutlined = function RedoOutlined2(props, ref) {
-    return /* @__PURE__ */ React__namespace.createElement(Icon, _extends({}, props, {
-      ref,
-      icon: RedoOutlined$1
-    }));
-  };
-  var RefIcon$1 = /* @__PURE__ */ React__namespace.forwardRef(RedoOutlined);
-  var SettingOutlined$1 = { "icon": { "tag": "svg", "attrs": { "viewBox": "64 64 896 896", "focusable": "false" }, "children": [{ "tag": "path", "attrs": { "d": "M924.8 625.7l-65.5-56c3.1-19 4.7-38.4 4.7-57.8s-1.6-38.8-4.7-57.8l65.5-56a32.03 32.03 0 009.3-35.2l-.9-2.6a443.74 443.74 0 00-79.7-137.9l-1.8-2.1a32.12 32.12 0 00-35.1-9.5l-81.3 28.9c-30-24.6-63.5-44-99.7-57.6l-15.7-85a32.05 32.05 0 00-25.8-25.7l-2.7-.5c-52.1-9.4-106.9-9.4-159 0l-2.7.5a32.05 32.05 0 00-25.8 25.7l-15.8 85.4a351.86 351.86 0 00-99 57.4l-81.9-29.1a32 32 0 00-35.1 9.5l-1.8 2.1a446.02 446.02 0 00-79.7 137.9l-.9 2.6c-4.5 12.5-.8 26.5 9.3 35.2l66.3 56.6c-3.1 18.8-4.6 38-4.6 57.1 0 19.2 1.5 38.4 4.6 57.1L99 625.5a32.03 32.03 0 00-9.3 35.2l.9 2.6c18.1 50.4 44.9 96.9 79.7 137.9l1.8 2.1a32.12 32.12 0 0035.1 9.5l81.9-29.1c29.8 24.5 63.1 43.9 99 57.4l15.8 85.4a32.05 32.05 0 0025.8 25.7l2.7.5a449.4 449.4 0 00159 0l2.7-.5a32.05 32.05 0 0025.8-25.7l15.7-85a350 350 0 0099.7-57.6l81.3 28.9a32 32 0 0035.1-9.5l1.8-2.1c34.8-41.1 61.6-87.5 79.7-137.9l.9-2.6c4.5-12.3.8-26.3-9.3-35zM788.3 465.9c2.5 15.1 3.8 30.6 3.8 46.1s-1.3 31-3.8 46.1l-6.6 40.1 74.7 63.9a370.03 370.03 0 01-42.6 73.6L721 702.8l-31.4 25.8c-23.9 19.6-50.5 35-79.3 45.8l-38.1 14.3-17.9 97a377.5 377.5 0 01-85 0l-17.9-97.2-37.8-14.5c-28.5-10.8-55-26.2-78.7-45.7l-31.4-25.9-93.4 33.2c-17-22.9-31.2-47.6-42.6-73.6l75.5-64.5-6.5-40c-2.4-14.9-3.7-30.3-3.7-45.5 0-15.3 1.2-30.6 3.7-45.5l6.5-40-75.5-64.5c11.3-26.1 25.6-50.7 42.6-73.6l93.4 33.2 31.4-25.9c23.7-19.5 50.2-34.9 78.7-45.7l37.9-14.3 17.9-97.2c28.1-3.2 56.8-3.2 85 0l17.9 97 38.1 14.3c28.7 10.8 55.4 26.2 79.3 45.8l31.4 25.8 92.8-32.9c17 22.9 31.2 47.6 42.6 73.6L781.8 426l6.5 39.9zM512 326c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176-78.8-176-176-176zm79.2 255.2A111.6 111.6 0 01512 614c-29.9 0-58-11.7-79.2-32.8A111.6 111.6 0 01400 502c0-29.9 11.7-58 32.8-79.2C454 401.6 482.1 390 512 390c29.9 0 58 11.6 79.2 32.8A111.6 111.6 0 01624 502c0 29.9-11.7 58-32.8 79.2z" } }] }, "name": "setting", "theme": "outlined" };
-  var SettingOutlined = function SettingOutlined2(props, ref) {
-    return /* @__PURE__ */ React__namespace.createElement(Icon, _extends({}, props, {
-      ref,
-      icon: SettingOutlined$1
-    }));
-  };
-  var RefIcon = /* @__PURE__ */ React__namespace.forwardRef(SettingOutlined);
+  var RefIcon = /* @__PURE__ */ React__namespace.forwardRef(MinusOutlined);
   var reactIs = { exports: {} };
   var reactIs_production_min = {};
   /**
@@ -7894,7 +7878,7 @@
       className: mergedIconCls,
       style: style2,
       ref
-    }, /* @__PURE__ */ React.createElement(RefIcon$3, {
+    }, /* @__PURE__ */ React.createElement(RefIcon$1, {
       className: iconClassName
     }));
   });
@@ -9046,7 +9030,7 @@
     const propCloseConfig = useClosableConfig(propCloseCollection);
     const contextCloseConfig = useClosableConfig(contextCloseCollection);
     const mergedFallbackCloseCollection = React.useMemo(() => Object.assign({
-      closeIcon: /* @__PURE__ */ React.createElement(RefIcon$6, null)
+      closeIcon: /* @__PURE__ */ React.createElement(RefIcon$4, null)
     }, fallbackCloseCollection), [fallbackCloseCollection]);
     const mergedClosableConfig = React.useMemo(() => {
       if (propCloseConfig === false) {
@@ -12486,9 +12470,9 @@
       if (format || progressStatus !== "exception" && progressStatus !== "success") {
         text = textFormatter(validProgress(percent), validProgress(successPercent));
       } else if (progressStatus === "exception") {
-        text = isLineType ? /* @__PURE__ */ React__namespace.createElement(RefIcon$7, null) : /* @__PURE__ */ React__namespace.createElement(RefIcon$6, null);
+        text = isLineType ? /* @__PURE__ */ React__namespace.createElement(RefIcon$5, null) : /* @__PURE__ */ React__namespace.createElement(RefIcon$4, null);
       } else if (progressStatus === "success") {
-        text = isLineType ? /* @__PURE__ */ React__namespace.createElement(RefIcon$9, null) : /* @__PURE__ */ React__namespace.createElement(RefIcon$8, null);
+        text = isLineType ? /* @__PURE__ */ React__namespace.createElement(RefIcon$7, null) : /* @__PURE__ */ React__namespace.createElement(RefIcon$6, null);
       }
       return /* @__PURE__ */ React__namespace.createElement("span", {
         className: `${prefixCls}-text`,
@@ -15053,7 +15037,7 @@
     return result;
   });
   const minimizedAtom = atom(false);
-  const version = "1.3.0";
+  const version = "1.3.1";
   const DefaultStyle$1 = {};
   const TaskView = ({
     task,
@@ -15108,7 +15092,7 @@
           /* @__PURE__ */ jsxRuntimeExports.jsx(Flex, { children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "file-name", children: fileName }) }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(Tag, { color: statusColor, bordered: true, children: statusName }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(Flex, { flex: 1, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Progress, { percent }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Flex, { gap: 4, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { onClick: (e2) => onDownload(task), size: "small", children: /* @__PURE__ */ jsxRuntimeExports.jsx(RefIcon$5, {}) }) })
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Flex, { gap: 4, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { onClick: (e2) => onDownload(task), size: "small", children: /* @__PURE__ */ jsxRuntimeExports.jsx(RefIcon$3, {}) }) })
         ]
       }
     );
@@ -15246,14 +15230,17 @@
         console.info(`${task.id}下载失败：`, reason);
         patchTask({
           id: task.id,
-          status: TaskStatus.Error
+          status: TaskStatus.Error,
+          completed: 0
         });
       });
     }
     function onProgress(id, completed, total) {
       console.info(`任务${id}下载进度更新：${completed} / ${total}`);
+      const status = TaskStatus.Running;
       patchTask({
         id,
+        status,
         completed,
         total
       });
@@ -15281,8 +15268,6 @@
       console.info(`创建Blob：`, zipBlob);
       FileSaver_minExports.saveAs(zipBlob, `${title}.zip`);
     }
-    function setting() {
-    }
     function sizeToggle() {
       setMinimized(!minimized);
     }
@@ -15302,17 +15287,7 @@
               Button,
               {
                 size: "small",
-                icon: /* @__PURE__ */ jsxRuntimeExports.jsx(RefIcon$1, {}),
-                disabled: tasks.length > 0,
-                onClick: fetchTasks,
-                style: { display: "none" }
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              Button,
-              {
-                size: "small",
-                icon: /* @__PURE__ */ jsxRuntimeExports.jsx(RefIcon$5, {}),
+                icon: /* @__PURE__ */ jsxRuntimeExports.jsx(RefIcon$3, {}),
                 onClick: downloadAll
               }
             ),
@@ -15320,18 +15295,9 @@
               Button,
               {
                 size: "small",
-                icon: /* @__PURE__ */ jsxRuntimeExports.jsx(RefIcon$4, {}),
+                icon: /* @__PURE__ */ jsxRuntimeExports.jsx(RefIcon$2, {}),
                 disabled: tasks.length > 0 && tasks.length !== Object.keys(files).length,
                 onClick: pack
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              Button,
-              {
-                size: "small",
-                icon: /* @__PURE__ */ jsxRuntimeExports.jsx(RefIcon, {}),
-                onClick: setting,
-                style: { display: "none" }
               }
             ),
             /* @__PURE__ */ jsxRuntimeExports.jsxs(Flex, { flex: 1, justify: "end", align: "center", gap: 12, children: [
@@ -15343,7 +15309,7 @@
                 Button,
                 {
                   size: "small",
-                  icon: minimized ? /* @__PURE__ */ jsxRuntimeExports.jsx(RefIcon$a, {}) : /* @__PURE__ */ jsxRuntimeExports.jsx(RefIcon$2, {}),
+                  icon: minimized ? /* @__PURE__ */ jsxRuntimeExports.jsx(RefIcon$8, {}) : /* @__PURE__ */ jsxRuntimeExports.jsx(RefIcon, {}),
                   onClick: sizeToggle
                 }
               )

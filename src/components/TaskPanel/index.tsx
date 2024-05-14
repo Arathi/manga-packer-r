@@ -3,8 +3,6 @@ import {
   DownloadOutlined,
   FileZipOutlined,
   MinusOutlined,
-  RedoOutlined,
-  SettingOutlined,
 } from "@ant-design/icons";
 import { Button, Flex, Progress } from "antd";
 import { zipSync } from 'fflate';
@@ -88,14 +86,17 @@ const TaskPanel: React.FC<Props> = ({
       patchTask({
         id: task.id,
         status: TaskStatus.Error,
+        completed: 0,
       });
     });
   }
 
   function onProgress(id: TaskID, completed: number, total: number) {
     console.info(`任务${id}下载进度更新：${completed} / ${total}`);
+    const status = TaskStatus.Running;
     patchTask({
       id,
+      status,
       completed,
       total,
     });
@@ -127,10 +128,6 @@ const TaskPanel: React.FC<Props> = ({
     saveAs(zipBlob, `${title}.zip`);
   }
 
-  function setting() {
-    //
-  }
-
   function sizeToggle() {
     setMinimized(!minimized);
   }
@@ -148,13 +145,6 @@ const TaskPanel: React.FC<Props> = ({
     >
       <Flex justify="start" gap={12}>
         <Button 
-          size={'small'} 
-          icon={<RedoOutlined />}
-          disabled={tasks.length > 0}
-          onClick={fetchTasks}
-          style={{ display: "none" }}
-        />
-        <Button 
           size={'small'}
           icon={<DownloadOutlined />}
           onClick={downloadAll} 
@@ -166,12 +156,6 @@ const TaskPanel: React.FC<Props> = ({
             tasks.length > 0 && tasks.length !== Object.keys(files).length
           }
           onClick={pack}
-        />
-        <Button 
-          size={'small'} 
-          icon={<SettingOutlined />}
-          onClick={setting} 
-          style={{ display: "none" }}
         />
         <Flex flex={1} justify="end" align="center" gap={12}>
           <span className="plugin-version">v{version}</span>
@@ -186,8 +170,8 @@ const TaskPanel: React.FC<Props> = ({
       <Flex align={'center'}>
         <Flex><span className={'total-progress'}>总下载进度：</span></Flex>
         <Flex flex={1}>
-          <Progress 
-            percent={totalProgress} 
+          <Progress
+            percent={totalProgress}
             format={(percent) => `${percent?.toFixed(0) ?? '0'}%`}
           />
         </Flex>
