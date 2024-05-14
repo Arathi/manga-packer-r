@@ -27,15 +27,21 @@ class DownloaderMonkey extends Downloader {
         onload: async (event) => {
           // 下载完成
           const blob = event.response;
+          const mime = blob.type;
           const buffer = await event.response.arrayBuffer();
           const bytes = new Uint8Array(buffer);
-          resolve({
-            ...task,
-            ...{
-              mime: blob.type,
-              bytes,
-            },
-          });
+          if (event.status == 200) {
+            resolve({
+              ...task,
+              ...{
+                mime,
+                bytes,
+              },
+            });
+          }
+          else {
+            reject(`文件类型：${mime}，状态码：${event.status}`);
+          }
         },
         onerror: (event) => {
           // 错误处理

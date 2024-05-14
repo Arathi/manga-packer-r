@@ -1,7 +1,8 @@
+import { unsafeWindow } from "$";
+
 import Gallery from "@/domains/Gallery";
 import GenericAdapter from "./GenericAdapter";
 import Task, { TaskStatus } from "@/domains/Task";
-import { unsafeWindow } from "$";
 
 type GTH = {
   ct: CT;

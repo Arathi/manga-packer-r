@@ -11,7 +11,6 @@ import { zipSync } from 'fflate';
 import { saveAs } from "file-saver";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { CSSProperties, useEffect } from "react";
-import { version } from '@/../package.json';
 
 import AdapterFactory from "@/adapters/AdapterFactory";
 import Task, { TaskID, TaskStatus } from "@/domains/Task";
@@ -24,6 +23,7 @@ import {
   titleAtom,
   minimizedAtom,
 } from "@/stores";
+import { version } from '@/../package.json';
 
 import TaskView from './TaskView';
 import TaskList from './TaskList';
@@ -83,7 +83,13 @@ const TaskPanel: React.FC<Props> = ({
   }
 
   function download(task: Task) {
-    downloader.download(task, onProgress).then(onComplete);
+    downloader.download(task, onProgress).then(onComplete).catch(reason => {
+      console.info(`${task.id}下载失败：`, reason);
+      patchTask({
+        id: task.id,
+        status: TaskStatus.Error,
+      });
+    });
   }
 
   function onProgress(id: TaskID, completed: number, total: number) {

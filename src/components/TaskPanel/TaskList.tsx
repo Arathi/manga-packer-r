@@ -7,8 +7,8 @@ import {
   titleAtom,
   minimizedAtom,
 } from '@/stores';
-import useWindowSize from '@/hooks/useWindowSize';
 import Task, { TaskStatus } from "@/domains/Task";
+import useWindowSize from '@/hooks/useWindowSize';
 
 import TaskView from './TaskView';
 

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Manga Packer R
 // @namespace    com.undsf.tmus.mgpk
-// @version      1.2.5
+// @version      1.3.0
 // @author       Arathi of Nebnizilla
 // @icon         https://vitejs.dev/logo.svg
 // @homepageURL  https://github.com/Arathi/manga-packer-r
@@ -196,13 +196,12 @@
     if (source == null)
       return {};
     var target = {};
-    var sourceKeys = Object.keys(source);
-    var key, i;
-    for (i = 0; i < sourceKeys.length; i++) {
-      key = sourceKeys[i];
-      if (excluded.indexOf(key) >= 0)
-        continue;
-      target[key] = source[key];
+    for (var key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        if (excluded.indexOf(key) >= 0)
+          continue;
+        target[key] = source[key];
+      }
     }
     return target;
   }
@@ -1575,7 +1574,7 @@
     }
     return Array.isArray(twoToneColor) ? twoToneColor : [twoToneColor];
   }
-  var iconStyles = "\n.anticon {\n  display: inline-flex;\n  alignItems: center;\n  color: inherit;\n  font-style: normal;\n  line-height: 0;\n  text-align: center;\n  text-transform: none;\n  vertical-align: -0.125em;\n  text-rendering: optimizeLegibility;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n\n.anticon > * {\n  line-height: 1;\n}\n\n.anticon svg {\n  display: inline-block;\n}\n\n.anticon::before {\n  display: none;\n}\n\n.anticon .anticon-icon {\n  display: block;\n}\n\n.anticon[tabindex] {\n  cursor: pointer;\n}\n\n.anticon-spin::before,\n.anticon-spin {\n  display: inline-block;\n  -webkit-animation: loadingCircle 1s infinite linear;\n  animation: loadingCircle 1s infinite linear;\n}\n\n@-webkit-keyframes loadingCircle {\n  100% {\n    -webkit-transform: rotate(360deg);\n    transform: rotate(360deg);\n  }\n}\n\n@keyframes loadingCircle {\n  100% {\n    -webkit-transform: rotate(360deg);\n    transform: rotate(360deg);\n  }\n}\n";
+  var iconStyles = "\n.anticon {\n  display: inline-flex;\n  align-items: center;\n  color: inherit;\n  font-style: normal;\n  line-height: 0;\n  text-align: center;\n  text-transform: none;\n  vertical-align: -0.125em;\n  text-rendering: optimizeLegibility;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n\n.anticon > * {\n  line-height: 1;\n}\n\n.anticon svg {\n  display: inline-block;\n}\n\n.anticon::before {\n  display: none;\n}\n\n.anticon .anticon-icon {\n  display: block;\n}\n\n.anticon[tabindex] {\n  cursor: pointer;\n}\n\n.anticon-spin::before,\n.anticon-spin {\n  display: inline-block;\n  -webkit-animation: loadingCircle 1s infinite linear;\n  animation: loadingCircle 1s infinite linear;\n}\n\n@-webkit-keyframes loadingCircle {\n  100% {\n    -webkit-transform: rotate(360deg);\n    transform: rotate(360deg);\n  }\n}\n\n@keyframes loadingCircle {\n  100% {\n    -webkit-transform: rotate(360deg);\n    transform: rotate(360deg);\n  }\n}\n";
   var useInsertStyles = function useInsertStyles2(eleRef) {
     var _useContext = React.useContext(IconContext), csp = _useContext.csp, prefixCls = _useContext.prefixCls;
     var mergedStyleStr = iconStyles;
@@ -1892,20 +1891,18 @@
     }
     return cacheRef.current.value;
   }
-  function fillRef(ref, node2) {
+  var fillRef = function fillRef2(ref, node2) {
     if (typeof ref === "function") {
       ref(node2);
     } else if (_typeof(ref) === "object" && ref && "current" in ref) {
       ref.current = node2;
     }
-  }
-  function composeRef() {
+  };
+  var composeRef = function composeRef2() {
     for (var _len = arguments.length, refs = new Array(_len), _key = 0; _key < _len; _key++) {
       refs[_key] = arguments[_key];
     }
-    var refList = refs.filter(function(ref) {
-      return ref;
-    });
+    var refList = refs.filter(Boolean);
     if (refList.length <= 1) {
       return refList[0];
     }
@@ -1914,8 +1911,8 @@
         fillRef(ref, node2);
       });
     };
-  }
-  function useComposeRef() {
+  };
+  var useComposeRef = function useComposeRef2() {
     for (var _len2 = arguments.length, refs = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
       refs[_key2] = arguments[_key2];
     }
@@ -1926,8 +1923,8 @@
         return ref !== next2[i];
       });
     });
-  }
-  function supportRef(nodeOrComponent) {
+  };
+  var supportRef = function supportRef2(nodeOrComponent) {
     var _type$prototype, _nodeOrComponent$prot;
     var type = reactIsExports.isMemo(nodeOrComponent) ? nodeOrComponent.type.type : nodeOrComponent.type;
     if (typeof type === "function" && !((_type$prototype = type.prototype) !== null && _type$prototype !== void 0 && _type$prototype.render) && type.$$typeof !== reactIsExports.ForwardRef) {
@@ -1937,7 +1934,7 @@
       return false;
     }
     return true;
-  }
+  };
   function toArray$2(children) {
     var option = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
     var ret = [];
@@ -4656,6 +4653,7 @@
       colorSuccessTextActive: successColors[10],
       colorErrorBg: errorColors[1],
       colorErrorBgHover: errorColors[2],
+      colorErrorBgActive: errorColors[3],
       colorErrorBorder: errorColors[3],
       colorErrorBorderHover: errorColors[4],
       colorErrorHover: errorColors[5],
@@ -5008,7 +5006,7 @@
     };
   }
   const PresetColors = ["blue", "purple", "cyan", "green", "magenta", "pink", "red", "orange", "yellow", "volcano", "geekblue", "lime", "gold"];
-  const version$2 = "5.16.4";
+  const version$2 = "5.17.1";
   function isStableColor(color) {
     return color >= 0 && color <= 255;
   }
@@ -5744,7 +5742,10 @@
       token: token2,
       hashId: "",
       path: ["ant-design-icons", iconPrefixCls],
-      nonce: () => csp === null || csp === void 0 ? void 0 : csp.nonce
+      nonce: () => csp === null || csp === void 0 ? void 0 : csp.nonce,
+      layer: {
+        name: "antd"
+      }
     }, () => [{
       [`.${iconPrefixCls}`]: Object.assign(Object.assign({}, resetIcon()), {
         [`.${iconPrefixCls} .${iconPrefixCls}-icon`]: {
@@ -5809,6 +5810,9 @@
         hashId,
         nonce: () => csp === null || csp === void 0 ? void 0 : csp.nonce,
         clientOnly: options.clientOnly,
+        layer: {
+          name: "antd"
+        },
         // antd is always at top of styles
         order: options.order || -999
       };
@@ -6830,6 +6834,11 @@
         config[propName] = propValue;
       }
     });
+    if (typeof autoInsertSpaceInButton !== "undefined") {
+      config.button = Object.assign({
+        autoInsertSpace: autoInsertSpaceInButton
+      }, config.button);
+    }
     const memoedConfig = useMemo(() => config, config, (prevConfig, currentConfig) => {
       const prevKeys = Object.keys(prevConfig);
       const currentKeys = Object.keys(currentConfig);
@@ -7619,12 +7628,12 @@
         }
         return false;
       }
-    }, (_ref) => {
+    }, (_ref, ref) => {
       let {
         className: motionClassName
       } = _ref;
       return /* @__PURE__ */ React__namespace.createElement("div", {
-        ref: divRef,
+        ref: composeRef(divRef, ref),
         className: classNames(className, {
           "wave-quick": isSmallComponent
         }, motionClassName),
@@ -7868,14 +7877,18 @@
       style: style2
     }, children);
   });
-  const InnerLoadingIcon = /* @__PURE__ */ React.forwardRef((_ref, ref) => {
-    let {
+  const InnerLoadingIcon = /* @__PURE__ */ React.forwardRef((props, ref) => {
+    const {
       prefixCls,
       className,
       style: style2,
-      iconClassName
-    } = _ref;
-    const mergedIconCls = classNames(`${prefixCls}-loading-icon`, className);
+      iconClassName,
+      iconPosition = "start"
+    } = props;
+    const mergedIconCls = classNames(className, {
+      [`${prefixCls}-loading-icon-end`]: iconPosition === "end",
+      [`${prefixCls}-loading-icon`]: iconPosition === "start"
+    });
     return /* @__PURE__ */ React.createElement(IconWrapper, {
       prefixCls,
       className: mergedIconCls,
@@ -7901,14 +7914,16 @@
       loading,
       existIcon,
       className,
-      style: style2
+      style: style2,
+      iconPosition
     } = props;
     const visible = !!loading;
     if (existIcon) {
       return /* @__PURE__ */ React.createElement(InnerLoadingIcon, {
         prefixCls,
         className,
-        style: style2
+        style: style2,
+        iconPosition
       });
     }
     return /* @__PURE__ */ React.createElement(CSSMotion, {
@@ -7923,17 +7938,18 @@
       onEnterActive: getRealWidth,
       onLeaveStart: getRealWidth,
       onLeaveActive: getCollapsedWidth
-    }, (_ref2, ref) => {
+    }, (_ref, ref) => {
       let {
         className: motionCls,
         style: motionStyle
-      } = _ref2;
+      } = _ref;
       return /* @__PURE__ */ React.createElement(InnerLoadingIcon, {
         prefixCls,
         className,
         style: Object.assign(Object.assign({}, style2), motionStyle),
         ref,
-        iconClassName: motionCls
+        iconClassName: motionCls,
+        iconPosition
       });
     });
   };
@@ -8098,7 +8114,11 @@
           display: "inline-block"
         },
         [`${componentCls}-icon`]: {
-          lineHeight: 0
+          lineHeight: 0,
+          // iconPosition in end
+          [`&-end`]: {
+            marginInlineStart: token2.marginXS
+          }
         },
         // Leave a space between icon and text.
         [`> ${iconCls} + span, > span + ${iconCls}`]: {
@@ -8107,6 +8127,9 @@
         [`&:not(${componentCls}-icon-only) > ${componentCls}-icon`]: {
           [`&${componentCls}-loading-icon, &:not(:last-child)`]: {
             marginInlineEnd: token2.marginXS
+          },
+          [`&${componentCls}-loading-icon-end`]: {
+            marginInlineStart: token2.marginXS
           }
         },
         "> a": {
@@ -8270,7 +8293,7 @@
       background: token2.colorErrorBg
     }, {
       color: token2.colorErrorHover,
-      background: token2.colorErrorBg
+      background: token2.colorErrorBgActive
     }))
   });
   const genTypeButtonStyle = (token2) => {
@@ -8591,7 +8614,7 @@
     };
   }
   const InternalCompoundedButton = /* @__PURE__ */ React.forwardRef((props, ref) => {
-    var _a2, _b2;
+    var _a2, _b2, _c;
     const {
       loading = false,
       prefixCls: customizePrefixCls,
@@ -8605,20 +8628,22 @@
       rootClassName,
       children,
       icon,
+      iconPosition = "start",
       ghost = false,
       block = false,
       // React does not recognize the `htmlType` prop on a DOM element. Here we pick it out of `rest`.
       htmlType = "button",
       classNames: customClassNames,
-      style: customStyle = {}
-    } = props, rest = __rest$8(props, ["loading", "prefixCls", "type", "danger", "shape", "size", "styles", "disabled", "className", "rootClassName", "children", "icon", "ghost", "block", "htmlType", "classNames", "style"]);
+      style: customStyle = {},
+      autoInsertSpace
+    } = props, rest = __rest$8(props, ["loading", "prefixCls", "type", "danger", "shape", "size", "styles", "disabled", "className", "rootClassName", "children", "icon", "iconPosition", "ghost", "block", "htmlType", "classNames", "style", "autoInsertSpace"]);
     const mergedType = type || "default";
     const {
       getPrefixCls,
-      autoInsertSpaceInButton,
       direction,
       button
     } = React.useContext(ConfigContext);
+    const mergedInsertSpace = (_a2 = autoInsertSpace !== null && autoInsertSpace !== void 0 ? autoInsertSpace : button === null || button === void 0 ? void 0 : button.autoInsertSpace) !== null && _a2 !== void 0 ? _a2 : true;
     const prefixCls = getPrefixCls("btn", customizePrefixCls);
     const [wrapCSSVar, hashId, cssVarCls] = useStyle$6(prefixCls);
     const disabled = React.useContext(DisabledContext);
@@ -8649,7 +8674,7 @@
       return cleanupTimer;
     }, [loadingOrDelay]);
     React.useEffect(() => {
-      if (!buttonRef || !buttonRef.current || autoInsertSpaceInButton === false) {
+      if (!buttonRef || !buttonRef.current || !mergedInsertSpace) {
         return;
       }
       const buttonText = buttonRef.current.textContent;
@@ -8671,7 +8696,6 @@
       }
       onClick === null || onClick === void 0 ? void 0 : onClick(e2);
     };
-    const autoInsertSpace = autoInsertSpaceInButton !== false;
     const {
       compactSize,
       compactItemClassnames
@@ -8695,14 +8719,17 @@
       [`${prefixCls}-icon-only`]: !children && children !== 0 && !!iconType,
       [`${prefixCls}-background-ghost`]: ghost && !isUnBorderedButtonType(mergedType),
       [`${prefixCls}-loading`]: innerLoading,
-      [`${prefixCls}-two-chinese-chars`]: hasTwoCNChar && autoInsertSpace && !innerLoading,
+      [`${prefixCls}-two-chinese-chars`]: hasTwoCNChar && mergedInsertSpace && !innerLoading,
       [`${prefixCls}-block`]: block,
       [`${prefixCls}-dangerous`]: !!danger,
       [`${prefixCls}-rtl`]: direction === "rtl"
     }, compactItemClassnames, className, rootClassName, button === null || button === void 0 ? void 0 : button.className);
     const fullStyle = Object.assign(Object.assign({}, button === null || button === void 0 ? void 0 : button.style), customStyle);
-    const iconClasses = classNames(customClassNames === null || customClassNames === void 0 ? void 0 : customClassNames.icon, (_a2 = button === null || button === void 0 ? void 0 : button.classNames) === null || _a2 === void 0 ? void 0 : _a2.icon);
-    const iconStyle = Object.assign(Object.assign({}, (styles === null || styles === void 0 ? void 0 : styles.icon) || {}), ((_b2 = button === null || button === void 0 ? void 0 : button.styles) === null || _b2 === void 0 ? void 0 : _b2.icon) || {});
+    const isIconPositionEnd = iconPosition === "end" && children && children !== 0 && iconType;
+    const iconClasses = classNames(customClassNames === null || customClassNames === void 0 ? void 0 : customClassNames.icon, (_b2 = button === null || button === void 0 ? void 0 : button.classNames) === null || _b2 === void 0 ? void 0 : _b2.icon, {
+      [`${prefixCls}-icon-end`]: isIconPositionEnd
+    });
+    const iconStyle = Object.assign(Object.assign({}, (styles === null || styles === void 0 ? void 0 : styles.icon) || {}), ((_c = button === null || button === void 0 ? void 0 : button.styles) === null || _c === void 0 ? void 0 : _c.icon) || {});
     const iconNode = icon && !innerLoading ? /* @__PURE__ */ React.createElement(IconWrapper, {
       prefixCls,
       className: iconClasses,
@@ -8710,9 +8737,11 @@
     }, icon) : /* @__PURE__ */ React.createElement(LoadingIcon, {
       existIcon: !!icon,
       prefixCls,
-      loading: !!innerLoading
+      loading: !!innerLoading,
+      iconPosition
     });
-    const kids = children || children === 0 ? spaceChildren(children, needInserted && autoInsertSpace) : null;
+    const kids = children || children === 0 ? spaceChildren(children, needInserted && mergedInsertSpace) : null;
+    const genButtonContent = (iconComponent, kidsComponent) => iconPosition === "start" ? /* @__PURE__ */ React.createElement(React.Fragment, null, iconComponent, kidsComponent) : /* @__PURE__ */ React.createElement(React.Fragment, null, kidsComponent, iconComponent);
     if (linkButtonRestProps.href !== void 0) {
       return wrapCSSVar(/* @__PURE__ */ React.createElement("a", Object.assign({}, linkButtonRestProps, {
         className: classNames(classes, {
@@ -8723,7 +8752,7 @@
         onClick: handleClick,
         ref: buttonRef,
         tabIndex: mergedDisabled ? -1 : 0
-      }), iconNode, kids));
+      }), genButtonContent(iconNode, kids)));
     }
     let buttonNode = /* @__PURE__ */ React.createElement("button", Object.assign({}, rest, {
       type: htmlType,
@@ -8732,7 +8761,7 @@
       onClick: handleClick,
       disabled: mergedDisabled,
       ref: buttonRef
-    }), iconNode, kids, !!compactItemClassnames && /* @__PURE__ */ React.createElement(CompactCmp, {
+    }), genButtonContent(iconNode, kids), !!compactItemClassnames && /* @__PURE__ */ React.createElement(CompactCmp, {
       key: "compact",
       prefixCls
     }));
@@ -11158,7 +11187,7 @@
           "--antd-arrow-background-color": tooltipBg,
           // Wrapper for the tooltip content
           [`${componentCls}-inner`]: {
-            minWidth: controlHeight,
+            minWidth: "1em",
             minHeight: controlHeight,
             padding: `${unit$1(token2.calc(paddingSM).div(2).equal())} ${unit$1(paddingXS)}`,
             color: tooltipColor,
@@ -11455,11 +11484,10 @@
   const justifyContentValues = ["flex-start", "flex-end", "start", "end", "center", "space-between", "space-around", "space-evenly", "stretch", "normal", "left", "right"];
   const alignItemsValues = ["center", "start", "end", "flex-start", "flex-end", "self-start", "self-end", "baseline", "normal", "stretch"];
   const genClsWrap = (prefixCls, props) => {
-    const wrapCls = {};
-    flexWrapValues.forEach((cssKey) => {
-      wrapCls[`${prefixCls}-wrap-${cssKey}`] = props.wrap === cssKey;
-    });
-    return wrapCls;
+    const wrap = props.wrap === true ? "wrap" : props.wrap;
+    return {
+      [`${prefixCls}-wrap-${wrap}`]: wrap && flexWrapValues.includes(wrap)
+    };
   };
   const genClsAlign = (prefixCls, props) => {
     const alignCls = {};
@@ -11996,7 +12024,7 @@
       style: circleStyle
     }, width <= 20 ? /* @__PURE__ */ React__namespace.createElement(Tooltip2, {
       title: children
-    }, /* @__PURE__ */ React__namespace.createElement("span", null, circleContent)) : /* @__PURE__ */ React__namespace.createElement(React__namespace.Fragment, null, circleContent, children));
+    }, circleContent) : /* @__PURE__ */ React__namespace.createElement(React__namespace.Fragment, null, circleContent, children));
   };
   const LineStrokeColorVar = "--progress-line-stroke-color";
   const Percent = "--progress-percent";
@@ -14674,7 +14702,6 @@
       useSetAtom(atom2)
     ];
   }
-  const version = "1.2.5";
   class Adapter {
   }
   class GenericAdapter extends Adapter {
@@ -14943,15 +14970,20 @@
           responseType: "blob",
           onload: async (event) => {
             const blob = event.response;
+            const mime = blob.type;
             const buffer = await event.response.arrayBuffer();
             const bytes = new Uint8Array(buffer);
-            resolve({
-              ...task,
-              ...{
-                mime: blob.type,
-                bytes
-              }
-            });
+            if (event.status == 200) {
+              resolve({
+                ...task,
+                ...{
+                  mime,
+                  bytes
+                }
+              });
+            } else {
+              reject(`文件类型：${mime}，状态码：${event.status}`);
+            }
           },
           onerror: (event) => {
             reject(event);
@@ -15021,6 +15053,7 @@
     return result;
   });
   const minimizedAtom = atom(false);
+  const version = "1.3.0";
   const DefaultStyle$1 = {};
   const TaskView = ({
     task,
@@ -15209,7 +15242,13 @@
       tasks.forEach((task) => download(task));
     }
     function download(task) {
-      downloader.download(task, onProgress).then(onComplete);
+      downloader.download(task, onProgress).then(onComplete).catch((reason) => {
+        console.info(`${task.id}下载失败：`, reason);
+        patchTask({
+          id: task.id,
+          status: TaskStatus.Error
+        });
+      });
     }
     function onProgress(id, completed, total) {
       console.info(`任务${id}下载进度更新：${completed} / ${total}`);
@@ -15328,8 +15367,6 @@
   const container = document.createElement("div");
   container.id = "mgpk-container";
   document.body.append(container);
-  client.createRoot(container).render(
-    /* @__PURE__ */ jsxRuntimeExports.jsx(TaskPanel, {})
-  );
+  client.createRoot(container).render(/* @__PURE__ */ jsxRuntimeExports.jsx(TaskPanel, {}));
 
 })(React, ReactDOM);

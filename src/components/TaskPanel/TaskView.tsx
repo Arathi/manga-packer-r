@@ -1,7 +1,7 @@
 import { DownloadOutlined } from "@ant-design/icons";
 import { Button, Flex, Progress, Tag, TagProps } from "antd";
-import { CSSProperties } from "react";
 import { useAtomValue } from 'jotai';
+import { CSSProperties } from "react";
 
 import Task, { TaskStatus } from "@/domains/Task";
 import { taskStatusAtom } from "@/stores";

@@ -5,6 +5,4 @@ const container = document.createElement('div');
 container.id = 'mgpk-container';
 document.body.append(container);
 
-ReactDOM.createRoot(container).render(
-  <TaskPanel />,
-);
+ReactDOM.createRoot(container).render(<TaskPanel />);
