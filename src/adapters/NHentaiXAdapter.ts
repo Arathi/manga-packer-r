@@ -84,16 +84,18 @@ class NHentaiXAdapter extends GenericAdapter {
   async wait<T>(key: string, interval: number = 10, timeout: number = 3000): Promise<T> {
     return new Promise((resolve, reject) => {
       const startAt = new Date().getTime();
-      const timer = setTimeout(() => {
+      const timer = setInterval(() => {
         // @ts-ignore
         const res: T | undefined = unsafeWindow[key];
         if (res !== undefined) {
+          clearInterval(timer);
           resolve(res);
         }
 
         const current = new Date().getTime();
         const duration = current - startAt;
         if (duration > timeout) {
+          clearInterval(timer);
           reject(`等待资源超时：${key}`);
         }
       }, interval);
