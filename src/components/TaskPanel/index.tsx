@@ -1,11 +1,11 @@
+import { Button, Progress } from "@arco-design/web-react";
 import {
-  BorderOutlined,
-  DownloadOutlined,
-  FileZipOutlined,
-  MinusOutlined,
-} from "@ant-design/icons";
-import { Button, Flex, Progress } from "antd";
-import { zipSync } from 'fflate';
+  IconDown,
+  IconDownload,
+  IconSave,
+  IconUp,
+} from "@arco-design/web-react/icon";
+import { zipSync } from "fflate";
 import { saveAs } from "file-saver";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { CSSProperties, useEffect } from "react";
@@ -21,12 +21,13 @@ import {
   titleAtom,
   minimizedAtom,
 } from "@/stores";
-import { version } from '@/../package.json';
+import { version } from "@/../package.json";
 
-import TaskView from './TaskView';
-import TaskList from './TaskList';
+import TaskView from "./TaskView";
+import TaskList from "./TaskList";
+import Flex from "@/components/Flex";
 
-import './index.scss';
+import "./index.scss";
 
 const adapter = AdapterFactory.create();
 const downloader = DownloaderFactory.getInstance();
@@ -55,11 +56,9 @@ const DefaultStyle: CSSProperties = {
 /**
  * 任务面板
  */
-const TaskPanel: React.FC<Props> = ({
-  style = DefaultStyle,
-}) => {
+const TaskPanel: React.FC<Props> = ({ style = DefaultStyle }) => {
   const [tasks, setTasks] = useAtom(tasksAtom);
-  const totalProgress = useAtomValue(totalProgressAtom);
+  const totalProgress = useAtomValue(totalProgressAtom) ?? 0;
   const patchTask = useSetAtom(patchTaskAtom);
   const [title, setTitle] = useAtom(titleAtom);
   const [minimized, setMinimized] = useAtom(minimizedAtom);
@@ -67,7 +66,7 @@ const TaskPanel: React.FC<Props> = ({
   const mergedStyle = {
     ...DefaultStyle,
     ...style,
-  }
+  };
 
   async function fetchTasks() {
     const gallery = await adapter.fetchGallery();
@@ -77,18 +76,21 @@ const TaskPanel: React.FC<Props> = ({
   }
 
   function downloadAll() {
-    tasks.forEach(task => download(task));
+    tasks.forEach((task) => download(task));
   }
 
   function download(task: Task) {
-    downloader.download(task, onProgress).then(onComplete).catch(reason => {
-      console.info(`${task.id}下载失败：`, reason);
-      patchTask({
-        id: task.id,
-        status: TaskStatus.Error,
-        completed: 0,
+    downloader
+      .download(task, onProgress)
+      .then(onComplete)
+      .catch((reason) => {
+        console.info(`${task.id}下载失败：`, reason);
+        patchTask({
+          id: task.id,
+          status: TaskStatus.Error,
+          completed: 0,
+        });
       });
-    });
   }
 
   function onProgress(id: TaskID, completed: number, total: number) {
@@ -103,7 +105,7 @@ const TaskPanel: React.FC<Props> = ({
   }
 
   function onComplete(result: TaskResult) {
-    const {id, fileName, mime, bytes} = result;
+    const { id, fileName, mime, bytes } = result;
     console.info(
       `${id}下载完成，文件类型：${mime}，缓存长度：${bytes?.length ?? 0}`
     );
@@ -112,7 +114,7 @@ const TaskPanel: React.FC<Props> = ({
       id,
       status,
     });
-    
+
     if (fileName !== undefined && bytes !== undefined) {
       files[fileName] = bytes;
     }
@@ -122,7 +124,7 @@ const TaskPanel: React.FC<Props> = ({
     const zipBytes = zipSync(files, { level: 0 });
     console.info(`压缩后字节数：${zipBytes.length}`);
     const zipBlob = new Blob([zipBytes], {
-      type: 'application/zip',
+      type: "application/zip",
     });
     console.info(`创建Blob：`, zipBlob);
     saveAs(zipBlob, `${title}.zip`);
@@ -138,20 +140,22 @@ const TaskPanel: React.FC<Props> = ({
 
   return (
     <Flex
-      className={'task-panel'}
-      gap={8} 
-      vertical 
+      className={"task-panel"}
+      gap={8}
+      direction="column"
       style={mergedStyle}
     >
       <Flex justify="start" gap={12}>
-        <Button 
-          size={'small'}
-          icon={<DownloadOutlined />}
-          onClick={downloadAll} 
+        <Button
+          type="primary"
+          size={"small"}
+          icon={<IconDownload />}
+          onClick={downloadAll}
         />
         <Button
-          size={'small'}
-          icon={<FileZipOutlined />}
+          type="primary"
+          size={"small"}
+          icon={<IconSave />}
           disabled={
             tasks.length > 0 && tasks.length !== Object.keys(files).length
           }
@@ -160,30 +164,29 @@ const TaskPanel: React.FC<Props> = ({
         <Flex flex={1} justify="end" align="center" gap={12}>
           <span className="plugin-version">v{version}</span>
           <Button
-            size={'small'}
-            icon={ minimized ? <BorderOutlined /> : <MinusOutlined />}
+            size={"small"}
+            icon={minimized ? <IconDown /> : <IconUp />}
             onClick={sizeToggle}
           />
         </Flex>
       </Flex>
 
-      <Flex align={'center'}>
-        <Flex><span className={'total-progress'}>总下载进度：</span></Flex>
+      <Flex align={"center"}>
+        <Flex>
+          <span className={"total-progress"}>总下载进度：</span>
+        </Flex>
         <Flex flex={1}>
           <Progress
             percent={totalProgress}
-            format={(percent) => `${percent?.toFixed(0) ?? '0'}%`}
+            formatText={(percent) => `${percent?.toFixed(0) ?? "0"}%`}
           />
         </Flex>
       </Flex>
 
       <TaskList tasks={tasks} onDownload={download} />
     </Flex>
-  )
+  );
 };
 
 export default TaskPanel;
-export {
-  TaskView,
-  TaskList,
-};
+export { TaskView, TaskList };

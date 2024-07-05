@@ -14,16 +14,17 @@ const useWindowSize = () => {
   });
 
   useEffect(() => {
-    const updateWindowSize = () => setWindowSize({
-      width: window.innerWidth,
-      height: window.innerHeight,
-      scale: window.devicePixelRatio,
-    });
-    window.addEventListener('resize', updateWindowSize);
-    return () => window.removeEventListener('resize', updateWindowSize);
+    const updateWindowSize = () =>
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+        scale: window.devicePixelRatio,
+      });
+    window.addEventListener("resize", updateWindowSize);
+    return () => window.removeEventListener("resize", updateWindowSize);
   }, []);
 
   return windowSize;
-}
+};
 
 export default useWindowSize;
