@@ -1,6 +1,6 @@
 import Task from "./Task";
 
-type Gallery = {
+export default interface Gallery {
   /**
    * 编号
    */
@@ -27,10 +27,4 @@ type Gallery = {
   tasks: Task[];
 }
 
-type GalleryID = string;
-
-export default Gallery;
-
-export type {
-  GalleryID,
-};
+export type GalleryID = string;

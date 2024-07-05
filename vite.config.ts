@@ -36,7 +36,6 @@ export default defineConfig({
             "ReactDOM",
             "umd/react-dom.production.min.js"
           ),
-          // "@arco-design/web-react": cdn.jsdelivr("arco", "dist/arco.min.js"),
         },
         externalResource: {},
       },
@@ -46,6 +45,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
+      "@pkg": path.resolve(__dirname, "package.json"),
     },
   },
 });

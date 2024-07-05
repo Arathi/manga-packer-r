@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Manga Packer R
 // @namespace    com.undsf.tmus.mgpk
-// @version      1.4.1
+// @version      1.4.2
 // @author       Arathi of Nebnizilla
 // @icon         https://vitejs.dev/logo.svg
 // @homepageURL  https://github.com/Arathi/manga-packer-r
@@ -7055,7 +7055,7 @@
     return result;
   });
   const minimizedAtom = atom(false);
-  const version = "1.4.1";
+  const version = "1.4.2";
   const Flex = ({
     direction,
     justify,
@@ -7136,18 +7136,27 @@
   };
   const useWindowSize = () => {
     const [windowSize, setWindowSize] = React.useState({
-      width: window.innerWidth,
-      height: window.innerHeight,
-      scale: window.devicePixelRatio
+      width: 0,
+      height: 0,
+      scale: 0
     });
-    React.useEffect(() => {
-      const updateWindowSize = () => setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-        scale: window.devicePixelRatio
+    function update() {
+      const {
+        innerWidth: width,
+        innerHeight: height,
+        devicePixelRatio: scale
+      } = window;
+      console.info(`发生变化：${width}x${height}@${scale}x`);
+      setWindowSize({
+        width,
+        height,
+        scale
       });
-      window.addEventListener("resize", updateWindowSize);
-      return () => window.removeEventListener("resize", updateWindowSize);
+    }
+    React.useEffect(() => {
+      update();
+      window.addEventListener("resize", update);
+      return () => window.removeEventListener("resize", update);
     }, []);
     return windowSize;
   };

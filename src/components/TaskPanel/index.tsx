@@ -21,13 +21,13 @@ import {
   titleAtom,
   minimizedAtom,
 } from "@/stores";
-import { version } from "@/../package.json";
+import { version } from "@pkg";
 
 import TaskView from "./TaskView";
 import TaskList from "./TaskList";
 import Flex from "@/components/Flex";
 
-import "./index.scss";
+import "./index.less";
 
 const adapter = AdapterFactory.create();
 const downloader = DownloaderFactory.getInstance();

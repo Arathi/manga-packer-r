@@ -1,6 +1,6 @@
 import { TaskPatch } from './Task';
 
-type Payload = {
+export interface Payload {
   mime?: string;
   bytes?: Uint8Array;
 }

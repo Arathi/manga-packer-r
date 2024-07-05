@@ -1,4 +1,4 @@
-type Task = {
+export default interface Task {
   id: TaskID;
   url: string;
   fileName: string;
@@ -7,9 +7,9 @@ type Task = {
   total?: number;
 }
 
-type TaskID = string | number;
+export type TaskID = string | number;
 
-enum TaskStatus {
+export enum TaskStatus {
   Pending = 0,
   Running = 1,
   Error = 2,
@@ -17,13 +17,4 @@ enum TaskStatus {
   All = 9,
 }
 
-type TaskPatch = Pick<Task, 'id'> & Partial<Task>;
-
-export default Task;
-export type {
-  TaskID,
-  TaskPatch,
-};
-export {
-  TaskStatus
-};
+export type TaskPatch = Pick<Task, 'id'> & Partial<Task>;
