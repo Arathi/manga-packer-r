@@ -1,9 +1,10 @@
+import path from "path";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import monkey, { cdn } from "vite-plugin-monkey";
-import path from "path";
+import { visualizer } from "rollup-plugin-visualizer";
+import compression from "vite-plugin-compression";
 
-// https://vitejs.dev/config/
 export default defineConfig({
   server: {
     port: 24246,
@@ -35,11 +36,12 @@ export default defineConfig({
             "ReactDOM",
             "umd/react-dom.production.min.js"
           ),
-          "@arco-design/web-react": cdn.jsdelivr("arco", "dist/arco.min.js"),
+          // "@arco-design/web-react": cdn.jsdelivr("arco", "dist/arco.min.js"),
         },
         externalResource: {},
       },
     }),
+    visualizer(),
   ],
   resolve: {
     alias: {
