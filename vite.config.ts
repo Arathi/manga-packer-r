@@ -30,6 +30,7 @@ export default defineConfig({
           "https://telegra.ph/*",
           "https://nhentai.net/g/*/",
           "https://nhentai.xxx/g/*/",
+          "https://e-hentai.org/g/*/*/",
         ],
       },
       build: {

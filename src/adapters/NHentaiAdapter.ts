@@ -60,7 +60,9 @@ class NHentaiAdapter extends GenericAdapter {
     super();
   }
 
-  async fetchGallery(): Promise<Gallery> {
+  async fetchGallery(
+    onProgress?: (loaded: number, total: number) => void
+  ): Promise<Gallery> {
     // @ts-ignore
     const nhGallery: NHentaiGallery = unsafeWindow._gallery;
 
@@ -88,24 +90,26 @@ class NHentaiAdapter extends GenericAdapter {
 
       const serverId = nhOptions.media_server;
       const mediaId = nhGallery.media_id;
-      let extName = 'jpg';
+      let extName = "jpg";
       let status: TaskStatus = TaskStatus.Pending;
       switch (page.t) {
-        case 'j':
-          extName = 'jpg';
+        case "j":
+          extName = "jpg";
           break;
-        case 'p':
-          extName = 'png';
+        case "p":
+          extName = "png";
           break;
         default:
           console.warn(`未知的文件类型描述符：${page.t}`);
           status = TaskStatus.Error;
       }
-      const fileName = `${pageNumber.padStart(3, '0')}.${extName}`;
+      const fileName = `${pageNumber.padStart(3, "0")}.${extName}`;
 
       return {
         id: `nh-${gallery.id}-${pageNumber}`,
-        url: `https://i${serverId}.nhentai.net/galleries/${mediaId}/${index+1}.${extName}`,
+        url: `https://i${serverId}.nhentai.net/galleries/${mediaId}/${
+          index + 1
+        }.${extName}`,
         fileName,
         status,
       };

@@ -9,13 +9,13 @@ class AdapterFactory {
   static create(): Adapter {
     const domain = window.location.host;
     switch (domain) {
-      case 'telegra.ph':
+      case "telegra.ph":
         return new TelegraphAdapter();
-      case 'nhentai.net':
+      case "nhentai.net":
         return new NHentaiAdapter();
-      case 'nhentai.xxx':
+      case "nhentai.xxx":
         return new NHentaiXAdapter();
-      case 'e-hentai.net':
+      case "e-hentai.org":
         return new EHentaiAdapter();
     }
     return new GenericAdapter();

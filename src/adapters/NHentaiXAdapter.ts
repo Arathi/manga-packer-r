@@ -8,12 +8,12 @@ type GTH = {
   ct: CT;
   fl: Record<string, string>;
   th: Record<string, string>;
-}
+};
 
 type CT = {
   cover: string;
   thumb: string;
-}
+};
 
 type Image = {
   type: string;
@@ -22,7 +22,7 @@ type Image = {
 };
 
 function parseImage(merged: string): Image | null {
-  const splitted = merged.split(',');
+  const splitted = merged.split(",");
   if (splitted.length != 3) {
     return null;
   }
@@ -46,10 +46,12 @@ class NHentaiXAdapter extends GenericAdapter {
     const element = unsafeWindow.document.querySelector(selector);
     return element as E | null;
   }
-  
-  async fetchGallery(): Promise<Gallery> {
-    const header = this.select<HTMLHeadingElement>('.info h1');
-    const galleryIdInput = this.select<HTMLInputElement>('input#gallery_id');
+
+  async fetchGallery(
+    onProgress?: (loaded: number, total: number) => void
+  ): Promise<Gallery> {
+    const header = this.select<HTMLHeadingElement>(".info h1");
+    const galleryIdInput = this.select<HTMLInputElement>("input#gallery_id");
 
     let parseSuccess = false;
     do {
@@ -81,7 +83,11 @@ class NHentaiXAdapter extends GenericAdapter {
     return gallery;
   }
 
-  async wait<T>(key: string, interval: number = 10, timeout: number = 3000): Promise<T> {
+  async wait<T>(
+    key: string,
+    interval: number = 10,
+    timeout: number = 3000
+  ): Promise<T> {
     return new Promise((resolve, reject) => {
       const startAt = new Date().getTime();
       const timer = setInterval(() => {
@@ -101,14 +107,14 @@ class NHentaiXAdapter extends GenericAdapter {
       }, interval);
     });
   }
-  
+
   async fetchTasks(gallery: Gallery): Promise<Task[]> {
     // @ts-ignore
-    const gth: GTH = await this.wait('g_th', 10, 30000);
+    const gth: GTH = await this.wait("g_th", 10, 30000);
 
-    const loadServerInput = this.select<HTMLInputElement>('input#load_server'); // 2
-    const loadDirInput = this.select<HTMLInputElement>('input#load_dir'); // 015
-    const loadIdInput = this.select<HTMLInputElement>('input#load_id'); // 43rks7ye0b
+    const loadServerInput = this.select<HTMLInputElement>("input#load_server"); // 2
+    const loadDirInput = this.select<HTMLInputElement>("input#load_dir"); // 015
+    const loadIdInput = this.select<HTMLInputElement>("input#load_id"); // 43rks7ye0b
 
     let parseSuccess = false;
     do {
@@ -124,7 +130,7 @@ class NHentaiXAdapter extends GenericAdapter {
         console.warn(`未找到input#load_id`);
         break;
       }
-      
+
       parseSuccess = true;
     } while (false);
 
@@ -137,22 +143,22 @@ class NHentaiXAdapter extends GenericAdapter {
     const loadId = loadIdInput!.value;
 
     const keys = Object.keys(gth.fl);
-    keys.forEach(key => {
-      const pageNumber = key.padStart(3, '0');
+    keys.forEach((key) => {
+      const pageNumber = key.padStart(3, "0");
       const merged = gth.fl[key];
       const page = parseImage(merged);
       if (page == null) {
         return;
       }
 
-      let extName = 'jpg';
+      let extName = "jpg";
       let status = TaskStatus.Pending;
       switch (page.type) {
-        case 'j':
-          extName = 'jpg';
+        case "j":
+          extName = "jpg";
           break;
-        case 'p':
-          extName = 'png';
+        case "p":
+          extName = "png";
           break;
         default:
           console.warn(`未知的文件类型描述符：${page.type}`);

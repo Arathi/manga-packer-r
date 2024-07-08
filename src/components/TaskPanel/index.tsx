@@ -1,4 +1,4 @@
-import { Button, Progress } from "@arco-design/web-react";
+import { Button } from "@arco-design/web-react";
 import {
   IconDown,
   IconDownload,
@@ -7,7 +7,7 @@ import {
 } from "@arco-design/web-react/icon";
 import { zipSync } from "fflate";
 import { saveAs } from "file-saver";
-import { CSSProperties, useEffect, useMemo, useState } from "react";
+import { CSSProperties, ReactNode, useEffect, useMemo, useState } from "react";
 
 import AdapterFactory from "@/adapters/AdapterFactory";
 import Task, { TaskID, TaskPatch, TaskStatus } from "@/domains/Task";
@@ -18,6 +18,7 @@ import { version } from "@pkg";
 import TaskView from "./TaskView";
 import TaskList from "./TaskList";
 import Flex from "@/components/Flex";
+import TaskProgress from "@/components/Progress";
 
 import "./index.less";
 
@@ -45,11 +46,22 @@ const DefaultStyle: CSSProperties = {
   padding: 12,
 };
 
+enum Step {
+  Pending = 0,
+  Fetch = 1,
+  Download = 2,
+  Pack = 3,
+  Save = 4,
+  Done = 5,
+}
+
 /**
  * 任务面板
  */
-const TaskPanel: React.FC<Props> = ({ style = DefaultStyle }) => {
+const TaskPanel: React.FC<Props> = ({ style }) => {
+  const [step, setStep] = useState<Step>(Step.Pending);
   const [title, setTitle] = useState("");
+  const [taskAmount, setTaskAmount] = useState(0);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [minimized, setMinimized] = useState(false);
 
@@ -77,13 +89,8 @@ const TaskPanel: React.FC<Props> = ({ style = DefaultStyle }) => {
     return (doneCounter * 100) / tasks.length;
   }, [tasks]);
 
-  const mergedStyle = {
-    ...DefaultStyle,
-    ...style,
-  };
-
   async function fetchTasks() {
-    const gallery = await adapter.fetchGallery();
+    const gallery = await adapter.fetchGallery((loaded, total) => {});
     const { title, tasks } = gallery;
     setTitle(title);
     setTasks(tasks);
@@ -149,15 +156,24 @@ const TaskPanel: React.FC<Props> = ({ style = DefaultStyle }) => {
   }
 
   useEffect(() => {
+    setStep(Step.Fetch);
     fetchTasks();
   }, []);
+
+  let taskList: ReactNode = null;
+  if (!minimized) {
+    taskList = <TaskList tasks={tasks} onDownload={download} />;
+  }
 
   return (
     <Flex
       className={"task-panel"}
       gap={8}
       direction="column"
-      style={mergedStyle}
+      style={{
+        ...DefaultStyle,
+        ...style,
+      }}
     >
       <Flex justify="start" gap={12}>
         <Button
@@ -187,20 +203,29 @@ const TaskPanel: React.FC<Props> = ({ style = DefaultStyle }) => {
 
       <Flex align={"center"}>
         <Flex>
-          <span className={"total-progress"}>总下载进度：</span>
+          <span className={"total-progress"}>下载进度：</span>
         </Flex>
+        <TaskProgress
+          success={tasks.filter((t) => t.status === TaskStatus.Done).length}
+          running={tasks.filter((t) => t.status === TaskStatus.Running).length}
+          error={tasks.filter((t) => t.status === TaskStatus.Error).length}
+          pending={tasks.filter((t) => t.status === TaskStatus.Pending).length}
+        />
+      </Flex>
+
+      {taskList}
+    </Flex>
+  );
+};
+
+/*
         <Flex flex={1}>
           <Progress
             percent={totalProgress}
             formatText={(percent) => `${percent?.toFixed(0) ?? "0"}%`}
           />
         </Flex>
-      </Flex>
-
-      {minimized ? null : <TaskList tasks={tasks} onDownload={download} />}
-    </Flex>
-  );
-};
+ */
 
 export default TaskPanel;
 export { TaskView, TaskList };

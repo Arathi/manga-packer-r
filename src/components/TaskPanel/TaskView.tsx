@@ -1,8 +1,10 @@
-import { Progress, Tag, TagProps } from "@arco-design/web-react";
+import { Tag, TagProps } from "@arco-design/web-react";
 import { CSSProperties } from "react";
 
-import Flex from "@/components/Flex";
 import Task, { TaskStatus } from "@/domains/Task";
+
+import TasKProgress from "@/components/Progress";
+import Flex from "@/components/Flex";
 
 type Props = {
   task: Task;
@@ -25,6 +27,10 @@ const TaskView: React.FC<Props> = ({ task, selectedStatus, style }) => {
     }
   }
 
+  let success = 0;
+  let running = 0;
+  let error = 0;
+  let pending = 0;
   let statusName = "未知";
   let statusColor: TagProps["color"] = "warning";
   if (status !== undefined) {
@@ -32,18 +38,24 @@ const TaskView: React.FC<Props> = ({ task, selectedStatus, style }) => {
       case TaskStatus.Pending:
         statusName = "等待";
         statusColor = "gray";
+        pending = 100;
         break;
       case TaskStatus.Running:
         statusName = "下载";
         statusColor = "blue";
+        running = completed!;
+        pending = total! - completed!;
         break;
       case TaskStatus.Error:
         statusName = "错误";
         statusColor = "red";
+        error = completed!;
+        pending = total! - completed!;
         break;
       case TaskStatus.Done:
         statusName = "完成";
         statusColor = "green";
+        success = 100;
         break;
     }
   }
@@ -66,12 +78,7 @@ const TaskView: React.FC<Props> = ({ task, selectedStatus, style }) => {
       <Tag color={statusColor} bordered>
         {statusName}
       </Tag>
-      <Flex flex={1}>
-        <Progress
-          percent={percent}
-          formatText={(percent) => `${percent.toFixed(2)}%`}
-        />
-      </Flex>
+      <TasKProgress success={success} pending={pending} />
     </Flex>
   );
 };

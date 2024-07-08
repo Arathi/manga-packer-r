@@ -8,10 +8,12 @@ class GenericAdapter extends Adapter {
     super();
   }
 
-  async fetchGallery(): Promise<Gallery> {
+  async fetchGallery(
+    onProgress?: (loaded: number, total: number) => void
+  ): Promise<Gallery> {
     return {
-      id: '',
-      title: '',
+      id: "",
+      title: "",
       referer: window.location.href,
       tasks: [],
     };

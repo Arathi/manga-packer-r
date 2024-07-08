@@ -18,11 +18,15 @@ class TelegraphAdapter extends GenericAdapter {
     super();
   }
 
-  async fetchGallery(): Promise<Gallery> {
+  async fetchGallery(
+    onProgress?: (loaded: number, total: number) => void
+  ): Promise<Gallery> {
     // @ts-ignore
     const tgGallery: TelegraphGallery = unsafeWindow.T;
 
-    const header: HTMLHeadingElement | null = document.querySelector("header.tl_article_header h1");
+    const header: HTMLHeadingElement | null = document.querySelector(
+      "header.tl_article_header h1"
+    );
     const title = header?.innerText ?? tgGallery.pageId;
     const gallery: Gallery = {
       id: tgGallery.pageId,
@@ -36,11 +40,12 @@ class TelegraphAdapter extends GenericAdapter {
   }
 
   async fetchTasks(gallery: Gallery): Promise<Task[]> {
-    const imgs: NodeListOf<HTMLImageElement> = document.querySelectorAll("figure img");
+    const imgs: NodeListOf<HTMLImageElement> =
+      document.querySelectorAll("figure img");
     let index = 0;
     for (let img of imgs) {
-      let pageNumber = `${++index}`.padStart(3, '0');
-      let dotIndex = img.src.lastIndexOf('.');
+      let pageNumber = `${++index}`.padStart(3, "0");
+      let dotIndex = img.src.lastIndexOf(".");
       const extName = img.src.substring(dotIndex);
       gallery.tasks.push({
         id: `tg-${gallery.id}-${pageNumber}`,
