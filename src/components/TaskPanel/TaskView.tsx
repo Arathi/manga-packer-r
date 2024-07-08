@@ -1,10 +1,10 @@
-import { Tag, TagProps } from "@arco-design/web-react";
 import { CSSProperties } from "react";
 
 import Task, { TaskStatus } from "@/domains/Task";
 
 import TasKProgress from "@/components/Progress";
 import Flex from "@/components/Flex";
+import Tag, { TagProps } from "@/components/Tag";
 
 type Props = {
   task: Task;
@@ -32,7 +32,7 @@ const TaskView: React.FC<Props> = ({ task, selectedStatus, style }) => {
   let error = 0;
   let pending = 0;
   let statusName = "未知";
-  let statusColor: TagProps["color"] = "warning";
+  let statusColor: TagProps["color"] = undefined;
   if (status !== undefined) {
     switch (status) {
       case TaskStatus.Pending:

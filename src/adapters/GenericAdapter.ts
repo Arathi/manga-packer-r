@@ -14,7 +14,6 @@ class GenericAdapter extends Adapter {
       title: "",
       referer: window.location.href,
       pageAmount: 0,
-      // tasks: [],
     };
   }
 

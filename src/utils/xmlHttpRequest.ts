@@ -1,6 +1,6 @@
 import { GM, GM_xmlhttpRequest } from "$";
 
-type ResponseType = {
+export type ResponseType = {
   text: string;
   json: any;
   arraybuffer: ArrayBuffer;
@@ -9,11 +9,11 @@ type ResponseType = {
   stream: ReadableStream<Uint8Array>;
 };
 
-type GmXhrRequest<R extends keyof ResponseType> = Parameters<
+export type GmXhrRequest<R extends keyof ResponseType> = Partial<Parameters<
   typeof GM_xmlhttpRequest<{}, R>
->[0];
+>[0]>;
 
-type HttpMethod = "GET" | "POST";
+export type HttpMethod = "GET" | "POST";
 
 export default function xmlHttpRequest<R extends keyof ResponseType = "text">(
   method: HttpMethod,

@@ -4,22 +4,22 @@ import Gallery from "@/domains/Gallery";
 import GenericAdapter from "./GenericAdapter";
 import Task, { TaskStatus } from "@/domains/Task";
 
-type GTH = {
+interface GTH {
   ct: CT;
   fl: Record<string, string>;
   th: Record<string, string>;
-};
+}
 
-type CT = {
+interface CT {
   cover: string;
   thumb: string;
-};
+}
 
-type Image = {
+interface Image {
   type: string;
   width: number;
   height: number;
-};
+}
 
 function parseImage(merged: string): Image | null {
   const splitted = merged.split(",");

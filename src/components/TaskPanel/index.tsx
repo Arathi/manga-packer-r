@@ -1,4 +1,3 @@
-import { Button } from "@arco-design/web-react";
 import {
   IconDown,
   IconDownload,
@@ -19,6 +18,7 @@ import TaskView from "./TaskView";
 import TaskList from "./TaskList";
 import Flex from "@/components/Flex";
 import TaskProgress from "@/components/Progress";
+import Button from "@/components/Button";
 
 import "./index.less";
 
@@ -65,14 +65,6 @@ const TaskPanel: React.FC<Props> = ({ style }) => {
   const [taskMap, setTaskMap] = useState<Record<string, Task | undefined>>({});
   const [minimized, setMinimized] = useState(false);
 
-  // const taskIds = useMemo<string[]>(() => {
-  //   const ids: string[] = [];
-  //   for (let id in taskMap) {
-  //     ids.push(id);
-  //   }
-  //   return ids;
-  // }, [taskMap]);
-
   const tasks = useMemo<Task[]>(() => {
     const list: Task[] = [];
     for (let id in taskMap) {
@@ -83,19 +75,6 @@ const TaskPanel: React.FC<Props> = ({ style }) => {
     }
     return list;
   }, [taskMap]);
-
-  // const totalProgress = useMemo<number>(() => {
-  //   if (tasks.length <= 0) {
-  //     return 0;
-  //   }
-  //   let doneCounter = 0;
-  //   tasks.forEach((t) => {
-  //     if (t.status === TaskStatus.Done) {
-  //       doneCounter++;
-  //     }
-  //   });
-  //   return (doneCounter * 100) / tasks.length;
-  // }, [tasks]);
 
   async function fetchGallery() {
     const gallery = await adapter.fetchGallery();
@@ -114,14 +93,6 @@ const TaskPanel: React.FC<Props> = ({ style }) => {
   function sortTasks() {}
 
   function patchTask(patch: TaskPatch) {
-    // const index = tasks.findIndex((t) => t.id === patch.id);
-    // if (index >= 0) {
-    //   tasks[index] = {
-    //     ...tasks[index],
-    //     ...patch,
-    //   };
-    //   setTasks([...tasks]);
-    // }
     const task = taskMap[patch.id];
     if (task !== undefined) {
       taskMap[patch.id] = {
