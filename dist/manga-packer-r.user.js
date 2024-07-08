@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Manga Packer R
 // @namespace    com.undsf.tmus.mgpk
-// @version      1.4.2
+// @version      1.5.0
 // @author       Arathi of Nebnizilla
 // @icon         https://vitejs.dev/logo.svg
 // @homepageURL  https://github.com/Arathi/manga-packer-r
@@ -6018,690 +6018,6 @@
     });
   })(FileSaver_min);
   var FileSaver_minExports = FileSaver_min.exports;
-  var define_import_meta_env_default$1 = { BASE_URL: "/", MODE: "production", DEV: false, PROD: true, SSR: false };
-  let keyCount = 0;
-  function atom(read, write) {
-    const key = `atom${++keyCount}`;
-    const config2 = {
-      toString: () => key
-    };
-    if (typeof read === "function") {
-      config2.read = read;
-    } else {
-      config2.init = read;
-      config2.read = defaultRead;
-      config2.write = defaultWrite;
-    }
-    if (write) {
-      config2.write = write;
-    }
-    return config2;
-  }
-  function defaultRead(get) {
-    return get(this);
-  }
-  function defaultWrite(get, set, arg) {
-    return set(
-      this,
-      typeof arg === "function" ? arg(get(this)) : arg
-    );
-  }
-  const isSelfAtom = (atom2, a) => atom2.unstable_is ? atom2.unstable_is(a) : a === atom2;
-  const hasInitialValue = (atom2) => "init" in atom2;
-  const isActuallyWritableAtom = (atom2) => !!atom2.write;
-  const cancelPromiseMap = /* @__PURE__ */ new WeakMap();
-  const registerCancelPromise = (promise, cancel) => {
-    cancelPromiseMap.set(promise, cancel);
-    promise.catch(() => {
-    }).finally(() => cancelPromiseMap.delete(promise));
-  };
-  const cancelPromise = (promise, next) => {
-    const cancel = cancelPromiseMap.get(promise);
-    if (cancel) {
-      cancelPromiseMap.delete(promise);
-      cancel(next);
-    }
-  };
-  const resolvePromise = (promise, value) => {
-    promise.status = "fulfilled";
-    promise.value = value;
-  };
-  const rejectPromise = (promise, e2) => {
-    promise.status = "rejected";
-    promise.reason = e2;
-  };
-  const isPromiseLike$1 = (x) => typeof (x == null ? void 0 : x.then) === "function";
-  const isEqualAtomValue = (a, b2) => !!a && "v" in a && "v" in b2 && Object.is(a.v, b2.v);
-  const isEqualAtomError = (a, b2) => !!a && "e" in a && "e" in b2 && Object.is(a.e, b2.e);
-  const hasPromiseAtomValue = (a) => !!a && "v" in a && a.v instanceof Promise;
-  const isEqualPromiseAtomValue = (a, b2) => "v" in a && "v" in b2 && a.v.orig && a.v.orig === b2.v.orig;
-  const returnAtomValue = (atomState) => {
-    if ("e" in atomState) {
-      throw atomState.e;
-    }
-    return atomState.v;
-  };
-  const createStore$1 = () => {
-    const atomStateMap = /* @__PURE__ */ new WeakMap();
-    const mountedMap = /* @__PURE__ */ new WeakMap();
-    const pendingStack = [];
-    const pendingMap = /* @__PURE__ */ new WeakMap();
-    let devListenersRev2;
-    let mountedAtoms;
-    if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-      devListenersRev2 = /* @__PURE__ */ new Set();
-      mountedAtoms = /* @__PURE__ */ new Set();
-    }
-    const getAtomState = (atom2) => atomStateMap.get(atom2);
-    const addPendingDependent = (atom2, atomState) => {
-      atomState.d.forEach((_, a) => {
-        var _a2;
-        if (!pendingMap.has(a)) {
-          const aState = getAtomState(a);
-          (_a2 = pendingStack[pendingStack.length - 1]) == null ? void 0 : _a2.add(a);
-          pendingMap.set(a, [aState, /* @__PURE__ */ new Set()]);
-          if (aState) {
-            addPendingDependent(a, aState);
-          }
-        }
-        pendingMap.get(a)[1].add(atom2);
-      });
-    };
-    const setAtomState = (atom2, atomState) => {
-      var _a2;
-      if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-        Object.freeze(atomState);
-      }
-      const prevAtomState = getAtomState(atom2);
-      atomStateMap.set(atom2, atomState);
-      if (!pendingMap.has(atom2)) {
-        (_a2 = pendingStack[pendingStack.length - 1]) == null ? void 0 : _a2.add(atom2);
-        pendingMap.set(atom2, [prevAtomState, /* @__PURE__ */ new Set()]);
-        addPendingDependent(atom2, atomState);
-      }
-      if (hasPromiseAtomValue(prevAtomState)) {
-        const next = "v" in atomState ? atomState.v instanceof Promise ? atomState.v : Promise.resolve(atomState.v) : Promise.reject(atomState.e);
-        if (prevAtomState.v !== next) {
-          cancelPromise(prevAtomState.v, next);
-        }
-      }
-    };
-    const updateDependencies = (atom2, nextAtomState, nextDependencies, keepPreviousDependencies) => {
-      const dependencies = new Map(
-        keepPreviousDependencies ? nextAtomState.d : null
-      );
-      let changed = false;
-      nextDependencies.forEach((aState, a) => {
-        if (!aState && isSelfAtom(atom2, a)) {
-          aState = nextAtomState;
-        }
-        if (aState) {
-          dependencies.set(a, aState);
-          if (nextAtomState.d.get(a) !== aState) {
-            changed = true;
-          }
-        } else if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-          console.warn("[Bug] atom state not found");
-        }
-      });
-      if (changed || nextAtomState.d.size !== dependencies.size) {
-        nextAtomState.d = dependencies;
-      }
-    };
-    const setAtomValue = (atom2, value, nextDependencies, keepPreviousDependencies) => {
-      const prevAtomState = getAtomState(atom2);
-      const nextAtomState = {
-        d: (prevAtomState == null ? void 0 : prevAtomState.d) || /* @__PURE__ */ new Map(),
-        v: value
-      };
-      if (nextDependencies) {
-        updateDependencies(
-          atom2,
-          nextAtomState,
-          nextDependencies,
-          keepPreviousDependencies
-        );
-      }
-      if (isEqualAtomValue(prevAtomState, nextAtomState) && prevAtomState.d === nextAtomState.d) {
-        return prevAtomState;
-      }
-      if (hasPromiseAtomValue(prevAtomState) && hasPromiseAtomValue(nextAtomState) && isEqualPromiseAtomValue(prevAtomState, nextAtomState)) {
-        if (prevAtomState.d === nextAtomState.d) {
-          return prevAtomState;
-        } else {
-          nextAtomState.v = prevAtomState.v;
-        }
-      }
-      setAtomState(atom2, nextAtomState);
-      return nextAtomState;
-    };
-    const setAtomValueOrPromise = (atom2, valueOrPromise, nextDependencies, abortPromise) => {
-      if (isPromiseLike$1(valueOrPromise)) {
-        let continuePromise;
-        const updatePromiseDependencies = () => {
-          const prevAtomState = getAtomState(atom2);
-          if (!hasPromiseAtomValue(prevAtomState) || prevAtomState.v !== promise) {
-            return;
-          }
-          const nextAtomState = setAtomValue(
-            atom2,
-            promise,
-            nextDependencies
-          );
-          if (mountedMap.has(atom2) && prevAtomState.d !== nextAtomState.d) {
-            mountDependencies(atom2, nextAtomState, prevAtomState.d);
-          }
-        };
-        const promise = new Promise((resolve, reject) => {
-          let settled = false;
-          valueOrPromise.then(
-            (v2) => {
-              if (!settled) {
-                settled = true;
-                resolvePromise(promise, v2);
-                resolve(v2);
-                updatePromiseDependencies();
-              }
-            },
-            (e2) => {
-              if (!settled) {
-                settled = true;
-                rejectPromise(promise, e2);
-                reject(e2);
-                updatePromiseDependencies();
-              }
-            }
-          );
-          continuePromise = (next) => {
-            if (!settled) {
-              settled = true;
-              next.then(
-                (v2) => resolvePromise(promise, v2),
-                (e2) => rejectPromise(promise, e2)
-              );
-              resolve(next);
-            }
-          };
-        });
-        promise.orig = valueOrPromise;
-        promise.status = "pending";
-        registerCancelPromise(promise, (next) => {
-          if (next) {
-            continuePromise(next);
-          }
-          abortPromise == null ? void 0 : abortPromise();
-        });
-        return setAtomValue(atom2, promise, nextDependencies, true);
-      }
-      return setAtomValue(atom2, valueOrPromise, nextDependencies);
-    };
-    const setAtomError = (atom2, error, nextDependencies) => {
-      const prevAtomState = getAtomState(atom2);
-      const nextAtomState = {
-        d: (prevAtomState == null ? void 0 : prevAtomState.d) || /* @__PURE__ */ new Map(),
-        e: error
-      };
-      if (nextDependencies) {
-        updateDependencies(atom2, nextAtomState, nextDependencies);
-      }
-      if (isEqualAtomError(prevAtomState, nextAtomState) && prevAtomState.d === nextAtomState.d) {
-        return prevAtomState;
-      }
-      setAtomState(atom2, nextAtomState);
-      return nextAtomState;
-    };
-    const readAtomState = (atom2, force) => {
-      const atomState = getAtomState(atom2);
-      if (!force && atomState) {
-        if (mountedMap.has(atom2)) {
-          return atomState;
-        }
-        if (Array.from(atomState.d).every(([a, s]) => {
-          if (a === atom2) {
-            return true;
-          }
-          const aState = readAtomState(a);
-          return aState === s || isEqualAtomValue(aState, s);
-        })) {
-          return atomState;
-        }
-      }
-      const nextDependencies = /* @__PURE__ */ new Map();
-      let isSync = true;
-      const getter = (a) => {
-        if (isSelfAtom(atom2, a)) {
-          const aState2 = getAtomState(a);
-          if (aState2) {
-            nextDependencies.set(a, aState2);
-            return returnAtomValue(aState2);
-          }
-          if (hasInitialValue(a)) {
-            nextDependencies.set(a, void 0);
-            return a.init;
-          }
-          throw new Error("no atom init");
-        }
-        const aState = readAtomState(a);
-        nextDependencies.set(a, aState);
-        return returnAtomValue(aState);
-      };
-      let controller;
-      let setSelf;
-      const options = {
-        get signal() {
-          if (!controller) {
-            controller = new AbortController();
-          }
-          return controller.signal;
-        },
-        get setSelf() {
-          if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production" && !isActuallyWritableAtom(atom2)) {
-            console.warn("setSelf function cannot be used with read-only atom");
-          }
-          if (!setSelf && isActuallyWritableAtom(atom2)) {
-            setSelf = (...args) => {
-              if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production" && isSync) {
-                console.warn("setSelf function cannot be called in sync");
-              }
-              if (!isSync) {
-                return writeAtom(atom2, ...args);
-              }
-            };
-          }
-          return setSelf;
-        }
-      };
-      try {
-        const valueOrPromise = atom2.read(getter, options);
-        return setAtomValueOrPromise(
-          atom2,
-          valueOrPromise,
-          nextDependencies,
-          () => controller == null ? void 0 : controller.abort()
-        );
-      } catch (error) {
-        return setAtomError(atom2, error, nextDependencies);
-      } finally {
-        isSync = false;
-      }
-    };
-    const readAtom = (atom2) => returnAtomValue(readAtomState(atom2));
-    const recomputeDependents = (atom2) => {
-      const getDependents = (a) => {
-        var _a2, _b2;
-        const dependents = new Set((_a2 = mountedMap.get(a)) == null ? void 0 : _a2.t);
-        (_b2 = pendingMap.get(a)) == null ? void 0 : _b2[1].forEach((dependent) => {
-          dependents.add(dependent);
-        });
-        return dependents;
-      };
-      const topsortedAtoms = new Array();
-      const markedAtoms = /* @__PURE__ */ new Set();
-      const visit = (n2) => {
-        if (markedAtoms.has(n2)) {
-          return;
-        }
-        markedAtoms.add(n2);
-        for (const m2 of getDependents(n2)) {
-          if (n2 !== m2) {
-            visit(m2);
-          }
-        }
-        topsortedAtoms.push(n2);
-      };
-      visit(atom2);
-      const changedAtoms = /* @__PURE__ */ new Set([atom2]);
-      for (let i = topsortedAtoms.length - 1; i >= 0; --i) {
-        const a = topsortedAtoms[i];
-        const prevAtomState = getAtomState(a);
-        if (!prevAtomState) {
-          continue;
-        }
-        let hasChangedDeps = false;
-        for (const dep of prevAtomState.d.keys()) {
-          if (dep !== a && changedAtoms.has(dep)) {
-            hasChangedDeps = true;
-            break;
-          }
-        }
-        if (hasChangedDeps) {
-          const nextAtomState = readAtomState(a, true);
-          if (!isEqualAtomValue(prevAtomState, nextAtomState)) {
-            changedAtoms.add(a);
-          }
-        }
-      }
-    };
-    const writeAtomState = (atom2, ...args) => {
-      const getter = (a) => returnAtomValue(readAtomState(a));
-      const setter = (a, ...args2) => {
-        const isSync = pendingStack.length > 0;
-        if (!isSync) {
-          pendingStack.push(/* @__PURE__ */ new Set([a]));
-        }
-        let r;
-        if (isSelfAtom(atom2, a)) {
-          if (!hasInitialValue(a)) {
-            throw new Error("atom not writable");
-          }
-          const prevAtomState = getAtomState(a);
-          const nextAtomState = setAtomValueOrPromise(a, args2[0]);
-          if (!isEqualAtomValue(prevAtomState, nextAtomState)) {
-            recomputeDependents(a);
-          }
-        } else {
-          r = writeAtomState(a, ...args2);
-        }
-        if (!isSync) {
-          const flushed = flushPending(pendingStack.pop());
-          if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-            devListenersRev2.forEach(
-              (l2) => l2({ type: "async-write", flushed })
-            );
-          }
-        }
-        return r;
-      };
-      const result = atom2.write(getter, setter, ...args);
-      return result;
-    };
-    const writeAtom = (atom2, ...args) => {
-      pendingStack.push(/* @__PURE__ */ new Set([atom2]));
-      const result = writeAtomState(atom2, ...args);
-      const flushed = flushPending(pendingStack.pop());
-      if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-        devListenersRev2.forEach((l2) => l2({ type: "write", flushed }));
-      }
-      return result;
-    };
-    const mountAtom = (atom2, initialDependent, onMountQueue) => {
-      var _a2;
-      const existingMount = mountedMap.get(atom2);
-      if (existingMount) {
-        if (initialDependent) {
-          existingMount.t.add(initialDependent);
-        }
-        return existingMount;
-      }
-      const queue = onMountQueue || [];
-      (_a2 = getAtomState(atom2)) == null ? void 0 : _a2.d.forEach((_, a) => {
-        if (a !== atom2) {
-          mountAtom(a, atom2, queue);
-        }
-      });
-      readAtomState(atom2);
-      const mounted = {
-        t: new Set(initialDependent && [initialDependent]),
-        l: /* @__PURE__ */ new Set()
-      };
-      mountedMap.set(atom2, mounted);
-      if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-        mountedAtoms.add(atom2);
-      }
-      if (isActuallyWritableAtom(atom2) && atom2.onMount) {
-        const { onMount } = atom2;
-        queue.push(() => {
-          const onUnmount = onMount((...args) => writeAtom(atom2, ...args));
-          if (onUnmount) {
-            mounted.u = onUnmount;
-          }
-        });
-      }
-      if (!onMountQueue) {
-        queue.forEach((f2) => f2());
-      }
-      return mounted;
-    };
-    const canUnmountAtom = (atom2, mounted) => !mounted.l.size && (!mounted.t.size || mounted.t.size === 1 && mounted.t.has(atom2));
-    const tryUnmountAtom = (atom2, mounted) => {
-      if (!canUnmountAtom(atom2, mounted)) {
-        return;
-      }
-      const onUnmount = mounted.u;
-      if (onUnmount) {
-        onUnmount();
-      }
-      mountedMap.delete(atom2);
-      if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-        mountedAtoms.delete(atom2);
-      }
-      const atomState = getAtomState(atom2);
-      if (atomState) {
-        if (hasPromiseAtomValue(atomState)) {
-          cancelPromise(atomState.v);
-        }
-        atomState.d.forEach((_, a) => {
-          if (a !== atom2) {
-            const mountedDep = mountedMap.get(a);
-            if (mountedDep) {
-              mountedDep.t.delete(atom2);
-              tryUnmountAtom(a, mountedDep);
-            }
-          }
-        });
-      } else if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-        console.warn("[Bug] could not find atom state to unmount", atom2);
-      }
-    };
-    const mountDependencies = (atom2, atomState, prevDependencies) => {
-      const depSet = new Set(atomState.d.keys());
-      const maybeUnmountAtomSet = /* @__PURE__ */ new Set();
-      prevDependencies == null ? void 0 : prevDependencies.forEach((_, a) => {
-        if (depSet.has(a)) {
-          depSet.delete(a);
-          return;
-        }
-        maybeUnmountAtomSet.add(a);
-        const mounted = mountedMap.get(a);
-        if (mounted) {
-          mounted.t.delete(atom2);
-        }
-      });
-      depSet.forEach((a) => {
-        mountAtom(a, atom2);
-      });
-      maybeUnmountAtomSet.forEach((a) => {
-        const mounted = mountedMap.get(a);
-        if (mounted) {
-          tryUnmountAtom(a, mounted);
-        }
-      });
-    };
-    const flushPending = (pendingAtoms) => {
-      let flushed;
-      if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-        flushed = /* @__PURE__ */ new Set();
-      }
-      const pending = [];
-      const collectPending = (pendingAtom) => {
-        var _a2;
-        if (!pendingMap.has(pendingAtom)) {
-          return;
-        }
-        const [prevAtomState, dependents] = pendingMap.get(pendingAtom);
-        pendingMap.delete(pendingAtom);
-        pending.push([pendingAtom, prevAtomState]);
-        dependents.forEach(collectPending);
-        (_a2 = getAtomState(pendingAtom)) == null ? void 0 : _a2.d.forEach((_, a) => collectPending(a));
-      };
-      pendingAtoms.forEach(collectPending);
-      pending.forEach(([atom2, prevAtomState]) => {
-        const atomState = getAtomState(atom2);
-        if (!atomState) {
-          if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-            console.warn("[Bug] no atom state to flush");
-          }
-          return;
-        }
-        if (atomState !== prevAtomState) {
-          const mounted = mountedMap.get(atom2);
-          if (mounted && atomState.d !== (prevAtomState == null ? void 0 : prevAtomState.d)) {
-            mountDependencies(atom2, atomState, prevAtomState == null ? void 0 : prevAtomState.d);
-          }
-          if (mounted && !// TODO This seems pretty hacky. Hope to fix it.
-          // Maybe we could `mountDependencies` in `setAtomState`?
-          (!hasPromiseAtomValue(prevAtomState) && (isEqualAtomValue(prevAtomState, atomState) || isEqualAtomError(prevAtomState, atomState)))) {
-            mounted.l.forEach((listener) => listener());
-            if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-              flushed.add(atom2);
-            }
-          }
-        }
-      });
-      if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-        return flushed;
-      }
-    };
-    const subscribeAtom = (atom2, listener) => {
-      const mounted = mountAtom(atom2);
-      const flushed = flushPending([atom2]);
-      const listeners = mounted.l;
-      listeners.add(listener);
-      if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-        devListenersRev2.forEach(
-          (l2) => l2({ type: "sub", flushed })
-        );
-      }
-      return () => {
-        listeners.delete(listener);
-        tryUnmountAtom(atom2, mounted);
-        if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-          devListenersRev2.forEach((l2) => l2({ type: "unsub" }));
-        }
-      };
-    };
-    if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-      return {
-        get: readAtom,
-        set: writeAtom,
-        sub: subscribeAtom,
-        // store dev methods (these are tentative and subject to change without notice)
-        dev_subscribe_store: (l2) => {
-          devListenersRev2.add(l2);
-          return () => {
-            devListenersRev2.delete(l2);
-          };
-        },
-        dev_get_mounted_atoms: () => mountedAtoms.values(),
-        dev_get_atom_state: (a) => atomStateMap.get(a),
-        dev_get_mounted: (a) => mountedMap.get(a),
-        dev_restore_atoms: (values) => {
-          pendingStack.push(/* @__PURE__ */ new Set());
-          for (const [atom2, valueOrPromise] of values) {
-            if (hasInitialValue(atom2)) {
-              setAtomValueOrPromise(atom2, valueOrPromise);
-              recomputeDependents(atom2);
-            }
-          }
-          const flushed = flushPending(pendingStack.pop());
-          devListenersRev2.forEach(
-            (l2) => l2({ type: "restore", flushed })
-          );
-        }
-      };
-    }
-    return {
-      get: readAtom,
-      set: writeAtom,
-      sub: subscribeAtom
-    };
-  };
-  let defaultStore;
-  const getDefaultStore$1 = () => {
-    if (!defaultStore) {
-      defaultStore = createStore$1();
-      if ((define_import_meta_env_default$1 ? "production" : void 0) !== "production") {
-        globalThis.__JOTAI_DEFAULT_STORE__ || (globalThis.__JOTAI_DEFAULT_STORE__ = defaultStore);
-        if (globalThis.__JOTAI_DEFAULT_STORE__ !== defaultStore) {
-          console.warn(
-            "Detected multiple Jotai instances. It may cause unexpected behavior with the default store. https://github.com/pmndrs/jotai/discussions/2044"
-          );
-        }
-      }
-    }
-    return defaultStore;
-  };
-  const getDefaultStore = getDefaultStore$1;
-  var define_import_meta_env_default = { BASE_URL: "/", MODE: "production", DEV: false, PROD: true, SSR: false };
-  const StoreContext = React.createContext(
-    void 0
-  );
-  const useStore = (options) => {
-    const store = React.useContext(StoreContext);
-    return store || getDefaultStore();
-  };
-  const isPromiseLike = (x) => typeof (x == null ? void 0 : x.then) === "function";
-  const use = React.use || ((promise) => {
-    if (promise.status === "pending") {
-      throw promise;
-    } else if (promise.status === "fulfilled") {
-      return promise.value;
-    } else if (promise.status === "rejected") {
-      throw promise.reason;
-    } else {
-      promise.status = "pending";
-      promise.then(
-        (v2) => {
-          promise.status = "fulfilled";
-          promise.value = v2;
-        },
-        (e2) => {
-          promise.status = "rejected";
-          promise.reason = e2;
-        }
-      );
-      throw promise;
-    }
-  });
-  function useAtomValue(atom2, options) {
-    const store = useStore();
-    const [[valueFromReducer, storeFromReducer, atomFromReducer], rerender] = React.useReducer(
-      (prev) => {
-        const nextValue = store.get(atom2);
-        if (Object.is(prev[0], nextValue) && prev[1] === store && prev[2] === atom2) {
-          return prev;
-        }
-        return [nextValue, store, atom2];
-      },
-      void 0,
-      () => [store.get(atom2), store, atom2]
-    );
-    let value = valueFromReducer;
-    if (storeFromReducer !== store || atomFromReducer !== atom2) {
-      rerender();
-      value = store.get(atom2);
-    }
-    const delay = void 0;
-    React.useEffect(() => {
-      const unsub = store.sub(atom2, () => {
-        rerender();
-      });
-      rerender();
-      return unsub;
-    }, [store, atom2, delay]);
-    React.useDebugValue(value);
-    return isPromiseLike(value) ? use(value) : value;
-  }
-  function useSetAtom(atom2, options) {
-    const store = useStore();
-    const setAtom = React.useCallback(
-      (...args) => {
-        if ((define_import_meta_env_default ? "production" : void 0) !== "production" && !("write" in atom2)) {
-          throw new Error("not writable atom");
-        }
-        return store.set(atom2, ...args);
-      },
-      [store, atom2]
-    );
-    return setAtom;
-  }
-  function useAtom(atom2, options) {
-    return [
-      useAtomValue(atom2),
-      // We do wrong type assertion here, which results in throwing an error.
-      useSetAtom(atom2)
-    ];
-  }
   class Adapter {
   }
   class GenericAdapter extends Adapter {
@@ -7005,57 +6321,7 @@
       return new DownloaderMonkey();
     }
   }
-  const tasksAtom = atom([]);
-  const taskStatusAtom = atom(TaskStatus.Pending);
-  const titleAtom = atom("");
-  const totalProgressAtom = atom((get) => {
-    const tasks = get(tasksAtom);
-    if (tasks.length > 0) {
-      let sum = tasks.map((task) => {
-        if (task.status == TaskStatus.Error)
-          return 0;
-        if (task.status == TaskStatus.Done)
-          return 1;
-        if (task.completed == void 0)
-          return 0;
-        if (task.total == void 0)
-          return 0;
-        let progress = task.completed / task.total;
-        if (progress < 0)
-          return 0;
-        if (progress > 1)
-          return 1;
-        return progress;
-      }).reduce((prev, current) => prev + current, 0);
-      return sum * 100 / tasks.length;
-    }
-  });
-  const patchTaskAtom = atom(null, (get, set, patch) => {
-    const tasks = get(tasksAtom);
-    const updated = tasks.map((task) => {
-      if (task.id === patch.id) {
-        return {
-          ...task,
-          ...patch
-        };
-      }
-      return task;
-    });
-    set(tasksAtom, updated);
-  });
-  const taskAmountsAtom = atom((get) => {
-    const tasks = get(tasksAtom);
-    const result = {};
-    result[TaskStatus.All] = tasks.length;
-    result[TaskStatus.Pending] = 0;
-    result[TaskStatus.Running] = 0;
-    result[TaskStatus.Error] = 0;
-    result[TaskStatus.Done] = 0;
-    tasks.forEach((task) => result[task.status]++);
-    return result;
-  });
-  const minimizedAtom = atom(false);
-  const version = "1.4.2";
+  const version = "1.5.0";
   const Flex = ({
     direction,
     justify,
@@ -7084,8 +6350,7 @@
     );
   };
   const DefaultStyle$1 = {};
-  const TaskView = ({ task, onDownload, style }) => {
-    const taskStatus = useAtomValue(taskStatusAtom);
+  const TaskView = ({ task, selectedStatus, style }) => {
     const { total, completed, status, fileName } = task;
     let percent = 0;
     if (total !== void 0 && total > 0) {
@@ -7115,7 +6380,7 @@
           break;
       }
     }
-    if (taskStatus !== TaskStatus.All && status != taskStatus) {
+    if (selectedStatus !== TaskStatus.All && status != selectedStatus) {
       return null;
     }
     const styleMerged = {
@@ -7162,13 +6427,18 @@
   };
   const TaskList = ({ tasks, onDownload }) => {
     const windowSize = useWindowSize();
-    const taskAmounts = useAtomValue(taskAmountsAtom);
-    const [taskStatus, setTaskStatus] = useAtom(taskStatusAtom);
-    const title = useAtomValue(titleAtom);
-    const minimized = useAtomValue(minimizedAtom);
-    if (minimized) {
-      return null;
-    }
+    const [taskStatus, setTaskStatus] = React.useState(TaskStatus.Pending);
+    const taskAmounts = React.useMemo(() => {
+      const amounts = {
+        0: 0,
+        1: 0,
+        2: 0,
+        3: 0,
+        9: tasks.length
+      };
+      tasks.forEach((t2) => amounts[t2.status]++);
+      return amounts;
+    }, [tasks]);
     const taskStatusOptions = [
       {
         label: `所有(${taskAmounts[TaskStatus.All]})`,
@@ -7192,18 +6462,13 @@
       }
     ];
     let taskViews = [];
-    taskViews = tasks.map((task) => /* @__PURE__ */ jsxRuntimeExports.jsx(TaskView, { task, onDownload }, `${task.id}`));
-    if (taskStatus !== TaskStatus.All) {
-      const amount = tasks.map((t2) => t2.status === taskStatus ? 1 : 0).reduce((prev, current) => prev + current, 0);
-      if (amount === 0) {
-        taskViews.push(/* @__PURE__ */ jsxRuntimeExports.jsx(Empty$1, { description: "未获取任务" }, title));
-      }
-    }
+    taskViews = tasks.map((task) => /* @__PURE__ */ jsxRuntimeExports.jsx(TaskView, { task, selectedStatus: taskStatus }, `${task.id}`));
     return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         Radio.Group,
         {
           type: "button",
+          size: "mini",
           options: taskStatusOptions,
           value: taskStatus,
           onChange: (value) => {
@@ -7246,11 +6511,31 @@
     padding: 12
   };
   const TaskPanel = ({ style = DefaultStyle }) => {
-    const [tasks, setTasks] = useAtom(tasksAtom);
-    const totalProgress = useAtomValue(totalProgressAtom) ?? 0;
-    const patchTask = useSetAtom(patchTaskAtom);
-    const [title, setTitle] = useAtom(titleAtom);
-    const [minimized, setMinimized] = useAtom(minimizedAtom);
+    const [title, setTitle] = React.useState("");
+    const [tasks, setTasks] = React.useState([]);
+    const [minimized, setMinimized] = React.useState(false);
+    function patchTask(patch) {
+      const index2 = tasks.findIndex((t2) => t2.id === patch.id);
+      if (index2 >= 0) {
+        tasks[index2] = {
+          ...tasks[index2],
+          ...patch
+        };
+        setTasks([...tasks]);
+      }
+    }
+    const totalProgress = React.useMemo(() => {
+      if (tasks.length <= 0) {
+        return 0;
+      }
+      let doneCounter = 0;
+      tasks.forEach((t2) => {
+        if (t2.status === TaskStatus.Done) {
+          doneCounter++;
+        }
+      });
+      return doneCounter * 100 / tasks.length;
+    }, [tasks]);
     const mergedStyle = {
       ...DefaultStyle,
       ...style
@@ -7366,7 +6651,7 @@
               }
             ) })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(TaskList, { tasks, onDownload: download })
+          minimized ? null : /* @__PURE__ */ jsxRuntimeExports.jsx(TaskList, { tasks, onDownload: download })
         ]
       }
     );

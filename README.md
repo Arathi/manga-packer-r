@@ -6,46 +6,58 @@ Manga Packer，油猴插件，用于从网页上打包下载图片资源，目�
 
 ## 下载安装
 
-1. [安装TamperMonkey](https://chromewebstore.google.com/detail/%E7%AF%A1%E6%94%B9%E7%8C%B4/dhdgffkkebhmkfjojejmpbldmpobfkfo)
+1. [安装 TamperMonkey](https://chromewebstore.google.com/detail/%E7%AF%A1%E6%94%B9%E7%8C%B4/dhdgffkkebhmkfjojejmpbldmpobfkfo)
 2. 安装本插件
 
-可以点击以下链接开始安装
+可以点击以下链接开始安装：
 
-* [GitHub](https://github.com/Arathi/manga-packer-r/raw/master/dist/manga-packer-r.user.js)
-* [GitHub Proxy](https://mirror.ghproxy.com/https://github.com/Arathi/manga-packer-r/raw/master/dist/manga-packer-r.user.js)
-* [jsDelivr](https://cdn.jsdelivr.net/gh/Arathi/manga-packer-r/dist/manga-packer-r.user.js)
+- [GitHub](https://github.com/Arathi/manga-packer-r/raw/master/dist/manga-packer-r.user.js)
+- [GitHub Proxy](https://mirror.ghproxy.com/https://github.com/Arathi/manga-packer-r/raw/master/dist/manga-packer-r.user.js)
+- [jsDelivr](https://cdn.jsdelivr.net/gh/Arathi/manga-packer-r/dist/manga-packer-r.user.js)
 
 ## 编译运行
 
-1. 安装 `Node.js`
+### 1. 安装 `Node.js`
 
-* 去 [Node.js官网](https://nodejs.org/en/download) 下载安装包后自行安装
-* 使用包管理器下载安装（TODO）
+[Node.js](https://nodejs.org/en/download) 提供了多种安装方式，自行选择一种方式安装，`Windows` 上目前推荐 [fnm](https://github.com/Schniz/fnm)。
 
-2. 安装 `pnpm`
+### 2. 安装 `pnpm`（可跳过）
 
 ```bash
 npm install -g pnpm
 ```
 
-3. 获取源码
+_注：也可以不安装 `pnpm`，直接使用 `npm`，后续命令请自行修改。_
 
-* 从 [GitHub](https://github.com/Arathi/manga-packer-r) 获取源码（需要安装 `git` 客户端）
+### 3. 获取源码
+
+从 [GitHub](https://github.com/Arathi/manga-packer-r) 获取源码（需要安装 `git` 客户端）
 
 ```bash
 git clone https://github.com/Arathi/manga-packer-r.git
 ```
 
-* 直接下载源码（TODO）
+### 4. 下载依赖包
 
-4. 编译开发版本
+```bash
+pnpm i
+```
+
+### 5. 编译开发版本（可跳过）
 
 ```bash
 pnpm dev
 ```
 
-5. 构建并安装
+### 6. 构建并安装
 
 ```bash
 pnpm build && pnpm preview
 ```
+
+## 后续计划
+
+- <del>剥离 jotai 相关依赖</del>
+- 剥离 arco 相关依赖
+- 支持 e-hentai
+- 支持 aria2

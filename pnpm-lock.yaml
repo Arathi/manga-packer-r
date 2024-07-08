@@ -17,9 +17,6 @@ importers:
       file-saver:
         specifier: ^2.0.5
         version: 2.0.5
-      jotai:
-        specifier: ^2.8.0
-        version: 2.8.0(@types/react@18.3.2)(react@18.3.1)
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -27,6 +24,9 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
     devDependencies:
+      '@arco-plugins/vite-react':
+        specifier: ^1.3.3
+        version: 1.3.3
       '@types/file-saver':
         specifier: ^2.0.7
         version: 2.0.7
@@ -75,6 +75,9 @@ packages:
     peerDependencies:
       react: '>=16'
       react-dom: '>=16'
+
+  '@arco-plugins/vite-react@1.3.3':
+    resolution: {integrity: sha512-fcGh/69xKGqIjMdIw6NCqst4uWME/WTYjiC6AxHbKBmeYSONazBYd+KtEDx9Be2N0pF4+sk+MGUDy3mrF13EdA==}
 
   '@babel/code-frame@7.24.2':
     resolution: {integrity: sha512-y5+tLQyV8pg3fsiln67BVLD1P13Eg4lh5RW9mF0zUuvLrv9uIQ4MCL+CRT+FTsBlBjcIan6PGsLcBN0m3ClUyQ==}
@@ -446,6 +449,9 @@ packages:
   '@types/file-saver@2.0.7':
     resolution: {integrity: sha512-dNKVfHd/jk0SkR/exKGj2ggkB45MAkzvWCaqLUUgkyjITkGNzH8H+yUwr+BLJUBjZOe9w8X3wgmXhZDRg1ED6A==}
 
+  '@types/node@16.18.101':
+    resolution: {integrity: sha512-AAsx9Rgz2IzG8KJ6tXd6ndNkVcu+GYB6U/SnFAaokSPNx2N7dcIIfnighYUNumvj6YS2q39Dejz5tT0NCV7CWA==}
+
   '@types/node@20.12.11':
     resolution: {integrity: sha512-vDg9PZ/zi+Nqp6boSOT7plNuthRugEKixDv5sFTIpkE89MmNtEArAShI4mxuX2+UrLEe9pxC1vm2cjm9YlWbJw==}
 
@@ -786,18 +792,6 @@ packages:
 
   isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
-
-  jotai@2.8.0:
-    resolution: {integrity: sha512-yZNMC36FdLOksOr8qga0yLf14miCJlEThlp5DeFJNnqzm2+ZG7wLcJzoOyij5K6U6Xlc5ljQqPDlJRgqW0Y18g==}
-    engines: {node: '>=12.20.0'}
-    peerDependencies:
-      '@types/react': '>=17.0.0'
-      react: '>=17.0.0'
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-      react:
-        optional: true
 
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
@@ -1249,6 +1243,17 @@ snapshots:
     transitivePeerDependencies:
       - '@types/react'
 
+  '@arco-plugins/vite-react@1.3.3':
+    dependencies:
+      '@babel/generator': 7.24.5
+      '@babel/helper-module-imports': 7.24.3
+      '@babel/parser': 7.24.5
+      '@babel/traverse': 7.24.5
+      '@babel/types': 7.24.5
+      '@types/node': 16.18.101
+    transitivePeerDependencies:
+      - supports-color
+
   '@babel/code-frame@7.24.2':
     dependencies:
       '@babel/highlight': 7.24.5
@@ -1549,6 +1554,8 @@ snapshots:
   '@types/estree@1.0.5': {}
 
   '@types/file-saver@2.0.7': {}
+
+  '@types/node@16.18.101': {}
 
   '@types/node@20.12.11':
     dependencies:
@@ -1909,11 +1916,6 @@ snapshots:
       is-docker: 2.2.1
 
   isexe@2.0.0: {}
-
-  jotai@2.8.0(@types/react@18.3.2)(react@18.3.1):
-    optionalDependencies:
-      '@types/react': 18.3.2
-      react: 18.3.1
 
   js-tokens@4.0.0: {}
 

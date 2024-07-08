@@ -7,20 +7,12 @@ import {
 } from "@arco-design/web-react/icon";
 import { zipSync } from "fflate";
 import { saveAs } from "file-saver";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { CSSProperties, useEffect } from "react";
+import { CSSProperties, useEffect, useMemo, useState } from "react";
 
 import AdapterFactory from "@/adapters/AdapterFactory";
-import Task, { TaskID, TaskStatus } from "@/domains/Task";
+import Task, { TaskID, TaskPatch, TaskStatus } from "@/domains/Task";
 import TaskResult from "@/domains/TaskResult";
 import DownloaderFactory from "@/downloaders/DownloaderFactory";
-import {
-  tasksAtom,
-  totalProgressAtom,
-  patchTaskAtom,
-  titleAtom,
-  minimizedAtom,
-} from "@/stores";
 import { version } from "@pkg";
 
 import TaskView from "./TaskView";
@@ -57,11 +49,33 @@ const DefaultStyle: CSSProperties = {
  * 任务面板
  */
 const TaskPanel: React.FC<Props> = ({ style = DefaultStyle }) => {
-  const [tasks, setTasks] = useAtom(tasksAtom);
-  const totalProgress = useAtomValue(totalProgressAtom) ?? 0;
-  const patchTask = useSetAtom(patchTaskAtom);
-  const [title, setTitle] = useAtom(titleAtom);
-  const [minimized, setMinimized] = useAtom(minimizedAtom);
+  const [title, setTitle] = useState("");
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [minimized, setMinimized] = useState(false);
+
+  function patchTask(patch: TaskPatch) {
+    const index = tasks.findIndex((t) => t.id === patch.id);
+    if (index >= 0) {
+      tasks[index] = {
+        ...tasks[index],
+        ...patch,
+      };
+      setTasks([...tasks]);
+    }
+  }
+
+  const totalProgress = useMemo<number>(() => {
+    if (tasks.length <= 0) {
+      return 0;
+    }
+    let doneCounter = 0;
+    tasks.forEach((t) => {
+      if (t.status === TaskStatus.Done) {
+        doneCounter++;
+      }
+    });
+    return (doneCounter * 100) / tasks.length;
+  }, [tasks]);
 
   const mergedStyle = {
     ...DefaultStyle,
@@ -183,7 +197,7 @@ const TaskPanel: React.FC<Props> = ({ style = DefaultStyle }) => {
         </Flex>
       </Flex>
 
-      <TaskList tasks={tasks} onDownload={download} />
+      {minimized ? null : <TaskList tasks={tasks} onDownload={download} />}
     </Flex>
   );
 };

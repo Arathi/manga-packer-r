@@ -3,7 +3,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import monkey, { cdn } from "vite-plugin-monkey";
 import { visualizer } from "rollup-plugin-visualizer";
-import compression from "vite-plugin-compression";
+import { vitePluginForArco as arco } from "@arco-plugins/vite-react";
 
 export default defineConfig({
   server: {
@@ -11,6 +11,9 @@ export default defineConfig({
   },
   plugins: [
     react(),
+    // arco({
+    //   style: false,
+    // }),
     monkey({
       entry: "src/main.tsx",
       userscript: {
@@ -36,8 +39,11 @@ export default defineConfig({
             "ReactDOM",
             "umd/react-dom.production.min.js"
           ),
+          // "@arco-design/web-react": cdn.jsdelivr("arco", "dist/arco.min.js"),
         },
-        externalResource: {},
+        externalResource: {
+          // "@arco-design/web-react/dist/css/arco.min.css": cdn.jsdelivr(),
+        },
       },
     }),
     visualizer(),

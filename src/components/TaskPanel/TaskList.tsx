@@ -1,17 +1,11 @@
-import { useAtom, useAtomValue } from "jotai";
-import { Empty, Radio } from "@arco-design/web-react";
+import { Radio } from "@arco-design/web-react";
 
-import {
-  taskAmountsAtom,
-  taskStatusAtom,
-  titleAtom,
-  minimizedAtom,
-} from "@/stores";
 import Task, { TaskStatus } from "@/domains/Task";
 import useWindowSize from "@/hooks/useWindowSize";
 
 import TaskView from "./TaskView";
 import Flex from "../Flex";
+import { useMemo, useState } from "react";
 
 type TaskListProps = {
   tasks: Task[];
@@ -19,14 +13,18 @@ type TaskListProps = {
 };
 const TaskList: React.FC<TaskListProps> = ({ tasks, onDownload }) => {
   const windowSize = useWindowSize();
-  const taskAmounts = useAtomValue(taskAmountsAtom);
-  const [taskStatus, setTaskStatus] = useAtom(taskStatusAtom);
-  const title = useAtomValue(titleAtom);
-  const minimized = useAtomValue(minimizedAtom);
-
-  if (minimized) {
-    return null;
-  }
+  const [taskStatus, setTaskStatus] = useState<TaskStatus>(TaskStatus.Pending);
+  const taskAmounts = useMemo<Record<TaskStatus, number>>(() => {
+    const amounts: Record<TaskStatus, number> = {
+      0: 0,
+      1: 0,
+      2: 0,
+      3: 0,
+      9: tasks.length,
+    };
+    tasks.forEach((t) => amounts[t.status]++);
+    return amounts;
+  }, [tasks]);
 
   const taskStatusOptions = [
     {
@@ -53,22 +51,14 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onDownload }) => {
 
   let taskViews: React.ReactNode[] = [];
   taskViews = tasks.map((task) => (
-    <TaskView key={`${task.id}`} task={task} onDownload={onDownload} />
+    <TaskView key={`${task.id}`} task={task} selectedStatus={taskStatus} />
   ));
-
-  if (taskStatus !== TaskStatus.All) {
-    const amount = tasks
-      .map((t) => (t.status === taskStatus ? 1 : 0))
-      .reduce<number>((prev, current) => prev + current, 0);
-    if (amount === 0) {
-      taskViews.push(<Empty key={title} description="未获取任务" />);
-    }
-  }
 
   return (
     <>
       <Radio.Group
         type="button"
+        size="mini"
         options={taskStatusOptions}
         value={taskStatus}
         onChange={(value) => {

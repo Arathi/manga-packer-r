@@ -1,14 +1,12 @@
 import { Progress, Tag, TagProps } from "@arco-design/web-react";
-import { useAtomValue } from "jotai";
 import { CSSProperties } from "react";
 
 import Flex from "@/components/Flex";
 import Task, { TaskStatus } from "@/domains/Task";
-import { taskStatusAtom } from "@/stores";
 
 type Props = {
   task: Task;
-  onDownload: (task: Task) => void;
+  selectedStatus: TaskStatus;
   style?: CSSProperties;
 };
 
@@ -17,8 +15,7 @@ const DefaultStyle: CSSProperties = {};
 /**
  * 任务视图
  */
-const TaskView: React.FC<Props> = ({ task, onDownload, style }) => {
-  const taskStatus = useAtomValue(taskStatusAtom);
+const TaskView: React.FC<Props> = ({ task, selectedStatus, style }) => {
   const { total, completed, status, fileName } = task;
 
   let percent = 0;
@@ -51,7 +48,7 @@ const TaskView: React.FC<Props> = ({ task, onDownload, style }) => {
     }
   }
 
-  if (taskStatus !== TaskStatus.All && status != taskStatus) {
+  if (selectedStatus !== TaskStatus.All && status != selectedStatus) {
     // 隐藏任务
     return null;
   }
