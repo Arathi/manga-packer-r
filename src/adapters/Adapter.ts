@@ -4,14 +4,18 @@ import Task from "@/domains/Task";
 abstract class Adapter {
   /**
    * 获取Gallery
+   */
+  abstract fetchGallery(): Promise<Gallery>;
+
+  /**
+   * 获取任务
    *
    * @param onProgress 更新进度
    */
-  abstract fetchGallery(
-    onProgress?: (loaded: number, total: number) => void
-  ): Promise<Gallery>;
-
-  protected abstract fetchTasks(gallery: Gallery): Promise<Task[]>;
+  abstract fetchTasks(
+    galleryId: string,
+    onProgress?: (task: Task) => void
+  ): Promise<Task[]>;
 }
 
 export default Adapter;

@@ -1,10 +1,8 @@
-import Task from "./Task";
-
 export default interface Gallery {
   /**
    * 编号
    */
-  id: GalleryID;
+  id: string;
 
   /**
    * 标题
@@ -24,7 +22,5 @@ export default interface Gallery {
   /**
    * 任务
    */
-  tasks: Task[];
+  pageAmount: number;
 }
-
-export type GalleryID = string;

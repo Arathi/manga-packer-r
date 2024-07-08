@@ -47,9 +47,10 @@ class NHentaiXAdapter extends GenericAdapter {
     return element as E | null;
   }
 
-  async fetchGallery(
-    onProgress?: (loaded: number, total: number) => void
-  ): Promise<Gallery> {
+  async fetchGallery(): Promise<Gallery> {
+    // @ts-ignore
+    const gth: GTH = await this.wait("g_th", 10, 30000);
+
     const header = this.select<HTMLHeadingElement>(".info h1");
     const galleryIdInput = this.select<HTMLInputElement>("input#gallery_id");
 
@@ -72,13 +73,12 @@ class NHentaiXAdapter extends GenericAdapter {
 
     const id = galleryIdInput!.value;
     const title = header!.innerText;
-    const gallery = {
+    const gallery: Gallery = {
       id,
       title,
       referer: window.location.href,
-      tasks: [],
+      pageAmount: Object.keys(gth.fl).length,
     };
-    await this.fetchTasks(gallery);
 
     return gallery;
   }
@@ -108,7 +108,10 @@ class NHentaiXAdapter extends GenericAdapter {
     });
   }
 
-  async fetchTasks(gallery: Gallery): Promise<Task[]> {
+  async fetchTasks(
+    galleryId: string,
+    onProgress: (task: Task) => void
+  ): Promise<Task[]> {
     // @ts-ignore
     const gth: GTH = await this.wait("g_th", 10, 30000);
 

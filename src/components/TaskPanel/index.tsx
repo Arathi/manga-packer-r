@@ -10,7 +10,7 @@ import { saveAs } from "file-saver";
 import { CSSProperties, ReactNode, useEffect, useMemo, useState } from "react";
 
 import AdapterFactory from "@/adapters/AdapterFactory";
-import Task, { TaskID, TaskPatch, TaskStatus } from "@/domains/Task";
+import Task, { TaskPatch, TaskStatus } from "@/domains/Task";
 import TaskResult from "@/domains/TaskResult";
 import DownloaderFactory from "@/downloaders/DownloaderFactory";
 import { version } from "@pkg";
@@ -62,42 +62,83 @@ const TaskPanel: React.FC<Props> = ({ style }) => {
   const [step, setStep] = useState<Step>(Step.Pending);
   const [title, setTitle] = useState("");
   const [taskAmount, setTaskAmount] = useState(0);
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [taskMap, setTaskMap] = useState<Record<string, Task | undefined>>({});
   const [minimized, setMinimized] = useState(false);
 
-  function patchTask(patch: TaskPatch) {
-    const index = tasks.findIndex((t) => t.id === patch.id);
-    if (index >= 0) {
-      tasks[index] = {
-        ...tasks[index],
-        ...patch,
-      };
-      setTasks([...tasks]);
+  // const taskIds = useMemo<string[]>(() => {
+  //   const ids: string[] = [];
+  //   for (let id in taskMap) {
+  //     ids.push(id);
+  //   }
+  //   return ids;
+  // }, [taskMap]);
+
+  const tasks = useMemo<Task[]>(() => {
+    const list: Task[] = [];
+    for (let id in taskMap) {
+      const task = taskMap[id];
+      if (task !== undefined) {
+        list.push(task);
+      }
     }
+    return list;
+  }, [taskMap]);
+
+  // const totalProgress = useMemo<number>(() => {
+  //   if (tasks.length <= 0) {
+  //     return 0;
+  //   }
+  //   let doneCounter = 0;
+  //   tasks.forEach((t) => {
+  //     if (t.status === TaskStatus.Done) {
+  //       doneCounter++;
+  //     }
+  //   });
+  //   return (doneCounter * 100) / tasks.length;
+  // }, [tasks]);
+
+  async function fetchGallery() {
+    const gallery = await adapter.fetchGallery();
+    setTitle(gallery.title);
+    setTaskAmount(gallery.pageAmount);
+    adapter.fetchTasks(gallery.id, addTask);
   }
 
-  const totalProgress = useMemo<number>(() => {
-    if (tasks.length <= 0) {
-      return 0;
-    }
-    let doneCounter = 0;
-    tasks.forEach((t) => {
-      if (t.status === TaskStatus.Done) {
-        doneCounter++;
-      }
+  function addTask(task: Task) {
+    taskMap[task.id] = task;
+    setTaskMap({
+      ...taskMap,
     });
-    return (doneCounter * 100) / tasks.length;
-  }, [tasks]);
+  }
 
-  async function fetchTasks() {
-    const gallery = await adapter.fetchGallery((loaded, total) => {});
-    const { title, tasks } = gallery;
-    setTitle(title);
-    setTasks(tasks);
+  function sortTasks() {}
+
+  function patchTask(patch: TaskPatch) {
+    // const index = tasks.findIndex((t) => t.id === patch.id);
+    // if (index >= 0) {
+    //   tasks[index] = {
+    //     ...tasks[index],
+    //     ...patch,
+    //   };
+    //   setTasks([...tasks]);
+    // }
+    const task = taskMap[patch.id];
+    if (task !== undefined) {
+      taskMap[patch.id] = {
+        ...task,
+        ...patch,
+      };
+      setTaskMap({ ...taskMap });
+    }
   }
 
   function downloadAll() {
-    tasks.forEach((task) => download(task));
+    for (const id in tasks) {
+      const task = tasks[id];
+      if (task !== undefined) {
+        download(task);
+      }
+    }
   }
 
   function download(task: Task) {
@@ -114,7 +155,7 @@ const TaskPanel: React.FC<Props> = ({ style }) => {
       });
   }
 
-  function onProgress(id: TaskID, completed: number, total: number) {
+  function onProgress(id: string, completed: number, total: number) {
     console.info(`任务${id}下载进度更新：${completed} / ${total}`);
     const status = TaskStatus.Running;
     patchTask({
@@ -157,7 +198,7 @@ const TaskPanel: React.FC<Props> = ({ style }) => {
 
   useEffect(() => {
     setStep(Step.Fetch);
-    fetchTasks();
+    fetchGallery();
   }, []);
 
   let taskList: ReactNode = null;
@@ -217,15 +258,6 @@ const TaskPanel: React.FC<Props> = ({ style }) => {
     </Flex>
   );
 };
-
-/*
-        <Flex flex={1}>
-          <Progress
-            percent={totalProgress}
-            formatText={(percent) => `${percent?.toFixed(0) ?? "0"}%`}
-          />
-        </Flex>
- */
 
 export default TaskPanel;
 export { TaskView, TaskList };

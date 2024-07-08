@@ -17,9 +17,7 @@ class EHentaiAdapter extends GenericAdapter {
     super();
   }
 
-  async fetchGallery(
-    onProgress?: (loaded: number, total: number) => void
-  ): Promise<Gallery> {
+  async fetchGallery(): Promise<Gallery> {
     const href = unsafeWindow.location.href;
     const { gid, token, apikey } = unsafeWindow as unknown as Context;
     console.debug(`gallery.id = ${gid}`);
@@ -40,15 +38,17 @@ class EHentaiAdapter extends GenericAdapter {
       title,
       subtitle,
       referer: href,
-      tasks: [],
+      pageAmount: 0,
     };
 
-    await this.fetchTasks(gallery);
     console.info(`获取到gallery：`, gallery);
     return gallery;
   }
 
-  async fetchTasks(gallery: Gallery): Promise<Task[]> {
+  async fetchTasks(
+    galleryId: string,
+    onProgress?: (task: Task) => void
+  ): Promise<Task[]> {
     const gdt = unsafeWindow.document.querySelector<HTMLDivElement>("div#gdt");
     const tasks: Task[] = [];
     if (gdt !== null) {

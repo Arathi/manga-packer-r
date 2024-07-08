@@ -18,9 +18,7 @@ class TelegraphAdapter extends GenericAdapter {
     super();
   }
 
-  async fetchGallery(
-    onProgress?: (loaded: number, total: number) => void
-  ): Promise<Gallery> {
+  async fetchGallery(): Promise<Gallery> {
     // @ts-ignore
     const tgGallery: TelegraphGallery = unsafeWindow.T;
 
@@ -28,33 +26,51 @@ class TelegraphAdapter extends GenericAdapter {
       "header.tl_article_header h1"
     );
     const title = header?.innerText ?? tgGallery.pageId;
+
+    const imgs: NodeListOf<HTMLImageElement> =
+      document.querySelectorAll("figure img");
+
     const gallery: Gallery = {
       id: tgGallery.pageId,
       title,
       referer: window.location.href,
-      tasks: [],
+      pageAmount: imgs.length,
     };
 
-    await this.fetchTasks(gallery);
+    // await this.fetchTasks(gallery);
     return gallery;
   }
 
-  async fetchTasks(gallery: Gallery): Promise<Task[]> {
+  async fetchTasks(
+    galleryId: string,
+    onProgress?: (task: Task) => void
+  ): Promise<Task[]> {
     const imgs: NodeListOf<HTMLImageElement> =
       document.querySelectorAll("figure img");
     let index = 0;
+    const tasks: Task[] = [];
     for (let img of imgs) {
       let pageNumber = `${++index}`.padStart(3, "0");
       let dotIndex = img.src.lastIndexOf(".");
       const extName = img.src.substring(dotIndex);
-      gallery.tasks.push({
-        id: `tg-${gallery.id}-${pageNumber}`,
+      // gallery.tasks.push({
+      //   id: `tg-${gallery.id}-${pageNumber}`,
+      //   url: img.src,
+      //   fileName: `${pageNumber}${extName}`,
+      //   status: TaskStatus.Pending,
+      // });
+      const task: Task = {
+        id: `tg-${galleryId}-${pageNumber}`,
         url: img.src,
         fileName: `${pageNumber}${extName}`,
         status: TaskStatus.Pending,
-      });
+      };
+      if (onProgress !== undefined) {
+        onProgress(task);
+      }
+      tasks.push(task);
     }
-    return gallery.tasks;
+    return tasks;
   }
 }
 

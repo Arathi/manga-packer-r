@@ -60,9 +60,7 @@ class NHentaiAdapter extends GenericAdapter {
     super();
   }
 
-  async fetchGallery(
-    onProgress?: (loaded: number, total: number) => void
-  ): Promise<Gallery> {
+  async fetchGallery(): Promise<Gallery> {
     // @ts-ignore
     const nhGallery: NHentaiGallery = unsafeWindow._gallery;
 
@@ -71,14 +69,17 @@ class NHentaiAdapter extends GenericAdapter {
       title: nhGallery.title.japanese ?? nhGallery.id,
       subtitle: nhGallery.title.english,
       referer: window.location.href,
-      tasks: [],
+      pageAmount: nhGallery.num_pages,
     };
 
-    await this.fetchTasks(gallery);
+    // await this.fetchTasks(gallery);
     return gallery;
   }
 
-  async fetchTasks(gallery: Gallery): Promise<Task[]> {
+  async fetchTasks(
+    galleryId: string,
+    onProgress: (task: Task) => void
+  ): Promise<Task[]> {
     // @ts-ignore
     const nhGallery: NHentaiGallery = unsafeWindow._gallery;
 

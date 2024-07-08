@@ -15,11 +15,19 @@ export default function Progress({
   error = 0,
   pending = 100,
   height = 16,
-  colors = ["green", "blue", "red", "gray"],
+  colors = ["#00B42A", "#165DFF", "#F53F3F", "#E5E6EB"],
 }: Props) {
   const [successColor, runningColor, errorColor, pendingColor] = colors;
   return (
-    <Flex flex={1}>
+    <Flex
+      flex={1}
+      style={{
+        borderWidth: 1,
+        borderStyle: "solid",
+        borderColor: "gray",
+        // borderRadius: 8,
+      }}
+    >
       <Flex
         flex={success}
         style={{
