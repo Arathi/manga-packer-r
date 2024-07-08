@@ -1,8 +1,8 @@
-import Task, { TaskID } from "@/domains/Task";
+import Task from "@/domains/Task";
 import TaskResult from "@/domains/TaskResult";
 
 export type ProgressListener = (
-  taskId: TaskID,
+  taskId: string,
   completed: number,
   total: number,
 ) => void;
