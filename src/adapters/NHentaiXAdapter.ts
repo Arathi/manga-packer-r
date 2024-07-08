@@ -110,7 +110,7 @@ class NHentaiXAdapter extends GenericAdapter {
 
   async fetchTasks(
     galleryId: string,
-    onProgress: (task: Task) => void
+    onProgress?: (task: Task) => void
   ): Promise<Task[]> {
     // @ts-ignore
     const gth: GTH = await this.wait("g_th", 10, 30000);
@@ -146,6 +146,7 @@ class NHentaiXAdapter extends GenericAdapter {
     const loadId = loadIdInput!.value;
 
     const keys = Object.keys(gth.fl);
+    const tasks: Task[] = [];
     keys.forEach((key) => {
       const pageNumber = key.padStart(3, "0");
       const merged = gth.fl[key];
@@ -170,15 +171,20 @@ class NHentaiXAdapter extends GenericAdapter {
       const dir = `${loadDir}/${loadId}`;
       const fileName = `${pageNumber}.${extName}`;
 
-      gallery.tasks.push({
-        id: `nhx-${gallery.id}-${pageNumber}`,
+      const task: Task = {
+        id: `nhx-${galleryId}-${pageNumber}`,
         url: `https://i${loadServer}.nhentaimg.com/${dir}/${key}.${extName}`,
         fileName,
         status,
-      });
+      }
+      if (onProgress !== undefined) {
+        onProgress(task);
+      }
+
+      tasks.push(task);
     });
 
-    return gallery.tasks;
+    return tasks;
   }
 }
 

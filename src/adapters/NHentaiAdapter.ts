@@ -4,7 +4,7 @@ import Gallery from "@/domains/Gallery";
 import GenericAdapter from "./GenericAdapter";
 import Task, { TaskStatus } from "@/domains/Task";
 
-// region NHentaiGallery
+// #region NHentaiGallery
 type NHentaiGallery = {
   id: number;
   images: Images;
@@ -42,9 +42,9 @@ type Titles = {
   japanese: string;
   pretty: string;
 };
-// endregion
+// #endregion
 
-// region NHentaiApp
+// #region NHentaiApp
 type NHentaiApp = {
   options: NHentaiOptions;
 };
@@ -53,7 +53,7 @@ type NHentaiOptions = {
   csrf_token: string;
   media_server: number;
 };
-// endregion
+// #endregion
 
 class NHentaiAdapter extends GenericAdapter {
   constructor() {
@@ -72,13 +72,12 @@ class NHentaiAdapter extends GenericAdapter {
       pageAmount: nhGallery.num_pages,
     };
 
-    // await this.fetchTasks(gallery);
     return gallery;
   }
 
   async fetchTasks(
     galleryId: string,
-    onProgress: (task: Task) => void
+    onProgress?: (task: Task) => void
   ): Promise<Task[]> {
     // @ts-ignore
     const nhGallery: NHentaiGallery = unsafeWindow._gallery;
@@ -86,7 +85,7 @@ class NHentaiAdapter extends GenericAdapter {
     // @ts-ignore
     const nhOptions: NHentaiOptions = unsafeWindow._n_app.options;
 
-    gallery.tasks = nhGallery.images.pages.map((page, index) => {
+    const tasks: Task[] = nhGallery.images.pages.map((page, index) => {
       const pageNumber = `${index + 1}`;
 
       const serverId = nhOptions.media_server;
@@ -106,17 +105,22 @@ class NHentaiAdapter extends GenericAdapter {
       }
       const fileName = `${pageNumber.padStart(3, "0")}.${extName}`;
 
-      return {
-        id: `nh-${gallery.id}-${pageNumber}`,
+      const task = {
+        id: `nh-${galleryId}-${pageNumber}`,
         url: `https://i${serverId}.nhentai.net/galleries/${mediaId}/${
           index + 1
         }.${extName}`,
         fileName,
         status,
       };
+      if (onProgress !== undefined) {
+        onProgress(task);
+      }
+
+      return task;
     });
 
-    return gallery.tasks;
+    return tasks;
   }
 }
 

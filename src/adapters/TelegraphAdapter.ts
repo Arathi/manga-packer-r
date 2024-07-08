@@ -37,7 +37,6 @@ class TelegraphAdapter extends GenericAdapter {
       pageAmount: imgs.length,
     };
 
-    // await this.fetchTasks(gallery);
     return gallery;
   }
 
@@ -53,21 +52,18 @@ class TelegraphAdapter extends GenericAdapter {
       let pageNumber = `${++index}`.padStart(3, "0");
       let dotIndex = img.src.lastIndexOf(".");
       const extName = img.src.substring(dotIndex);
-      // gallery.tasks.push({
-      //   id: `tg-${gallery.id}-${pageNumber}`,
-      //   url: img.src,
-      //   fileName: `${pageNumber}${extName}`,
-      //   status: TaskStatus.Pending,
-      // });
+      
       const task: Task = {
         id: `tg-${galleryId}-${pageNumber}`,
         url: img.src,
         fileName: `${pageNumber}${extName}`,
         status: TaskStatus.Pending,
       };
+
       if (onProgress !== undefined) {
         onProgress(task);
       }
+
       tasks.push(task);
     }
     return tasks;

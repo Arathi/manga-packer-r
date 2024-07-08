@@ -4,12 +4,34 @@ import { unsafeWindow } from "$";
 import Task, { TaskStatus } from "@/domains/Task";
 import xmlHttpRequest from "@/utils/xmlHttpRequest";
 
-const URL_PATTERN = /\/g\/(\d+)\//;
-
 interface Context {
-  gid: string;
+  gid: number;
   token: string;
   apikey: string;
+  api_url: string;
+}
+
+interface GalleryMetadataResponse {
+  gmetadata: GMetadata[];
+}
+
+interface GMetadata {
+  gid: number;
+  token: string;
+  archiver_key: string;
+  title: string;
+  title_jpn: string;
+  category: string;
+  thumb: string;
+  uploader: string;
+  posted: string;
+  filecount: string;
+  filesize: number;
+  expunged: boolean;
+  rating: string;
+  torrentcount: string;
+  torrents: any[];
+  tags: string[];
 }
 
 class EHentaiAdapter extends GenericAdapter {
@@ -19,26 +41,33 @@ class EHentaiAdapter extends GenericAdapter {
 
   async fetchGallery(): Promise<Gallery> {
     const href = unsafeWindow.location.href;
-    const { gid, token, apikey } = unsafeWindow as unknown as Context;
+    const { gid, token, apikey, api_url } = unsafeWindow as unknown as Context;
     console.debug(`gallery.id = ${gid}`);
 
-    const headerName =
-      unsafeWindow.document.querySelector<HTMLHeadingElement>("h1#gn");
-    const headerNameJ =
-      unsafeWindow.document.querySelector<HTMLHeadingElement>("h1#gj");
+    const reqBody = {
+      method: "gdata",
+      gidlist: [
+        [gid, token],
+      ],
+      namespace: 1,
+    };
+    const resp: GalleryMetadataResponse = await xmlHttpRequest("POST", api_url, "json", undefined, {
+      url: api_url,
+      data: JSON.stringify(reqBody),
+    });
+    const { gmetadata: metadataList } = resp;
+    const {
+      title, title_jpn: subtitle, filecount
+    } = metadataList[0];
 
-    if (headerName === undefined) {
-      throw new Error(`未找到漫画标题`);
-    }
-    const title = headerName!.innerText;
-    const subtitle = headerNameJ?.innerText;
+    const fileCount = parseInt(filecount);
 
     const gallery: Gallery = {
-      id: gid,
+      id: `${gid}`,
       title,
       subtitle,
       referer: href,
-      pageAmount: 0,
+      pageAmount: fileCount,
     };
 
     console.info(`获取到gallery：`, gallery);
@@ -52,18 +81,18 @@ class EHentaiAdapter extends GenericAdapter {
     const gdt = unsafeWindow.document.querySelector<HTMLDivElement>("div#gdt");
     const tasks: Task[] = [];
     if (gdt !== null) {
-      const currentPageTasks = await this.fetchTasksInGDT(gallery, gdt, 1);
-      tasks.push(...currentPageTasks);
+      this.fetchTasksInGDT(galleryId, gdt, 1, onProgress);
+      // tasks.push(...currentPageTasks);
     }
-    await this.fetchNextPage();
-    gallery.tasks = tasks;
-    return gallery.tasks;
+    // await this.fetchNextPage();
+    return [];
   }
 
   async fetchTasksInGDT(
-    gallery: Gallery,
+    galleryId: string,
     gdt: HTMLDivElement,
-    startAt: number
+    startAt: number,
+    onProgress?: (task: Task) => void,
   ): Promise<Task[]> {
     const tasks: Task[] = [];
     const anchors = gdt.querySelectorAll<HTMLAnchorElement>("div.gdtm div a");
@@ -71,14 +100,17 @@ class EHentaiAdapter extends GenericAdapter {
       const anchor = anchors[index];
       const href = anchor.href;
       const pageNumber = `${startAt + index}`.padStart(3, "0");
-      const task = await this.fetchTask(gallery, pageNumber, href);
+      const task = await this.fetchTask(galleryId, pageNumber, href);
+      if (onProgress !== undefined) {
+        onProgress(task);
+      }
       tasks.push(task);
     }
     return tasks;
   }
 
   async fetchTask(
-    gallery: Gallery,
+    galleryId: string,
     pageNumber: string,
     url: string
   ): Promise<Task> {
@@ -97,7 +129,7 @@ class EHentaiAdapter extends GenericAdapter {
 
     const fileName = `${pageNumber}${extName}`;
     const task = {
-      id: `eh-${gallery.id}-${pageNumber}`,
+      id: `eh-${galleryId}-${pageNumber}`,
       url: src,
       fileName,
       status: TaskStatus.Pending,

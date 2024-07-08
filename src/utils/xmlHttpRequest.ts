@@ -11,7 +11,7 @@ type ResponseType = {
 
 type GmXhrRequest<R extends keyof ResponseType> = Parameters<
   typeof GM_xmlhttpRequest<{}, R>
->;
+>[0];
 
 type HttpMethod = "GET" | "POST";
 
