@@ -7,6 +7,9 @@ import TaskView from "./TaskView";
 import Flex from "../Flex";
 import { useMemo, useState } from "react";
 
+import "@arco-design/web-react/es/Button/style/index.less";
+import "@arco-design/web-react/es/Radio/style/index.less";
+
 type TaskListProps = {
   tasks: Task[];
   onDownload: (task: Task) => void;
