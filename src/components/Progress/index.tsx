@@ -25,7 +25,6 @@ export default function Progress({
         borderWidth: 1,
         borderStyle: "solid",
         borderColor: "gray",
-        // borderRadius: 8,
       }}
     >
       <Flex

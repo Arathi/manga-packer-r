@@ -1,4 +1,4 @@
-import { GM, GM_xmlhttpRequest } from "$";
+import { GM_xmlhttpRequest } from "$";
 
 export type ResponseType = {
   text: string;
@@ -9,9 +9,9 @@ export type ResponseType = {
   stream: ReadableStream<Uint8Array>;
 };
 
-export type GmXhrRequest<R extends keyof ResponseType> = Partial<Parameters<
-  typeof GM_xmlhttpRequest<{}, R>
->[0]>;
+export type GmXhrRequest<R extends keyof ResponseType> = Partial<
+  Parameters<typeof GM_xmlhttpRequest<unknown, R>>[0]
+>;
 
 export type HttpMethod = "GET" | "POST";
 
@@ -19,27 +19,30 @@ export default function xmlHttpRequest<R extends keyof ResponseType = "text">(
   method: HttpMethod,
   url: string,
   responseType: R,
-  onProgress?: (progress: number) => void,
+  onProgress?: (event: ProgressEvent) => void,
   options?: GmXhrRequest<R>
 ): Promise<ResponseType[R]> {
   const taskName = `${method} ${url}`;
   return new Promise((resolve, reject) => {
-    GM.xmlHttpRequest<{}, R>({
+    GM_xmlhttpRequest<unknown, R>({
       method,
       url,
       responseType,
       onprogress: (event) => {
-        const { loaded, total } = event;
+        const { done, lengthComputable, loaded, position, total, totalSize } =
+          event;
+        console.info(`XHR任务(${taskName})进度更新：`, event);
         let progress = 0;
         if (total > 0) {
           progress = loaded / total;
         }
-        const percent = `${(progress * 100).toFixed(2)}%`;
-        console.info(
-          `XHR任务(${taskName})进度更新：${loaded}/${total}(${percent})`
-        );
+        // const percent = `${(progress * 100).toFixed(2)}%`;
         if (onProgress !== undefined) {
-          onProgress(progress);
+          onProgress({
+            lengthComputable,
+            loaded,
+            total,
+          } as ProgressEvent);
         }
       },
       onload: (event) => {

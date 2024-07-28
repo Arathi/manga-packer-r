@@ -1,9 +1,9 @@
 import Downloader from "./Downloader";
-import DownloaderMonkey from "./DownloaderMonkey";
+import DownloaderAria2 from "./DownloaderAria2";
 
 class DownloaderFactory {
   static getInstance(): Downloader {
-    return new DownloaderMonkey();
+    return new DownloaderAria2();
   }
 }
 

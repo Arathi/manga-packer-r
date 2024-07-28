@@ -3,7 +3,10 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import monkey, { cdn } from "vite-plugin-monkey";
 import { visualizer } from "rollup-plugin-visualizer";
-import { vitePluginForArco as arco } from "@arco-plugins/vite-react";
+
+const HOMEPAGE_URL = `https://github.com/Arathi/manga-packer-r`;
+const USER_JS_PATH = "/raw/master/dist/manga-packer-r.user.js";
+const DOWNLOAD_URL = `${HOMEPAGE_URL}${USER_JS_PATH}`;
 
 export default defineConfig({
   server: {
@@ -11,9 +14,6 @@ export default defineConfig({
   },
   plugins: [
     react(),
-    // arco({
-    //   style: false,
-    // }),
     monkey({
       entry: "src/main.tsx",
       userscript: {
@@ -21,11 +21,9 @@ export default defineConfig({
         name: "Manga Packer R",
         namespace: "com.undsf.tmus.mgpk",
         author: "Arathi of Nebnizilla",
-        homepageURL: "https://github.com/Arathi/manga-packer-r",
-        downloadURL:
-          "https://github.com/Arathi/manga-packer-r/raw/master/dist/manga-packer-r.user.js",
-        updateURL:
-          "https://github.com/Arathi/manga-packer-r/raw/master/dist/manga-packer-r.user.js",
+        homepageURL: HOMEPAGE_URL,
+        downloadURL: DOWNLOAD_URL,
+        updateURL: DOWNLOAD_URL,
         match: [
           "https://telegra.ph/*",
           "https://nhentai.net/g/*/",
@@ -40,11 +38,8 @@ export default defineConfig({
             "ReactDOM",
             "umd/react-dom.production.min.js"
           ),
-          // "@arco-design/web-react": cdn.jsdelivr("arco", "dist/arco.min.js"),
         },
-        externalResource: {
-          // "@arco-design/web-react/dist/css/arco.min.css": cdn.jsdelivr(),
-        },
+        externalResource: {},
       },
     }),
     visualizer(),

@@ -14,11 +14,16 @@ type ResponseTypes = {
 };
 
 type ResponseType = keyof ResponseTypes;
-type XmlHttpRequestParameters<R extends ResponseType> = Parameters<typeof GM_xmlhttpRequest<unknown, R>>;
+type XmlHttpRequestParameters<R extends ResponseType> = Parameters<
+  typeof GM_xmlhttpRequest<unknown, R>
+>;
 type XmlHttpRequest<R extends ResponseType> = XmlHttpRequestParameters<R>[0];
 
 class DownloaderMonkey extends Downloader {
-  async download(task: Task, onProgress?: ProgressListener): Promise<TaskResult> {
+  async download(
+    task: Task,
+    onProgress?: ProgressListener
+  ): Promise<TaskResult> {
     return new Promise((resolve, reject) => {
       const request: XmlHttpRequest<"blob"> = {
         method: "GET",
@@ -38,8 +43,7 @@ class DownloaderMonkey extends Downloader {
                 bytes,
               },
             });
-          }
-          else {
+          } else {
             reject(`文件类型：${mime}，状态码：${event.status}`);
           }
         },
@@ -59,4 +63,4 @@ class DownloaderMonkey extends Downloader {
   }
 }
 
-export default DownloaderMonkey;
+// export default DownloaderMonkey;

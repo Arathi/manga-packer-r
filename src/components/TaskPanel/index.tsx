@@ -1,9 +1,3 @@
-import {
-  IconDown,
-  IconDownload,
-  IconSave,
-  IconUp,
-} from "@arco-design/web-react/icon";
 import { zipSync } from "fflate";
 import { saveAs } from "file-saver";
 import { CSSProperties, ReactNode, useEffect, useMemo, useState } from "react";
@@ -11,19 +5,20 @@ import { CSSProperties, ReactNode, useEffect, useMemo, useState } from "react";
 import AdapterFactory from "@/adapters/AdapterFactory";
 import Task, { TaskPatch, TaskStatus } from "@/domains/Task";
 import TaskResult from "@/domains/TaskResult";
-import DownloaderFactory from "@/downloaders/DownloaderFactory";
 import { version } from "@pkg";
+import xmlHttpRequest from "@/utils/xmlHttpRequest";
 
 import TaskView from "./TaskView";
 import TaskList from "./TaskList";
-import Flex from "@/components/Flex";
-import TaskProgress from "@/components/Progress";
 import Button from "@/components/Button";
+import Flex from "@/components/Flex";
+import { IconDown, IconDownload, IconSave, IconUp } from "@/components/Icon";
+import TaskProgress from "@/components/Progress";
 
 import "./index.less";
 
 const adapter = AdapterFactory.create();
-const downloader = DownloaderFactory.getInstance();
+// const downloader = DownloaderFactory.getInstance();
 
 const files: Record<string, Uint8Array> = {};
 
@@ -90,8 +85,6 @@ const TaskPanel: React.FC<Props> = ({ style }) => {
     });
   }
 
-  function sortTasks() {}
-
   function patchTask(patch: TaskPatch) {
     const task = taskMap[patch.id];
     if (task !== undefined) {
@@ -113,17 +106,20 @@ const TaskPanel: React.FC<Props> = ({ style }) => {
   }
 
   function download(task: Task) {
-    downloader
-      .download(task, onProgress)
-      .then(onComplete)
-      .catch((reason) => {
-        console.info(`${task.id}下载失败：`, reason);
-        patchTask({
-          id: task.id,
-          status: TaskStatus.Error,
-          completed: 0,
-        });
+    xmlHttpRequest("GET", task.url, "blob", (event) => {
+      const { lengthComputable, loaded, total } = event;
+      console.info(`下载进度更新：`, event);
+      onProgress(task.id, loaded, total);
+    }).then(async (blob) => {
+      const mime = blob.type;
+      const buffer = await blob.arrayBuffer();
+      const bytes = new Uint8Array(buffer);
+      onComplete({
+        ...task,
+        mime,
+        bytes,
       });
+    });
   }
 
   function onProgress(id: string, completed: number, total: number) {

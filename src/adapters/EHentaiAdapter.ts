@@ -46,19 +46,21 @@ class EHentaiAdapter extends GenericAdapter {
 
     const reqBody = {
       method: "gdata",
-      gidlist: [
-        [gid, token],
-      ],
+      gidlist: [[gid, token]],
       namespace: 1,
     };
-    const resp: GalleryMetadataResponse = await xmlHttpRequest("POST", api_url, "json", undefined, {
-      url: api_url,
-      data: JSON.stringify(reqBody),
-    });
+    const resp: GalleryMetadataResponse = await xmlHttpRequest(
+      "POST",
+      api_url,
+      "json",
+      undefined,
+      {
+        url: api_url,
+        data: JSON.stringify(reqBody),
+      }
+    );
     const { gmetadata: metadataList } = resp;
-    const {
-      title, title_jpn: subtitle, filecount
-    } = metadataList[0];
+    const { title, title_jpn: subtitle, filecount } = metadataList[0];
 
     const fileCount = parseInt(filecount);
 
@@ -82,9 +84,7 @@ class EHentaiAdapter extends GenericAdapter {
     const tasks: Task[] = [];
     if (gdt !== null) {
       this.fetchTasksInGDT(galleryId, gdt, 1, onProgress);
-      // tasks.push(...currentPageTasks);
     }
-    // await this.fetchNextPage();
     return [];
   }
 
@@ -92,7 +92,7 @@ class EHentaiAdapter extends GenericAdapter {
     galleryId: string,
     gdt: HTMLDivElement,
     startAt: number,
-    onProgress?: (task: Task) => void,
+    onProgress?: (task: Task) => void
   ): Promise<Task[]> {
     const tasks: Task[] = [];
     const anchors = gdt.querySelectorAll<HTMLAnchorElement>("div.gdtm div a");
