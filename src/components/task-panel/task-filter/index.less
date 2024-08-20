@@ -1,0 +1,58 @@
+@import "../../colors.less";
+
+.task-filter {
+  border: 1px solid gray;
+  border-radius: 0px;
+  font-size: 12px;
+
+  .task-filter-item {
+    padding: 3px;
+    border-left: 1px solid gray;
+    user-select: none;
+
+    &:first-child {
+      border-left: unset;
+    }
+
+    &-all {
+      &-active {
+        background: linear-gradient(
+          to right,
+          @color-pending,
+          @color-running,
+          @color-error,
+          @color-success
+        );
+        color: white;
+      }
+    }
+
+    &-pending {
+      &-active {
+        background-color: @color-pending;
+        color: black;
+      }
+    }
+
+    &-running {
+      &-active {
+        background-color: @color-running;
+        color: white;
+      }
+    }
+
+    &-error {
+      &-active {
+        background-color: @color-error;
+        color: white;
+      }
+    }
+
+    &-success {
+      &-active {
+        background-color: @color-success;
+        color: white;
+      }
+    }
+  }
+}

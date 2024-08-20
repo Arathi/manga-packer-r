@@ -24,6 +24,6 @@ dist-ssr
 *.sln
 *.sw?
 
-# 工程
+# Project
 .npmrc
 stats.html

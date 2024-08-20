@@ -1,0 +1,28 @@
+@import "../colors.less";
+
+.progress-bar {
+  border: 1px solid gray;
+  // box-shadow: 1px 1px 3px gray;
+
+  .blocks {
+    width: 100%;
+
+    .progress-block {
+      &-pending {
+        background-color: @color-pending;
+      }
+
+      &-running {
+        background-color: @color-running;
+      }
+
+      &-success {
+        background-color: @color-success;
+      }
+
+      &-error {
+        background-color: @color-error;
+      }
+    }
+  }
+}

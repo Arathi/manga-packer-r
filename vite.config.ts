@@ -1,8 +1,8 @@
-import path from "path";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import monkey, { cdn } from "vite-plugin-monkey";
 import { visualizer } from "rollup-plugin-visualizer";
+import { resolve } from "path";
 
 const HOMEPAGE_URL = `https://github.com/Arathi/manga-packer-r`;
 const USER_JS_PATH = "/raw/master/dist/manga-packer-r.user.js";
@@ -39,15 +39,13 @@ export default defineConfig({
             "umd/react-dom.production.min.js"
           ),
         },
-        externalResource: {},
       },
     }),
     visualizer(),
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "src"),
-      "@pkg": path.resolve(__dirname, "package.json"),
+      "@": resolve(__dirname, "src"),
     },
   },
 });

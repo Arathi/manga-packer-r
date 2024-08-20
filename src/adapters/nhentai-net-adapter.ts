@@ -1,0 +1,98 @@
+import { Gallery, Task } from "@/domains";
+import AbstractAdapter from "./abstract-adapter";
+import { unsafeWindow } from "$";
+import { TaskStatus } from "@/domains/task";
+
+// #region NHentaiGallery
+type NHentaiGallery = {
+  id: number;
+  images: Images;
+  media_id: string;
+  num_favorites: number;
+  num_pages: number;
+  scanlator: string;
+  tags: Tag[];
+  title: Titles;
+  upload_date: number;
+};
+
+type Images = {
+  cover: Image;
+  pages: Image[];
+  thumbnail: Image;
+};
+
+type Image = {
+  t: string;
+  w: number;
+  h: number;
+};
+
+type Tag = {
+  id: number;
+  type: string;
+  name: string;
+  url: string;
+  count: number;
+};
+
+type Titles = {
+  english: string;
+  japanese: string;
+  pretty: string;
+};
+// #endregion
+
+// #region NHentaiApp
+type NHentaiApp = {
+  options: NHentaiOptions;
+};
+
+type NHentaiOptions = {
+  csrf_token: string;
+  media_server: number;
+};
+// #endregion
+
+export default class NHentaiNetAdapter extends AbstractAdapter {
+  async generateGallery(): Promise<Gallery> {
+    const { _gallery: nhGallery, _n_app: nhApp } = unsafeWindow as unknown as {
+      _gallery: NHentaiGallery;
+      _n_app: NHentaiApp;
+    };
+
+    const tasks: Record<string | number, Task> = {};
+    const serverId = nhApp.options.media_server;
+    const mediaId = nhGallery.media_id;
+
+    nhGallery.images.pages.forEach((image, index) => {
+      const pageNo = `${index + 1}`;
+      const id = `${nhGallery.id}-${pageNo.padStart(3, "0")}`;
+      let extName = ``;
+      switch (image.t) {
+        case "j":
+          extName = "jpg";
+          break;
+        case "p":
+          extName = "png";
+          break;
+        default:
+          extName = "img";
+          break;
+      }
+      const fileName = `${pageNo}.${extName}`;
+      tasks[id] = {
+        id,
+        url: `https://i${serverId}.nhentai.net/galleries/${mediaId}/${pageNo}.${extName}`,
+        fileName,
+        status: TaskStatus.Pending,
+      };
+    });
+
+    return {
+      id: nhGallery.id,
+      name: nhGallery.title.japanese,
+      tasks,
+    };
+  }
+}
