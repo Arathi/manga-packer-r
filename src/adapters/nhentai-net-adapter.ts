@@ -65,6 +65,8 @@ export default class NHentaiNetAdapter extends AbstractAdapter {
     const serverId = nhApp.options.media_server;
     const mediaId = nhGallery.media_id;
 
+    const baseUrl = `https://i${serverId}.nhentai.net`;
+
     nhGallery.images.pages.forEach((image, index) => {
       const pageNo = `${index + 1}`;
       const id = `${nhGallery.id}-${pageNo.padStart(3, "0")}`;
@@ -80,10 +82,11 @@ export default class NHentaiNetAdapter extends AbstractAdapter {
           extName = "img";
           break;
       }
-      const fileName = `${pageNo}.${extName}`;
+      const uri = `/galleries/${mediaId}/${pageNo}.${extName}`;
+      const fileName = `${pageNo.padStart(3, "0")}.${extName}`;
       tasks[id] = {
         id,
-        url: `https://i${serverId}.nhentai.net/galleries/${mediaId}/${pageNo}.${extName}`,
+        url: `${baseUrl}${uri}`,
         fileName,
         status: TaskStatus.Pending,
       };

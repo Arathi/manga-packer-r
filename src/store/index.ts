@@ -1,27 +1,75 @@
 import { proxy } from "valtio";
 
 import Gallery from "@/domains/gallery";
-import { TaskStatus } from "@/domains/task";
+import Task, { TaskStatus } from "@/domains/task";
 
 interface State {
   gallery?: Gallery;
   status?: TaskStatus;
 }
 
-// const taskList = [
-//   { id: 0, total: 100, loaded: 101, status: TaskStatus.Success },
-//   { id: 1, total: 100, loaded: 64, status: TaskStatus.Running },
-//   { id: 2, total: 100, loaded: 32, status: TaskStatus.Running },
-//   { id: 3, total: 100, loaded: 68, status: TaskStatus.Pending },
-//   { id: 4, total: 100, loaded: 20, status: TaskStatus.Success },
-//   { id: 5, total: 100, loaded: 10, status: TaskStatus.Error },
-//   { id: 6, total: 100, loaded: 30, status: TaskStatus.Pending },
-//   { id: 7, total: 100, loaded: 40, status: TaskStatus.Pending },
-// ];
+interface Computed {
+  // 任务表
+  get tasks(): Task[];
 
-const store = proxy<State>({
+  // 根据状态值过滤任务表
+  get filtered(): Task[];
+
+  // 状态表
+  get statusList(): TaskStatus[];
+
+  // 状态数量统计
+  get statusAmounts(): Record<TaskStatus, number>;
+}
+
+const store = proxy<State & Computed>({
+  // #region state
   gallery: undefined,
   status: undefined,
+  // #endregion
+
+  // #region computed
+  get tasks(): Task[] {
+    const results: Task[] = [];
+    if (this.gallery !== undefined) {
+      const tasks = this.gallery.tasks;
+      for (const id in tasks) {
+        const task = tasks[id];
+        if (task !== undefined) {
+          results.push(task);
+        }
+      }
+    }
+    return results;
+  },
+
+  get filtered(): Task[] {
+    if (this.status === undefined || this.status === TaskStatus.All) {
+      return this.tasks;
+    }
+    return this.tasks.filter((t) => t.status === this.status);
+  },
+
+  get statusList(): TaskStatus[] {
+    const results: TaskStatus[] = this.tasks.map((t) => t.status);
+    return results;
+  },
+
+  get statusAmounts(): Record<TaskStatus, number> {
+    const amounts = {
+      0: 0,
+      1: 0,
+      2: 0,
+      3: 0,
+      9: 0,
+    };
+    for (const task of this.tasks) {
+      amounts[task.status]++;
+      amounts[TaskStatus.All]++;
+    }
+    return amounts;
+  },
+  // #endregion
 });
 
 export default store;

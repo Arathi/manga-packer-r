@@ -12,6 +12,7 @@ export enum TaskStatus {
   Running,
   Success,
   Error,
+  All = 9,
 }
 
 export function getStatusName(status: TaskStatus = TaskStatus.Pending): string {
@@ -24,6 +25,8 @@ export function getStatusName(status: TaskStatus = TaskStatus.Pending): string {
       return "success";
     case TaskStatus.Error:
       return "error";
+    case TaskStatus.All:
+      return "all";
   }
 }
 
@@ -37,5 +40,7 @@ export function getStatusText(status: TaskStatus = TaskStatus.Pending): string {
       return "成功";
     case TaskStatus.Error:
       return "错误";
+    case TaskStatus.All:
+      return "全部";
   }
 }

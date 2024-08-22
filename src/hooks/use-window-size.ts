@@ -1,24 +1,22 @@
-import { unsafeWindow } from "$";
 import { useEffect, useState } from "react";
+import { unsafeWindow } from "$";
 
 export interface WindowSize {
   width: number;
   height: number;
-  scale: number;
 }
 
-function innerSize(): WindowSize {
+function getSize(): WindowSize {
   return {
     width: unsafeWindow.innerWidth,
     height: unsafeWindow.innerHeight,
-    scale: unsafeWindow.devicePixelRatio,
   };
 }
 
 const useWindowSize = () => {
-  const [size, setSize] = useState<WindowSize>(innerSize());
+  const [size, setSize] = useState<WindowSize>(getSize());
   useEffect(() => {
-    setSize(innerSize());
+    setSize(getSize());
   }, []);
   return size;
 };

@@ -1,7 +1,7 @@
 import { HTMLAttributes } from "react";
 import Flex from "@/components/flex";
 import ProgressBar from "@/components/progress-bar";
-import Task, { TaskStatus } from "@/domains/task";
+import Task from "@/domains/task";
 
 import "./index.less";
 

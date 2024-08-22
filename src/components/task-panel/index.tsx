@@ -1,8 +1,8 @@
 import { HTMLAttributes, useEffect, useState } from "react";
 import { useSnapshot } from "valtio";
-import { GM_xmlhttpRequest, unsafeWindow } from "$";
 import { zipSync } from "fflate";
 import { saveAs } from "file-saver";
+import { GM_xmlhttpRequest, unsafeWindow } from "$";
 
 import { Adapter, TelegraphAdapter, NHentaiNetAdapter } from "@/adapters";
 import Button from "@/components/button";
@@ -14,6 +14,8 @@ import useWindowSize from "@/hooks/use-window-size";
 import store from "@/store";
 import TaskList from "./task-list";
 import TaskFilter from "./task-filter";
+import { version } from "@/../package.json";
+import RadioGroup from "../radio/group";
 
 import "./index.less";
 
@@ -32,31 +34,11 @@ const TaskPanel: React.FC<Props> = (props) => {
   const [minimized, setMinimized] = useState(false);
   const snap = useSnapshot(store);
 
-  const tasks: Task[] = [];
-  if (snap.gallery !== undefined) {
-    for (const key in snap.gallery.tasks) {
-      const task = snap.gallery.tasks[key];
-      if (task !== undefined) {
-        tasks.push(task);
-      }
-    }
-  }
-
-  const statusList: TaskStatus[] = [];
-  const filteredTasks: Task[] = [];
-  for (const task of tasks) {
-    const taskStatus = task.status ?? TaskStatus.Pending;
-    statusList.push(taskStatus);
-    if (snap.status === undefined || snap.status === taskStatus) {
-      filteredTasks.push(task);
-    }
-  }
-
   const sizeToggleIcon = minimized ? <IconDown /> : <IconUp />;
 
   function onDownloadAllClick() {
     console.debug(`点击下载按钮`);
-    for (const task of tasks) {
+    for (const task of snap.tasks) {
       if (task.status !== TaskStatus.Success) {
         download(task);
       }
@@ -170,13 +152,43 @@ const TaskPanel: React.FC<Props> = (props) => {
     init();
   }, []);
 
+  const filter = (
+    <TaskFilter status={snap.status} onChange={onTaskFilterChange} />
+  );
+
   const hidable = minimized ? null : (
     <>
-      <TaskFilter status={snap.status} onChange={onTaskFilterChange} />
+      <RadioGroup
+        items={[
+          {
+            value: TaskStatus.All,
+            element: `全部 (${snap.statusAmounts[TaskStatus.All]})`,
+          },
+          {
+            value: TaskStatus.Pending,
+            element: `等待 (${snap.statusAmounts[TaskStatus.Pending]})`,
+          },
+          {
+            value: TaskStatus.Running,
+            element: `下载 (${snap.statusAmounts[TaskStatus.Running]})`,
+          },
+          {
+            value: TaskStatus.Error,
+            element: `错误 (${snap.statusAmounts[TaskStatus.Error]})`,
+          },
+          {
+            value: TaskStatus.Success,
+            element: `完成 (${snap.statusAmounts[TaskStatus.Success]})`,
+          },
+        ]}
+        onChange={(value) => {
+          console.info(`任务状态过滤器切换为：`, value);
+          store.status = value;
+        }}
+      />
       <TaskList
-        tasks={filteredTasks}
+        tasks={store.filtered}
         style={{
-          // backgroundColor: "#cccccc",
           height: panelHeight - 99,
         }}
       />
@@ -205,14 +217,21 @@ const TaskPanel: React.FC<Props> = (props) => {
             <IconSave />
           </Button>
         </Flex>
-        <Flex className="buttons-right" flex={1} justify="end" gap={8}>
+        <Flex
+          className="buttons-right"
+          flex={1}
+          justify="end"
+          align="center"
+          gap={8}
+        >
+          <span>{version}</span>
           <Button className="btn-toggle" onClick={onToggleClick}>
             {sizeToggleIcon}
           </Button>
         </Flex>
       </Flex>
       <Flex className="total-progress-row" align="center" gap={8}>
-        <ProgressBar flex={1} statusList={statusList} />
+        <ProgressBar flex={1} statusList={store.statusList} />
       </Flex>
       {hidable}
     </Flex>

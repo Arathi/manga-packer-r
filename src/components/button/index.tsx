@@ -1,6 +1,4 @@
 import { HTMLAttributes } from "react";
-import Flex from "../flex";
-
 import "./index.less";
 
 interface Props extends HTMLAttributes<HTMLButtonElement> {

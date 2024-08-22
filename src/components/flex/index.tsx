@@ -1,6 +1,6 @@
 import { CSSProperties, HTMLAttributes } from "react";
 
-interface Props extends HTMLAttributes<HTMLDivElement> {
+export interface FlexProps extends HTMLAttributes<HTMLDivElement> {
   direction?: CSSProperties["flexDirection"];
   justify?: CSSProperties["justifyContent"];
   align?: CSSProperties["alignItems"];
@@ -8,9 +8,18 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
   flex?: CSSProperties["flex"];
 }
 
-const Flex: React.FC<Props> = (props) => {
-  const { className, direction, justify, align, gap, flex, style, onClick } =
-    props;
+const Flex: React.FC<FlexProps> = (props) => {
+  const {
+    className,
+    direction,
+    justify,
+    align,
+    gap,
+    flex,
+    children,
+    style,
+    onClick,
+  } = props;
   return (
     <div
       className={className}
@@ -25,7 +34,7 @@ const Flex: React.FC<Props> = (props) => {
       }}
       onClick={onClick}
     >
-      {props.children}
+      {children}
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { CSSProperties, HTMLAttributes } from "react";
-import Flex from "../flex";
+import Flex from "@/components/flex";
 import { TaskStatus, getStatusName } from "@/domains/task";
 
 import "./index.less";
@@ -14,7 +14,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
   statusList?: TaskStatus[];
 }
 
-const Progress: React.FC<Props> = ({
+const ProgressBar: React.FC<Props> = ({
   flex = 1,
   height = 20,
   min = 0,
@@ -24,6 +24,7 @@ const Progress: React.FC<Props> = ({
   statusList = [],
 }) => {
   let blocks: React.ReactNode[] = [];
+  let text: string = "";
 
   if (value !== undefined && status !== undefined) {
     const delta = max - min;
@@ -62,9 +63,15 @@ const Progress: React.FC<Props> = ({
         />
       );
     }
-    blocks.push();
+    if (max > 0) {
+      text = `${value}/${max} (${percent.toFixed(2)}%)`;
+    }
   } else {
+    let succ = 0;
     blocks = statusList.map((status, index) => {
+      if (status === TaskStatus.Success) {
+        succ++;
+      }
       const statusName = getStatusName(status);
       return (
         <Flex
@@ -74,13 +81,27 @@ const Progress: React.FC<Props> = ({
         />
       );
     });
+    const total = statusList.length;
+    let percent = (succ * 100) / total;
+    if (total > 0) {
+      text = `${succ}/${total} (${percent.toFixed(2)}%)`;
+    }
   }
 
   return (
-    <Flex className="progress-bar" flex={flex} style={{ height }}>
-      <Flex className="blocks">{blocks}</Flex>
+    <Flex className="progress-bar" direction="column" flex={flex}>
+      <Flex className="blocks" style={{ height }}>
+        {blocks}
+      </Flex>
+      <Flex
+        className="text"
+        justify="center"
+        style={{ height, marginTop: -height, fontSize: height * 0.7 }}
+      >
+        {text}
+      </Flex>
     </Flex>
   );
 };
 
-export default Progress;
+export default ProgressBar;
