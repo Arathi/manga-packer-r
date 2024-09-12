@@ -1,7 +1,7 @@
 export default interface Task {
   id: string | number;
   url: string;
-  fileName: string;
+  name: string;
   status: TaskStatus;
   total?: number;
   loaded?: number;

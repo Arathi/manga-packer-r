@@ -12,6 +12,11 @@ export default defineConfig({
   server: {
     port: 24246,
   },
+  resolve: {
+    alias: {
+      "@": resolve(__dirname, "src"),
+    },
+  },
   plugins: [
     react(),
     monkey({
@@ -43,9 +48,4 @@ export default defineConfig({
     }),
     visualizer(),
   ],
-  resolve: {
-    alias: {
-      "@": resolve(__dirname, "src"),
-    },
-  },
 });

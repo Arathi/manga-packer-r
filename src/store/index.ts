@@ -57,11 +57,11 @@ const store = proxy<State & Computed>({
 
   get statusAmounts(): Record<TaskStatus, number> {
     const amounts = {
-      0: 0,
-      1: 0,
-      2: 0,
-      3: 0,
-      9: 0,
+      [TaskStatus.Pending]: 0,
+      [TaskStatus.Running]: 0,
+      [TaskStatus.Success]: 0,
+      [TaskStatus.Error]: 0,
+      [TaskStatus.All]: 0,
     };
     for (const task of this.tasks) {
       amounts[task.status]++;

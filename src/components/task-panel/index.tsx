@@ -86,7 +86,7 @@ const TaskPanel: React.FC<Props> = (props) => {
       onload: async (event) => {
         const blob = event.response;
         console.info(
-          `任务 ${task.id} 下载完成，状态码：${event.status}（${event.statusText}），长度：${blob.size}`
+          `任务 ${task.id} 下载完成，状态码：${event.status}，长度：${blob.size}，类型：${blob.type}`
         );
         if (event.status === 200) {
           updateTask({
@@ -96,7 +96,20 @@ const TaskPanel: React.FC<Props> = (props) => {
             total: blob.size,
           });
           const buffer = await blob.arrayBuffer();
-          files[task.fileName] = new Uint8Array(buffer);
+          let extName = "img";
+          switch (blob.type) {
+            case "image/jpeg":
+              extName = "jpg";
+              break;
+            case "image/png":
+              extName = "png";
+              break;
+            default:
+              console.warn(`未知的blob类型：${blob.type}`);
+              break;
+          }
+          const fileName = `${task.name}.${extName}`;
+          files[fileName] = new Uint8Array(buffer);
         } else {
           updateTask({
             id: task.id,
@@ -159,6 +172,7 @@ const TaskPanel: React.FC<Props> = (props) => {
   const hidable = minimized ? null : (
     <>
       <RadioGroup
+        value={store.status}
         items={[
           {
             value: TaskStatus.All,

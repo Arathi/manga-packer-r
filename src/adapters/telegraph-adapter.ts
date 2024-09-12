@@ -1,6 +1,7 @@
+import { unsafeWindow } from "$";
+
 import Gallery from "@/domains/gallery";
 import AbstractAdapter from "./abstract-adapter";
-import { unsafeWindow } from "$";
 import Task, { TaskStatus } from "@/domains/task";
 
 interface T {
@@ -22,13 +23,11 @@ export default class TelegraphAdapter extends AbstractAdapter {
       const pageNo = `${key + 1}`.padStart(3, "0");
       const id = `${t.pageId}-${pageNo}`;
       const url = img.src;
-      const lastDotIndex = url.lastIndexOf(".");
-      const extName = url.substring(lastDotIndex);
       tasks[id] = {
         id,
         url,
         status: TaskStatus.Pending,
-        fileName: `${pageNo}${extName}`,
+        name: `${pageNo}`,
       };
     });
 

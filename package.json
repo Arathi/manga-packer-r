@@ -13,18 +13,18 @@
     "file-saver": "^2.0.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "valtio": "^1.13.2"
+    "valtio": "^2.0.0"
   },
   "devDependencies": {
     "@types/file-saver": "^2.0.7",
-    "@types/node": "^20.16.1",
-    "@types/react": "^18.3.4",
+    "@types/node": "^22.5.4",
+    "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "less": "^4.2.0",
     "rollup-plugin-visualizer": "^5.12.0",
-    "typescript": "^5.5.4",
-    "vite": "^5.4.2",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.4",
     "vite-plugin-monkey": "^4.0.6"
   }
 }

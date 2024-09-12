@@ -10,12 +10,12 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 }
 
 const TaskView: React.FC<Props> = ({ task }) => {
-  const { id, fileName = `${id}.png`, status, total, loaded } = task;
+  const { id, name, status, total, loaded } = task;
 
   return (
     <Flex className="task-view" gap={8} align="center">
-      <Flex className="task-file-name" justify="end">
-        {fileName}
+      <Flex className="task-name" justify="end">
+        {name}
       </Flex>
       <ProgressBar
         className="task-progress-bar"

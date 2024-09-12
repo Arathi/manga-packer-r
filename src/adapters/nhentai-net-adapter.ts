@@ -73,21 +73,20 @@ export default class NHentaiNetAdapter extends AbstractAdapter {
       let extName = ``;
       switch (image.t) {
         case "j":
-          extName = "jpg";
+          extName = ".jpg";
           break;
         case "p":
-          extName = "png";
+          extName = ".png";
           break;
         default:
-          extName = "img";
+          console.warn(`未知的图片文件类型：${image.t}`);
           break;
       }
-      const uri = `/galleries/${mediaId}/${pageNo}.${extName}`;
-      const fileName = `${pageNo.padStart(3, "0")}.${extName}`;
+      const uri = `/galleries/${mediaId}/${pageNo}${extName}`;
       tasks[id] = {
         id,
         url: `${baseUrl}${uri}`,
-        fileName,
+        name: `${pageNo.padStart(3, "0")}`,
         status: TaskStatus.Pending,
       };
     });
