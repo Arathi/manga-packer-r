@@ -68,9 +68,14 @@ const TaskPanel: React.FC<Props> = (props) => {
 
   function download(task: Task) {
     console.debug(`任务 ${task.id} 开始下载：`, task.url);
+    const headers: any = {};
+    if (task.referer !== undefined) {
+      headers.Referer = task.referer;
+    }
     GM_xmlhttpRequest({
       method: "GET",
       url: task.url,
+      headers,
       responseType: "blob",
       onprogress: (event) => {
         console.info(

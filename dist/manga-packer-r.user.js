@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Manga Packer R
 // @namespace    com.undsf.tmus.mgpk
-// @version      1.7.0-dev
+// @version      1.7.0
 // @author       Arathi of Nebnizilla
 // @icon         https://vitejs.dev/logo.svg
 // @homepageURL  https://github.com/Arathi/manga-packer-r
@@ -18,15 +18,12 @@
 // @grant        unsafeWindow
 // ==/UserScript==
 
-(r=>{if(typeof GM_addStyle=="function"){GM_addStyle(r);return}const o=document.createElement("style");o.textContent=r,document.head.append(o)})(" .mgpk-button{padding:5px 10px 1px}.progress-bar{border:1px solid gray}.progress-bar .blocks{width:100%}.progress-bar .blocks .progress-block-pending{background-color:#dadada}.progress-bar .blocks .progress-block-running{background-color:#165dff}.progress-bar .blocks .progress-block-success{background-color:#00b42a}.progress-bar .blocks .progress-block-error{background-color:#f53f3f}.task-view .task-file-name{width:64px;-webkit-user-select:none;user-select:none}.task-list{padding-right:2px;overflow-x:hidden;overflow-y:scroll}.task-list::-webkit-scrollbar{width:2px}.task-list::-webkit-scrollbar-thumb{background-color:#0006}.task-list::-webkit-scrollbar-track{background-color:#0000001a}.task-filter{border:1px solid gray;border-radius:0;font-size:12px}.task-filter .task-filter-item{padding:3px;border-left:1px solid gray;-webkit-user-select:none;user-select:none}.task-filter .task-filter-item:first-child{border-left:unset}.task-filter .task-filter-item-all-active{background:linear-gradient(to right,#dadada,#165dff,#f53f3f,#00b42a);color:#fff}.task-filter .task-filter-item-pending-active{background-color:#dadada;color:#000}.task-filter .task-filter-item-running-active{background-color:#165dff;color:#fff}.task-filter .task-filter-item-error-active{background-color:#f53f3f;color:#fff}.task-filter .task-filter-item-success-active{background-color:#00b42a;color:#fff}.task-panel{position:fixed;width:400px;top:8px;right:8px;background-color:#ffffffe6;border:solid 1px rgba(127,127,127,.8);border-radius:5px;padding:8px;font-size:16px;font-weight:400;color:#000} ");
+(r=>{if(typeof GM_addStyle=="function"){GM_addStyle(r);return}const o=document.createElement("style");o.textContent=r,document.head.append(o)})(" .mgpk-button{padding:5px 10px 1px}.progress-bar{border:1px solid gray}.progress-bar .blocks{width:100%}.progress-bar .blocks .progress-block-pending{background-color:#dadada}.progress-bar .blocks .progress-block-running{background-color:#165dff}.progress-bar .blocks .progress-block-success{background-color:#00b42a}.progress-bar .blocks .progress-block-error{background-color:#f53f3f}.task-view .task-file-name{width:40px;-webkit-user-select:none;user-select:none}.task-list{padding-right:2px;overflow-x:hidden;overflow-y:scroll}.task-list::-webkit-scrollbar{width:2px}.task-list::-webkit-scrollbar-thumb{background-color:#0006}.task-list::-webkit-scrollbar-track{background-color:#0000001a}.task-filter{border:1px solid gray;border-radius:0;font-size:12px}.task-filter .task-filter-item{padding:3px;border-left:1px solid gray;-webkit-user-select:none;user-select:none}.task-filter .task-filter-item:first-child{border-left:unset}.task-filter .task-filter-item-all-active{background:linear-gradient(to right,#dadada,#165dff,#f53f3f,#00b42a);color:#fff}.task-filter .task-filter-item-pending-active{background-color:#dadada;color:#000}.task-filter .task-filter-item-running-active{background-color:#165dff;color:#fff}.task-filter .task-filter-item-error-active{background-color:#f53f3f;color:#fff}.task-filter .task-filter-item-success-active{background-color:#00b42a;color:#fff}.task-panel{position:fixed;width:400px;top:8px;right:8px;background-color:#ffffffe6;border:solid 1px rgba(127,127,127,.8);border-radius:5px;padding:8px;font-size:16px;font-weight:400;color:#000} ");
 
 (function (require$$0, require$$0$1) {
   'use strict';
 
   var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
-  function getDefaultExportFromCjs(x) {
-    return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
-  }
   var jsxRuntime = { exports: {} };
   var reactJsxRuntime_production_min = {};
   /**
@@ -38,135 +35,267 @@
    * This source code is licensed under the MIT license found in the
    * LICENSE file in the root directory of this source tree.
    */
-  var f$1 = require$$0, k$1 = Symbol.for("react.element"), l$2 = Symbol.for("react.fragment"), m$2 = Object.prototype.hasOwnProperty, n$2 = f$1.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner, p$2 = { key: true, ref: true, __self: true, __source: true };
-  function q$1(c2, a2, g) {
-    var b, d = {}, e2 = null, h2 = null;
-    void 0 !== g && (e2 = "" + g);
-    void 0 !== a2.key && (e2 = "" + a2.key);
-    void 0 !== a2.ref && (h2 = a2.ref);
-    for (b in a2) m$2.call(a2, b) && !p$2.hasOwnProperty(b) && (d[b] = a2[b]);
-    if (c2 && c2.defaultProps) for (b in a2 = c2.defaultProps, a2) void 0 === d[b] && (d[b] = a2[b]);
-    return { $$typeof: k$1, type: c2, key: e2, ref: h2, props: d, _owner: n$2.current };
+  var f = require$$0, k = Symbol.for("react.element"), l = Symbol.for("react.fragment"), m$1 = Object.prototype.hasOwnProperty, n = f.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner, p = { key: true, ref: true, __self: true, __source: true };
+  function q(c, a, g) {
+    var b, d = {}, e = null, h = null;
+    void 0 !== g && (e = "" + g);
+    void 0 !== a.key && (e = "" + a.key);
+    void 0 !== a.ref && (h = a.ref);
+    for (b in a) m$1.call(a, b) && !p.hasOwnProperty(b) && (d[b] = a[b]);
+    if (c && c.defaultProps) for (b in a = c.defaultProps, a) void 0 === d[b] && (d[b] = a[b]);
+    return { $$typeof: k, type: c, key: e, ref: h, props: d, _owner: n.current };
   }
-  reactJsxRuntime_production_min.Fragment = l$2;
-  reactJsxRuntime_production_min.jsx = q$1;
-  reactJsxRuntime_production_min.jsxs = q$1;
+  reactJsxRuntime_production_min.Fragment = l;
+  reactJsxRuntime_production_min.jsx = q;
+  reactJsxRuntime_production_min.jsxs = q;
   {
     jsxRuntime.exports = reactJsxRuntime_production_min;
   }
   var jsxRuntimeExports = jsxRuntime.exports;
   var client = {};
-  var m$1 = require$$0$1;
+  var m = require$$0$1;
   {
-    client.createRoot = m$1.createRoot;
-    client.hydrateRoot = m$1.hydrateRoot;
+    client.createRoot = m.createRoot;
+    client.hydrateRoot = m.hydrateRoot;
   }
-  const e$1 = Symbol(), t$1 = Symbol(), r$1 = "a", n$1 = "w";
-  let o = (e2, t2) => new Proxy(e2, t2);
-  const s = Object.getPrototypeOf, c = /* @__PURE__ */ new WeakMap(), l$1 = (e2) => e2 && (c.has(e2) ? c.get(e2) : s(e2) === Object.prototype || s(e2) === Array.prototype), f = (e2) => "object" == typeof e2 && null !== e2, i$1 = (e2) => {
-    if (Array.isArray(e2)) return Array.from(e2);
-    const t2 = Object.getOwnPropertyDescriptors(e2);
-    return Object.values(t2).forEach((e3) => {
-      e3.configurable = true;
-    }), Object.create(s(e2), t2);
-  }, u$1 = (e2) => e2[t$1] || e2, a = (s2, c2, f2, p2) => {
-    if (!l$1(s2)) return s2;
-    let g = p2 && p2.get(s2);
-    if (!g) {
-      const e2 = u$1(s2);
-      g = ((e3) => Object.values(Object.getOwnPropertyDescriptors(e3)).some((e4) => !e4.configurable && !e4.writable))(e2) ? [e2, i$1(e2)] : [e2], null == p2 || p2.set(s2, g);
+  const TRACK_MEMO_SYMBOL = Symbol();
+  const GET_ORIGINAL_SYMBOL = Symbol();
+  const AFFECTED_PROPERTY = "a";
+  const IS_TARGET_COPIED_PROPERTY = "f";
+  const PROXY_PROPERTY = "p";
+  const PROXY_CACHE_PROPERTY = "c";
+  const TARGET_CACHE_PROPERTY = "t";
+  const NEXT_OBJECT_PROPERTY = "n";
+  const CHANGED_PROPERTY = "g";
+  const HAS_KEY_PROPERTY = "h";
+  const ALL_OWN_KEYS_PROPERTY = "w";
+  const HAS_OWN_KEY_PROPERTY = "o";
+  const KEYS_PROPERTY = "k";
+  let newProxy$1 = (target, handler) => new Proxy(target, handler);
+  const getProto = Object.getPrototypeOf;
+  const objectsToTrack = /* @__PURE__ */ new WeakMap();
+  const isObjectToTrack = (obj) => obj && (objectsToTrack.has(obj) ? objectsToTrack.get(obj) : getProto(obj) === Object.prototype || getProto(obj) === Array.prototype);
+  const isObject$1 = (x) => typeof x === "object" && x !== null;
+  const needsToCopyTargetObject = (obj) => Object.values(Object.getOwnPropertyDescriptors(obj)).some((descriptor) => !descriptor.configurable && !descriptor.writable);
+  const copyTargetObject = (obj) => {
+    if (Array.isArray(obj)) {
+      return Array.from(obj);
     }
-    const [y2, h2] = g;
-    let w2 = f2 && f2.get(y2);
-    return w2 && w2[1].f === !!h2 || (w2 = ((o2, s3) => {
-      const c3 = { f: s3 };
-      let l2 = false;
-      const f3 = (e2, t2) => {
-        if (!l2) {
-          let s4 = c3[r$1].get(o2);
-          if (s4 || (s4 = {}, c3[r$1].set(o2, s4)), e2 === n$1) s4[n$1] = true;
-          else {
-            let r2 = s4[e2];
-            r2 || (r2 = /* @__PURE__ */ new Set(), s4[e2] = r2), r2.add(t2);
-          }
+    const descriptors = Object.getOwnPropertyDescriptors(obj);
+    Object.values(descriptors).forEach((desc) => {
+      desc.configurable = true;
+    });
+    return Object.create(getProto(obj), descriptors);
+  };
+  const createProxyHandler = (origObj, isTargetCopied) => {
+    const state = {
+      [IS_TARGET_COPIED_PROPERTY]: isTargetCopied
+    };
+    let trackObject = false;
+    const recordUsage = (type, key) => {
+      if (!trackObject) {
+        let used = state[AFFECTED_PROPERTY].get(origObj);
+        if (!used) {
+          used = {};
+          state[AFFECTED_PROPERTY].set(origObj, used);
         }
-      }, i = { get: (e2, n2) => n2 === t$1 ? o2 : (f3("k", n2), a(Reflect.get(e2, n2), c3[r$1], c3.c, c3.t)), has: (t2, n2) => n2 === e$1 ? (l2 = true, c3[r$1].delete(o2), true) : (f3("h", n2), Reflect.has(t2, n2)), getOwnPropertyDescriptor: (e2, t2) => (f3("o", t2), Reflect.getOwnPropertyDescriptor(e2, t2)), ownKeys: (e2) => (f3(n$1), Reflect.ownKeys(e2)) };
-      return s3 && (i.set = i.deleteProperty = () => false), [i, c3];
-    })(y2, !!h2), w2[1].p = o(h2 || y2, w2[0]), f2 && f2.set(y2, w2)), w2[1][r$1] = c2, w2[1].c = f2, w2[1].t = p2, w2[1].p;
-  }, p$1 = (e2, t2, r2, o2, s2 = Object.is) => {
-    if (s2(e2, t2)) return false;
-    if (!f(e2) || !f(t2)) return true;
-    const c2 = r2.get(u$1(e2));
-    if (!c2) return true;
-    if (o2) {
-      const r3 = o2.get(e2);
-      if (r3 && r3.n === t2) return r3.g;
-      o2.set(e2, { n: t2, g: false });
-    }
-    let l2 = null;
-    try {
-      for (const r3 of c2.h || []) if (l2 = Reflect.has(e2, r3) !== Reflect.has(t2, r3), l2) return l2;
-      if (true === c2[n$1]) {
-        if (l2 = ((e3, t3) => {
-          const r3 = Reflect.ownKeys(e3), n2 = Reflect.ownKeys(t3);
-          return r3.length !== n2.length || r3.some((e4, t4) => e4 !== n2[t4]);
-        })(e2, t2), l2) return l2;
-      } else for (const r3 of c2.o || []) if (l2 = !!Reflect.getOwnPropertyDescriptor(e2, r3) != !!Reflect.getOwnPropertyDescriptor(t2, r3), l2) return l2;
-      for (const n2 of c2.k || []) if (l2 = p$1(e2[n2], t2[n2], r2, o2, s2), l2) return l2;
-      return null === l2 && (l2 = true), l2;
-    } finally {
-      o2 && o2.set(e2, { n: t2, g: l2 });
-    }
-  }, y = (e2) => l$1(e2) && e2[t$1] || null, h$1 = (e2, t2 = true) => {
-    c.set(e2, t2);
-  }, w = (e2, t2, r2) => {
-    const o2 = [], s2 = /* @__PURE__ */ new WeakSet(), c2 = (e3, l2) => {
-      if (s2.has(e3)) return;
-      f(e3) && s2.add(e3);
-      const i = f(e3) && t2.get(u$1(e3));
-      if (i) {
-        var a2, p2;
-        if (null == (a2 = i.h) || a2.forEach((e4) => {
-          const t3 = `:has(${String(e4)})`;
-          o2.push(l2 ? [...l2, t3] : [t3]);
-        }), true === i[n$1]) {
-          const e4 = ":ownKeys";
-          o2.push(l2 ? [...l2, e4] : [e4]);
+        if (type === ALL_OWN_KEYS_PROPERTY) {
+          used[ALL_OWN_KEYS_PROPERTY] = true;
         } else {
-          var g;
-          null == (g = i.o) || g.forEach((e4) => {
-            const t3 = `:hasOwn(${String(e4)})`;
-            o2.push(l2 ? [...l2, t3] : [t3]);
+          let set = used[type];
+          if (!set) {
+            set = /* @__PURE__ */ new Set();
+            used[type] = set;
+          }
+          set.add(key);
+        }
+      }
+    };
+    const recordObjectAsUsed = () => {
+      trackObject = true;
+      state[AFFECTED_PROPERTY].delete(origObj);
+    };
+    const handler = {
+      get(target, key) {
+        if (key === GET_ORIGINAL_SYMBOL) {
+          return origObj;
+        }
+        recordUsage(KEYS_PROPERTY, key);
+        return createProxy(Reflect.get(target, key), state[AFFECTED_PROPERTY], state[PROXY_CACHE_PROPERTY], state[TARGET_CACHE_PROPERTY]);
+      },
+      has(target, key) {
+        if (key === TRACK_MEMO_SYMBOL) {
+          recordObjectAsUsed();
+          return true;
+        }
+        recordUsage(HAS_KEY_PROPERTY, key);
+        return Reflect.has(target, key);
+      },
+      getOwnPropertyDescriptor(target, key) {
+        recordUsage(HAS_OWN_KEY_PROPERTY, key);
+        return Reflect.getOwnPropertyDescriptor(target, key);
+      },
+      ownKeys(target) {
+        recordUsage(ALL_OWN_KEYS_PROPERTY);
+        return Reflect.ownKeys(target);
+      }
+    };
+    if (isTargetCopied) {
+      handler.set = handler.deleteProperty = () => false;
+    }
+    return [handler, state];
+  };
+  const getOriginalObject = (obj) => (
+    // unwrap proxy
+    obj[GET_ORIGINAL_SYMBOL] || // otherwise
+    obj
+  );
+  const createProxy = (obj, affected, proxyCache2, targetCache2) => {
+    if (!isObjectToTrack(obj))
+      return obj;
+    let targetAndCopied = targetCache2 && targetCache2.get(obj);
+    if (!targetAndCopied) {
+      const target2 = getOriginalObject(obj);
+      if (needsToCopyTargetObject(target2)) {
+        targetAndCopied = [target2, copyTargetObject(target2)];
+      } else {
+        targetAndCopied = [target2];
+      }
+      targetCache2 === null || targetCache2 === void 0 ? void 0 : targetCache2.set(obj, targetAndCopied);
+    }
+    const [target, copiedTarget] = targetAndCopied;
+    let handlerAndState = proxyCache2 && proxyCache2.get(target);
+    if (!handlerAndState || handlerAndState[1][IS_TARGET_COPIED_PROPERTY] !== !!copiedTarget) {
+      handlerAndState = createProxyHandler(target, !!copiedTarget);
+      handlerAndState[1][PROXY_PROPERTY] = newProxy$1(copiedTarget || target, handlerAndState[0]);
+      if (proxyCache2) {
+        proxyCache2.set(target, handlerAndState);
+      }
+    }
+    handlerAndState[1][AFFECTED_PROPERTY] = affected;
+    handlerAndState[1][PROXY_CACHE_PROPERTY] = proxyCache2;
+    handlerAndState[1][TARGET_CACHE_PROPERTY] = targetCache2;
+    return handlerAndState[1][PROXY_PROPERTY];
+  };
+  const isAllOwnKeysChanged = (prevObj, nextObj) => {
+    const prevKeys = Reflect.ownKeys(prevObj);
+    const nextKeys = Reflect.ownKeys(nextObj);
+    return prevKeys.length !== nextKeys.length || prevKeys.some((k2, i) => k2 !== nextKeys[i]);
+  };
+  const isChanged = (prevObj, nextObj, affected, cache, isEqual = Object.is) => {
+    if (isEqual(prevObj, nextObj)) {
+      return false;
+    }
+    if (!isObject$1(prevObj) || !isObject$1(nextObj))
+      return true;
+    const used = affected.get(getOriginalObject(prevObj));
+    if (!used)
+      return true;
+    if (cache) {
+      const hit = cache.get(prevObj);
+      if (hit && hit[NEXT_OBJECT_PROPERTY] === nextObj) {
+        return hit[CHANGED_PROPERTY];
+      }
+      cache.set(prevObj, {
+        [NEXT_OBJECT_PROPERTY]: nextObj,
+        [CHANGED_PROPERTY]: false
+      });
+    }
+    let changed = null;
+    try {
+      for (const key of used[HAS_KEY_PROPERTY] || []) {
+        changed = Reflect.has(prevObj, key) !== Reflect.has(nextObj, key);
+        if (changed)
+          return changed;
+      }
+      if (used[ALL_OWN_KEYS_PROPERTY] === true) {
+        changed = isAllOwnKeysChanged(prevObj, nextObj);
+        if (changed)
+          return changed;
+      } else {
+        for (const key of used[HAS_OWN_KEY_PROPERTY] || []) {
+          const hasPrev = !!Reflect.getOwnPropertyDescriptor(prevObj, key);
+          const hasNext = !!Reflect.getOwnPropertyDescriptor(nextObj, key);
+          changed = hasPrev !== hasNext;
+          if (changed)
+            return changed;
+        }
+      }
+      for (const key of used[KEYS_PROPERTY] || []) {
+        changed = isChanged(prevObj[key], nextObj[key], affected, cache, isEqual);
+        if (changed)
+          return changed;
+      }
+      if (changed === null)
+        changed = true;
+      return changed;
+    } finally {
+      if (cache) {
+        cache.set(prevObj, {
+          [NEXT_OBJECT_PROPERTY]: nextObj,
+          [CHANGED_PROPERTY]: changed
+        });
+      }
+    }
+  };
+  const getUntracked = (obj) => {
+    if (isObjectToTrack(obj)) {
+      return obj[GET_ORIGINAL_SYMBOL] || null;
+    }
+    return null;
+  };
+  const markToTrack = (obj, mark = true) => {
+    objectsToTrack.set(obj, mark);
+  };
+  const affectedToPathList = (obj, affected, onlyWithValues) => {
+    const list = [];
+    const seen = /* @__PURE__ */ new WeakSet();
+    const walk = (x, path) => {
+      var _a2, _b2, _c;
+      if (seen.has(x)) {
+        return;
+      }
+      if (isObject$1(x)) {
+        seen.add(x);
+      }
+      const used = isObject$1(x) && affected.get(getOriginalObject(x));
+      if (used) {
+        (_a2 = used[HAS_KEY_PROPERTY]) === null || _a2 === void 0 ? void 0 : _a2.forEach((key) => {
+          const segment = `:has(${String(key)})`;
+          list.push(path ? [...path, segment] : [segment]);
+        });
+        if (used[ALL_OWN_KEYS_PROPERTY] === true) {
+          const segment = ":ownKeys";
+          list.push(path ? [...path, segment] : [segment]);
+        } else {
+          (_b2 = used[HAS_OWN_KEY_PROPERTY]) === null || _b2 === void 0 ? void 0 : _b2.forEach((key) => {
+            const segment = `:hasOwn(${String(key)})`;
+            list.push(path ? [...path, segment] : [segment]);
           });
         }
-        null == (p2 = i.k) || p2.forEach((t3) => {
-          !("value" in (Object.getOwnPropertyDescriptor(e3, t3) || {})) || c2(e3[t3], l2 ? [...l2, t3] : [t3]);
+        (_c = used[KEYS_PROPERTY]) === null || _c === void 0 ? void 0 : _c.forEach((key) => {
+          if ("value" in (Object.getOwnPropertyDescriptor(x, key) || {})) {
+            walk(x[key], path ? [...path, key] : [key]);
+          }
         });
-      } else l2 && o2.push(l2);
+      } else if (path) {
+        list.push(path);
+      }
     };
-    return c2(e2), o2;
+    walk(obj);
+    return list;
   };
   const __vite_import_meta_env__$1 = { "BASE_URL": "/", "DEV": false, "MODE": "production", "PROD": true, "SSR": false };
   const isObject = (x) => typeof x === "object" && x !== null;
-  const proxyStateMap = /* @__PURE__ */ new WeakMap();
-  const refSet = /* @__PURE__ */ new WeakSet();
-  const buildProxyFunction = (objectIs = Object.is, newProxy = (target, handler) => new Proxy(target, handler), canProxy = (x) => isObject(x) && !refSet.has(x) && (Array.isArray(x) || !(Symbol.iterator in x)) && !(x instanceof WeakMap) && !(x instanceof WeakSet) && !(x instanceof Error) && !(x instanceof Number) && !(x instanceof Date) && !(x instanceof String) && !(x instanceof RegExp) && !(x instanceof ArrayBuffer), defaultHandlePromise = (promise) => {
-    switch (promise.status) {
-      case "fulfilled":
-        return promise.value;
-      case "rejected":
-        throw promise.reason;
-      default:
-        throw promise;
-    }
-  }, snapCache = /* @__PURE__ */ new WeakMap(), createSnapshot = (target, version, handlePromise = defaultHandlePromise) => {
+  const canProxyDefault = (x) => isObject(x) && !refSet.has(x) && (Array.isArray(x) || !(Symbol.iterator in x)) && !(x instanceof WeakMap) && !(x instanceof WeakSet) && !(x instanceof Error) && !(x instanceof Number) && !(x instanceof Date) && !(x instanceof String) && !(x instanceof RegExp) && !(x instanceof ArrayBuffer) && !(x instanceof Promise);
+  const createSnapshotDefault = (target, version2) => {
     const cache = snapCache.get(target);
-    if ((cache == null ? void 0 : cache[0]) === version) {
+    if ((cache == null ? void 0 : cache[0]) === version2) {
       return cache[1];
     }
     const snap = Array.isArray(target) ? [] : Object.create(Object.getPrototypeOf(target));
-    h$1(snap, true);
-    snapCache.set(target, [version, snap]);
+    markToTrack(snap, true);
+    snapCache.set(target, [version2, snap]);
     Reflect.ownKeys(target).forEach((key) => {
       if (Object.getOwnPropertyDescriptor(snap, key)) {
         return;
@@ -184,36 +313,67 @@
         configurable: true
       };
       if (refSet.has(value)) {
-        h$1(value, false);
-      } else if (value instanceof Promise) {
-        delete desc.value;
-        desc.get = () => handlePromise(value);
+        markToTrack(value, false);
       } else if (proxyStateMap.has(value)) {
         const [target2, ensureVersion] = proxyStateMap.get(
           value
         );
-        desc.value = createSnapshot(
-          target2,
-          ensureVersion(),
-          handlePromise
-        );
+        desc.value = createSnapshot(target2, ensureVersion());
       }
       Object.defineProperty(snap, key, desc);
     });
     return Object.preventExtensions(snap);
-  }, proxyCache = /* @__PURE__ */ new WeakMap(), versionHolder = [1, 1], proxyFunction = (initialObject) => {
-    if (!isObject(initialObject)) {
+  };
+  const createHandlerDefault = (isInitializing, addPropListener, removePropListener, notifyUpdate) => ({
+    deleteProperty(target, prop) {
+      const prevValue = Reflect.get(target, prop);
+      removePropListener(prop);
+      const deleted = Reflect.deleteProperty(target, prop);
+      if (deleted) {
+        notifyUpdate(["delete", [prop], prevValue]);
+      }
+      return deleted;
+    },
+    set(target, prop, value, receiver) {
+      const hasPrevValue = !isInitializing() && Reflect.has(target, prop);
+      const prevValue = Reflect.get(target, prop, receiver);
+      if (hasPrevValue && (objectIs(prevValue, value) || proxyCache.has(value) && objectIs(prevValue, proxyCache.get(value)))) {
+        return true;
+      }
+      removePropListener(prop);
+      if (isObject(value)) {
+        value = getUntracked(value) || value;
+      }
+      const nextValue = !proxyStateMap.has(value) && canProxy(value) ? proxy(value) : value;
+      addPropListener(prop, nextValue);
+      Reflect.set(target, prop, nextValue, receiver);
+      notifyUpdate(["set", [prop], value, prevValue]);
+      return true;
+    }
+  });
+  const proxyStateMap = /* @__PURE__ */ new WeakMap();
+  const refSet = /* @__PURE__ */ new WeakSet();
+  const snapCache = /* @__PURE__ */ new WeakMap();
+  const versionHolder = [1, 1];
+  const proxyCache = /* @__PURE__ */ new WeakMap();
+  let objectIs = Object.is;
+  let newProxy = (target, handler) => new Proxy(target, handler);
+  let canProxy = canProxyDefault;
+  let createSnapshot = createSnapshotDefault;
+  let createHandler = createHandlerDefault;
+  function proxy(baseObject = {}) {
+    if (!isObject(baseObject)) {
       throw new Error("object required");
     }
-    const found = proxyCache.get(initialObject);
+    const found = proxyCache.get(baseObject);
     if (found) {
       return found;
     }
-    let version = versionHolder[0];
+    let version2 = versionHolder[0];
     const listeners = /* @__PURE__ */ new Set();
     const notifyUpdate = (op, nextVersion = ++versionHolder[0]) => {
-      if (version !== nextVersion) {
-        version = nextVersion;
+      if (version2 !== nextVersion) {
+        version2 = nextVersion;
         listeners.forEach((listener) => listener(op, nextVersion));
       }
     };
@@ -223,12 +383,12 @@
         checkVersion = nextCheckVersion;
         propProxyStates.forEach(([propProxyState]) => {
           const propVersion = propProxyState[1](nextCheckVersion);
-          if (propVersion > version) {
-            version = propVersion;
+          if (propVersion > version2) {
+            version2 = propVersion;
           }
         });
       }
-      return version;
+      return version2;
     };
     const createPropListener = (prop) => (op, nextVersion) => {
       const newOp = [...op];
@@ -236,15 +396,18 @@
       notifyUpdate(newOp, nextVersion);
     };
     const propProxyStates = /* @__PURE__ */ new Map();
-    const addPropListener = (prop, propProxyState) => {
-      if ((__vite_import_meta_env__$1 ? "production" : void 0) !== "production" && propProxyStates.has(prop)) {
-        throw new Error("prop listener already exists");
-      }
-      if (listeners.size) {
-        const remove = propProxyState[3](createPropListener(prop));
-        propProxyStates.set(prop, [propProxyState, remove]);
-      } else {
-        propProxyStates.set(prop, [propProxyState]);
+    const addPropListener = (prop, propValue) => {
+      const propProxyState = !refSet.has(propValue) && proxyStateMap.get(propValue);
+      if (propProxyState) {
+        if ((__vite_import_meta_env__$1 ? "production" : void 0) !== "production" && propProxyStates.has(prop)) {
+          throw new Error("prop listener already exists");
+        }
+        if (listeners.size) {
+          const remove = propProxyState[2](createPropListener(prop));
+          propProxyStates.set(prop, [propProxyState, remove]);
+        } else {
+          propProxyStates.set(prop, [propProxyState]);
+        }
       }
     };
     const removePropListener = (prop) => {
@@ -262,7 +425,7 @@
           if ((__vite_import_meta_env__$1 ? "production" : void 0) !== "production" && prevRemove) {
             throw new Error("remove already exists");
           }
-          const remove = propProxyState[3](createPropListener(prop));
+          const remove = propProxyState[2](createPropListener(prop));
           propProxyStates.set(prop, [propProxyState, remove]);
         });
       }
@@ -279,93 +442,28 @@
       };
       return removeListener;
     };
-    const baseObject = Array.isArray(initialObject) ? [] : Object.create(Object.getPrototypeOf(initialObject));
-    const handler = {
-      deleteProperty(target, prop) {
-        const prevValue = Reflect.get(target, prop);
-        removePropListener(prop);
-        const deleted = Reflect.deleteProperty(target, prop);
-        if (deleted) {
-          notifyUpdate(["delete", [prop], prevValue]);
-        }
-        return deleted;
-      },
-      set(target, prop, value, receiver) {
-        const hasPrevValue = Reflect.has(target, prop);
-        const prevValue = Reflect.get(target, prop, receiver);
-        if (hasPrevValue && (objectIs(prevValue, value) || proxyCache.has(value) && objectIs(prevValue, proxyCache.get(value)))) {
-          return true;
-        }
-        removePropListener(prop);
-        if (isObject(value)) {
-          value = y(value) || value;
-        }
-        let nextValue = value;
-        if (value instanceof Promise) {
-          value.then((v) => {
-            value.status = "fulfilled";
-            value.value = v;
-            notifyUpdate(["resolve", [prop], v]);
-          }).catch((e2) => {
-            value.status = "rejected";
-            value.reason = e2;
-            notifyUpdate(["reject", [prop], e2]);
-          });
-        } else {
-          if (!proxyStateMap.has(value) && canProxy(value)) {
-            nextValue = proxyFunction(value);
-          }
-          const childProxyState = !refSet.has(nextValue) && proxyStateMap.get(nextValue);
-          if (childProxyState) {
-            addPropListener(prop, childProxyState);
-          }
-        }
-        Reflect.set(target, prop, nextValue, receiver);
-        notifyUpdate(["set", [prop], value, prevValue]);
-        return true;
-      }
-    };
+    let initializing = true;
+    const handler = createHandler(
+      () => initializing,
+      addPropListener,
+      removePropListener,
+      notifyUpdate
+    );
     const proxyObject = newProxy(baseObject, handler);
-    proxyCache.set(initialObject, proxyObject);
-    const proxyState = [
-      baseObject,
-      ensureVersion,
-      createSnapshot,
-      addListener
-    ];
+    proxyCache.set(baseObject, proxyObject);
+    const proxyState = [baseObject, ensureVersion, addListener];
     proxyStateMap.set(proxyObject, proxyState);
-    Reflect.ownKeys(initialObject).forEach((key) => {
+    Reflect.ownKeys(baseObject).forEach((key) => {
       const desc = Object.getOwnPropertyDescriptor(
-        initialObject,
+        baseObject,
         key
       );
-      if ("value" in desc) {
-        proxyObject[key] = initialObject[key];
-        delete desc.value;
-        delete desc.writable;
+      if ("value" in desc && desc.writable) {
+        proxyObject[key] = baseObject[key];
       }
-      Object.defineProperty(baseObject, key, desc);
     });
+    initializing = false;
     return proxyObject;
-  }) => [
-    // public functions
-    proxyFunction,
-    // shared state
-    proxyStateMap,
-    refSet,
-    // internal things
-    objectIs,
-    newProxy,
-    canProxy,
-    defaultHandlePromise,
-    snapCache,
-    createSnapshot,
-    proxyCache,
-    versionHolder
-  ];
-  const [defaultProxyFunction] = buildProxyFunction();
-  function proxy(initialObject = {}) {
-    return defaultProxyFunction(initialObject);
   }
   function subscribe(proxyObject, callback, notifyInSync) {
     const proxyState = proxyStateMap.get(proxyObject);
@@ -374,7 +472,7 @@
     }
     let promise;
     const ops = [];
-    const addListener = proxyState[3];
+    const addListener = proxyState[2];
     let isListenerActive = false;
     const listener = (op) => {
       ops.push(op);
@@ -394,83 +492,33 @@
       removeListener();
     };
   }
-  function snapshot(proxyObject, handlePromise) {
+  function snapshot(proxyObject) {
     const proxyState = proxyStateMap.get(proxyObject);
     if ((__vite_import_meta_env__$1 ? "production" : void 0) !== "production" && !proxyState) {
       console.warn("Please use proxy object");
     }
-    const [target, ensureVersion, createSnapshot] = proxyState;
-    return createSnapshot(target, ensureVersion(), handlePromise);
+    const [target, ensureVersion] = proxyState;
+    return createSnapshot(target, ensureVersion());
   }
-  var shim = { exports: {} };
-  var useSyncExternalStoreShim_production_min = {};
-  /**
-   * @license React
-   * use-sync-external-store-shim.production.min.js
-   *
-   * Copyright (c) Facebook, Inc. and its affiliates.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE file in the root directory of this source tree.
-   */
-  var e = require$$0;
-  function h(a2, b) {
-    return a2 === b && (0 !== a2 || 1 / a2 === 1 / b) || a2 !== a2 && b !== b;
-  }
-  var k = "function" === typeof Object.is ? Object.is : h, l = e.useState, m = e.useEffect, n = e.useLayoutEffect, p = e.useDebugValue;
-  function q(a2, b) {
-    var d = b(), f2 = l({ inst: { value: d, getSnapshot: b } }), c2 = f2[0].inst, g = f2[1];
-    n(function() {
-      c2.value = d;
-      c2.getSnapshot = b;
-      r(c2) && g({ inst: c2 });
-    }, [a2, d, b]);
-    m(function() {
-      r(c2) && g({ inst: c2 });
-      return a2(function() {
-        r(c2) && g({ inst: c2 });
-      });
-    }, [a2]);
-    p(d);
-    return d;
-  }
-  function r(a2) {
-    var b = a2.getSnapshot;
-    a2 = a2.value;
-    try {
-      var d = b();
-      return !k(a2, d);
-    } catch (f2) {
-      return true;
-    }
-  }
-  function t(a2, b) {
-    return b();
-  }
-  var u = "undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement ? t : q;
-  useSyncExternalStoreShim_production_min.useSyncExternalStore = void 0 !== e.useSyncExternalStore ? e.useSyncExternalStore : u;
-  {
-    shim.exports = useSyncExternalStoreShim_production_min;
-  }
-  var shimExports = shim.exports;
-  const useSyncExternalStoreExports = /* @__PURE__ */ getDefaultExportFromCjs(shimExports);
   const __vite_import_meta_env__ = { "BASE_URL": "/", "DEV": false, "MODE": "production", "PROD": true, "SSR": false };
-  const { use } = require$$0;
-  const { useSyncExternalStore } = useSyncExternalStoreExports;
   const useAffectedDebugValue = (state, affected) => {
     const pathList = require$$0.useRef();
     require$$0.useEffect(() => {
-      pathList.current = w(state, affected);
+      pathList.current = affectedToPathList(state, affected);
     });
     require$$0.useDebugValue(pathList.current);
   };
+  const condUseAffectedDebugValue = useAffectedDebugValue;
   const targetCache = /* @__PURE__ */ new WeakMap();
   function useSnapshot(proxyObject, options) {
     const notifyInSync = void 0;
+    const affected = require$$0.useMemo(
+      () => proxyObject && /* @__PURE__ */ new WeakMap(),
+      [proxyObject]
+    );
     const lastSnapshot = require$$0.useRef();
-    const lastAffected = require$$0.useRef();
     let inRender = true;
-    const currSnapshot = useSyncExternalStore(
+    const currSnapshot = require$$0.useSyncExternalStore(
       require$$0.useCallback(
         (callback) => {
           const unsub = subscribe(proxyObject, callback);
@@ -480,41 +528,32 @@
         [proxyObject, notifyInSync]
       ),
       () => {
-        const nextSnapshot = snapshot(proxyObject, use);
+        const nextSnapshot = snapshot(proxyObject);
         try {
-          if (!inRender && lastSnapshot.current && lastAffected.current && !p$1(
+          if (!inRender && lastSnapshot.current && !isChanged(
             lastSnapshot.current,
             nextSnapshot,
-            lastAffected.current,
+            affected,
             /* @__PURE__ */ new WeakMap()
           )) {
             return lastSnapshot.current;
           }
-        } catch (e2) {
+        } catch (e) {
         }
         return nextSnapshot;
       },
-      () => snapshot(proxyObject, use)
+      () => snapshot(proxyObject)
     );
     inRender = false;
-    const currAffected = /* @__PURE__ */ new WeakMap();
-    require$$0.useEffect(() => {
+    require$$0.useLayoutEffect(() => {
       lastSnapshot.current = currSnapshot;
-      lastAffected.current = currAffected;
     });
     if ((__vite_import_meta_env__ ? "production" : void 0) !== "production") {
-      useAffectedDebugValue(currSnapshot, currAffected);
+      condUseAffectedDebugValue(currSnapshot, affected);
     }
-    const proxyCache = require$$0.useMemo(() => /* @__PURE__ */ new WeakMap(), []);
-    return a(
-      currSnapshot,
-      currAffected,
-      proxyCache,
-      targetCache
-    );
+    const proxyCache2 = require$$0.useMemo(() => /* @__PURE__ */ new WeakMap(), []);
+    return createProxy(currSnapshot, affected, proxyCache2, targetCache);
   }
-  var _GM_xmlhttpRequest = /* @__PURE__ */ (() => typeof GM_xmlhttpRequest != "undefined" ? GM_xmlhttpRequest : void 0)();
-  var _unsafeWindow = /* @__PURE__ */ (() => typeof unsafeWindow != "undefined" ? unsafeWindow : void 0)();
   var u8 = Uint8Array, u16 = Uint16Array, i32 = Int32Array;
   var fleb = new u8([
     0,
@@ -593,13 +632,13 @@
     for (var i = 0; i < 31; ++i) {
       b[i] = start += 1 << eb[i - 1];
     }
-    var r2 = new i32(b[30]);
+    var r = new i32(b[30]);
     for (var i = 1; i < 30; ++i) {
       for (var j = b[i]; j < b[i + 1]; ++j) {
-        r2[j] = j - b[i] << 5 | i;
+        r[j] = j - b[i] << 5 | i;
       }
     }
-    return { b, r: r2 };
+    return { b, r };
   };
   var _a = freb(fleb, 2), fl = _a.b, revfl = _a.r;
   fl[28] = 258, revfl[258] = 28;
@@ -611,11 +650,11 @@
     x = (x & 61680) >> 4 | (x & 3855) << 4;
     rev[i] = ((x & 65280) >> 8 | (x & 255) << 8) >> 1;
   }
-  var hMap = function(cd, mb, r2) {
-    var s2 = cd.length;
+  var hMap = function(cd, mb, r) {
+    var s = cd.length;
     var i = 0;
     var l2 = new u16(mb);
-    for (; i < s2; ++i) {
+    for (; i < s; ++i) {
       if (cd[i])
         ++l2[cd[i] - 1];
     }
@@ -625,8 +664,8 @@
     }
     var co;
     {
-      co = new u16(s2);
-      for (i = 0; i < s2; ++i) {
+      co = new u16(s);
+      for (i = 0; i < s; ++i) {
         if (cd[i]) {
           co[i] = rev[le[cd[i] - 1]++] >> 15 - cd[i];
         }
@@ -651,10 +690,10 @@
   var shft = function(p2) {
     return (p2 + 7) / 8 | 0;
   };
-  var slc = function(v, s2, e2) {
-    if (e2 == null || e2 > v.length)
-      e2 = v.length;
-    return new u8(v.subarray(s2, e2));
+  var slc = function(v, s, e) {
+    if (e == null || e > v.length)
+      e = v.length;
+    return new u8(v.subarray(s, e));
   };
   var ec = [
     "unexpected EOF",
@@ -674,68 +713,68 @@
     // determined by unknown compression method
   ];
   var err = function(ind, msg, nt) {
-    var e2 = new Error(msg || ec[ind]);
-    e2.code = ind;
+    var e = new Error(msg || ec[ind]);
+    e.code = ind;
     if (Error.captureStackTrace)
-      Error.captureStackTrace(e2, err);
+      Error.captureStackTrace(e, err);
     if (!nt)
-      throw e2;
-    return e2;
+      throw e;
+    return e;
   };
   var wbits = function(d, p2, v) {
     v <<= p2 & 7;
-    var o2 = p2 / 8 | 0;
-    d[o2] |= v;
-    d[o2 + 1] |= v >> 8;
+    var o = p2 / 8 | 0;
+    d[o] |= v;
+    d[o + 1] |= v >> 8;
   };
   var wbits16 = function(d, p2, v) {
     v <<= p2 & 7;
-    var o2 = p2 / 8 | 0;
-    d[o2] |= v;
-    d[o2 + 1] |= v >> 8;
-    d[o2 + 2] |= v >> 16;
+    var o = p2 / 8 | 0;
+    d[o] |= v;
+    d[o + 1] |= v >> 8;
+    d[o + 2] |= v >> 16;
   };
   var hTree = function(d, mb) {
-    var t2 = [];
+    var t = [];
     for (var i = 0; i < d.length; ++i) {
       if (d[i])
-        t2.push({ s: i, f: d[i] });
+        t.push({ s: i, f: d[i] });
     }
-    var s2 = t2.length;
-    var t22 = t2.slice();
-    if (!s2)
+    var s = t.length;
+    var t2 = t.slice();
+    if (!s)
       return { t: et, l: 0 };
-    if (s2 == 1) {
-      var v = new u8(t2[0].s + 1);
-      v[t2[0].s] = 1;
+    if (s == 1) {
+      var v = new u8(t[0].s + 1);
+      v[t[0].s] = 1;
       return { t: v, l: 1 };
     }
-    t2.sort(function(a2, b) {
-      return a2.f - b.f;
+    t.sort(function(a, b) {
+      return a.f - b.f;
     });
-    t2.push({ s: -1, f: 25001 });
-    var l2 = t2[0], r2 = t2[1], i0 = 0, i1 = 1, i2 = 2;
-    t2[0] = { s: -1, f: l2.f + r2.f, l: l2, r: r2 };
-    while (i1 != s2 - 1) {
-      l2 = t2[t2[i0].f < t2[i2].f ? i0++ : i2++];
-      r2 = t2[i0 != i1 && t2[i0].f < t2[i2].f ? i0++ : i2++];
-      t2[i1++] = { s: -1, f: l2.f + r2.f, l: l2, r: r2 };
+    t.push({ s: -1, f: 25001 });
+    var l2 = t[0], r = t[1], i0 = 0, i1 = 1, i2 = 2;
+    t[0] = { s: -1, f: l2.f + r.f, l: l2, r };
+    while (i1 != s - 1) {
+      l2 = t[t[i0].f < t[i2].f ? i0++ : i2++];
+      r = t[i0 != i1 && t[i0].f < t[i2].f ? i0++ : i2++];
+      t[i1++] = { s: -1, f: l2.f + r.f, l: l2, r };
     }
-    var maxSym = t22[0].s;
-    for (var i = 1; i < s2; ++i) {
-      if (t22[i].s > maxSym)
-        maxSym = t22[i].s;
+    var maxSym = t2[0].s;
+    for (var i = 1; i < s; ++i) {
+      if (t2[i].s > maxSym)
+        maxSym = t2[i].s;
     }
     var tr = new u16(maxSym + 1);
-    var mbt = ln(t2[i1 - 1], tr, 0);
+    var mbt = ln(t[i1 - 1], tr, 0);
     if (mbt > mb) {
       var i = 0, dt = 0;
       var lft = mbt - mb, cst = 1 << lft;
-      t22.sort(function(a2, b) {
-        return tr[b.s] - tr[a2.s] || a2.f - b.f;
+      t2.sort(function(a, b) {
+        return tr[b.s] - tr[a.s] || a.f - b.f;
       });
-      for (; i < s2; ++i) {
-        var i2_1 = t22[i].s;
+      for (; i < s; ++i) {
+        var i2_1 = t2[i].s;
         if (tr[i2_1] > mb) {
           dt += cst - (1 << mbt - tr[i2_1]);
           tr[i2_1] = mb;
@@ -744,14 +783,14 @@
       }
       dt >>= lft;
       while (dt > 0) {
-        var i2_2 = t22[i].s;
+        var i2_2 = t2[i].s;
         if (tr[i2_2] < mb)
           dt -= 1 << mb - tr[i2_2]++ - 1;
         else
           ++i;
       }
       for (; i >= 0 && dt; --i) {
-        var i2_3 = t22[i].s;
+        var i2_3 = t2[i].s;
         if (tr[i2_3] == mb) {
           --tr[i2_3];
           ++dt;
@@ -764,40 +803,40 @@
   var ln = function(n2, l2, d) {
     return n2.s == -1 ? Math.max(ln(n2.l, l2, d + 1), ln(n2.r, l2, d + 1)) : l2[n2.s] = d;
   };
-  var lc = function(c2) {
-    var s2 = c2.length;
-    while (s2 && !c2[--s2])
+  var lc = function(c) {
+    var s = c.length;
+    while (s && !c[--s])
       ;
-    var cl = new u16(++s2);
-    var cli = 0, cln = c2[0], cls = 1;
-    var w2 = function(v) {
+    var cl = new u16(++s);
+    var cli = 0, cln = c[0], cls = 1;
+    var w = function(v) {
       cl[cli++] = v;
     };
-    for (var i = 1; i <= s2; ++i) {
-      if (c2[i] == cln && i != s2)
+    for (var i = 1; i <= s; ++i) {
+      if (c[i] == cln && i != s)
         ++cls;
       else {
         if (!cln && cls > 2) {
           for (; cls > 138; cls -= 138)
-            w2(32754);
+            w(32754);
           if (cls > 2) {
-            w2(cls > 10 ? cls - 11 << 5 | 28690 : cls - 3 << 5 | 12305);
+            w(cls > 10 ? cls - 11 << 5 | 28690 : cls - 3 << 5 | 12305);
             cls = 0;
           }
         } else if (cls > 3) {
-          w2(cln), --cls;
+          w(cln), --cls;
           for (; cls > 6; cls -= 6)
-            w2(8304);
+            w(8304);
           if (cls > 2)
-            w2(cls - 3 << 5 | 8208), cls = 0;
+            w(cls - 3 << 5 | 8208), cls = 0;
         }
         while (cls--)
-          w2(cln);
+          w(cln);
         cls = 1;
-        cln = c2[i];
+        cln = c[i];
       }
     }
-    return { c: cl.subarray(0, cli), n: s2 };
+    return { c: cl.subarray(0, cli), n: s };
   };
   var clen = function(cf, cl) {
     var l2 = 0;
@@ -806,15 +845,15 @@
     return l2;
   };
   var wfblk = function(out, pos, dat) {
-    var s2 = dat.length;
-    var o2 = shft(pos + 2);
-    out[o2] = s2 & 255;
-    out[o2 + 1] = s2 >> 8;
-    out[o2 + 2] = out[o2] ^ 255;
-    out[o2 + 3] = out[o2 + 1] ^ 255;
-    for (var i = 0; i < s2; ++i)
-      out[o2 + i + 4] = dat[i];
-    return (o2 + 4 + s2) * 8;
+    var s = dat.length;
+    var o = shft(pos + 2);
+    out[o] = s & 255;
+    out[o + 1] = s >> 8;
+    out[o + 2] = out[o] ^ 255;
+    out[o + 3] = out[o + 1] ^ 255;
+    for (var i = 0; i < s; ++i)
+      out[o + i + 4] = dat[i];
+    return (o + 4 + s) * 8;
   };
   var wblk = function(dat, out, final, syms, lf, df, eb, li, bs, bl, p2) {
     wbits(out, p2++, final);
@@ -883,16 +922,16 @@
   var deo = /* @__PURE__ */ new i32([65540, 131080, 131088, 131104, 262176, 1048704, 1048832, 2114560, 2117632]);
   var et = /* @__PURE__ */ new u8(0);
   var dflt = function(dat, lvl, plvl, pre, post, st) {
-    var s2 = st.z || dat.length;
-    var o2 = new u8(pre + s2 + 5 * (1 + Math.ceil(s2 / 7e3)) + post);
-    var w2 = o2.subarray(pre, o2.length - post);
+    var s = st.z || dat.length;
+    var o = new u8(pre + s + 5 * (1 + Math.ceil(s / 7e3)) + post);
+    var w = o.subarray(pre, o.length - post);
     var lst = st.l;
     var pos = (st.r || 0) & 7;
     if (lvl) {
       if (pos)
-        w2[0] = st.r >> 3;
+        w[0] = st.r >> 3;
       var opt = deo[lvl - 1];
-      var n2 = opt >> 13, c2 = opt & 8191;
+      var n2 = opt >> 13, c = opt & 8191;
       var msk_1 = (1 << plvl) - 1;
       var prev = st.p || new u16(32768), head = st.h || new u16(msk_1 + 1);
       var bs1_1 = Math.ceil(plvl / 3), bs2_1 = 2 * bs1_1;
@@ -902,22 +941,22 @@
       var syms = new i32(25e3);
       var lf = new u16(288), df = new u16(32);
       var lc_1 = 0, eb = 0, i = st.i || 0, li = 0, wi = st.w || 0, bs = 0;
-      for (; i + 2 < s2; ++i) {
+      for (; i + 2 < s; ++i) {
         var hv = hsh(i);
         var imod = i & 32767, pimod = head[hv];
         prev[imod] = pimod;
         head[hv] = imod;
         if (wi <= i) {
-          var rem = s2 - i;
+          var rem = s - i;
           if ((lc_1 > 7e3 || li > 24576) && (rem > 423 || !lst)) {
-            pos = wblk(dat, w2, 0, syms, lf, df, eb, li, bs, i - bs, pos);
+            pos = wblk(dat, w, 0, syms, lf, df, eb, li, bs, i - bs, pos);
             li = lc_1 = eb = 0, bs = i;
             for (var j = 0; j < 286; ++j)
               lf[j] = 0;
             for (var j = 0; j < 30; ++j)
               df[j] = 0;
           }
-          var l2 = 2, d = 0, ch_1 = c2, dif = imod - pimod & 32767;
+          var l2 = 2, d = 0, ch_1 = c, dif = imod - pimod & 32767;
           if (rem > 2 && hv == hsh(i - dif)) {
             var maxn = Math.min(n2, rem) - 1;
             var maxd = Math.min(32767, i);
@@ -960,50 +999,50 @@
           }
         }
       }
-      for (i = Math.max(i, wi); i < s2; ++i) {
+      for (i = Math.max(i, wi); i < s; ++i) {
         syms[li++] = dat[i];
         ++lf[dat[i]];
       }
-      pos = wblk(dat, w2, lst, syms, lf, df, eb, li, bs, i - bs, pos);
+      pos = wblk(dat, w, lst, syms, lf, df, eb, li, bs, i - bs, pos);
       if (!lst) {
-        st.r = pos & 7 | w2[pos / 8 | 0] << 3;
+        st.r = pos & 7 | w[pos / 8 | 0] << 3;
         pos -= 7;
         st.h = head, st.p = prev, st.i = i, st.w = wi;
       }
     } else {
-      for (var i = st.w || 0; i < s2 + lst; i += 65535) {
-        var e2 = i + 65535;
-        if (e2 >= s2) {
-          w2[pos / 8 | 0] = lst;
-          e2 = s2;
+      for (var i = st.w || 0; i < s + lst; i += 65535) {
+        var e = i + 65535;
+        if (e >= s) {
+          w[pos / 8 | 0] = lst;
+          e = s;
         }
-        pos = wfblk(w2, pos + 1, dat.subarray(i, e2));
+        pos = wfblk(w, pos + 1, dat.subarray(i, e));
       }
-      st.i = s2;
+      st.i = s;
     }
-    return slc(o2, 0, pre + shft(pos) + post);
+    return slc(o, 0, pre + shft(pos) + post);
   };
   var crct = /* @__PURE__ */ function() {
-    var t2 = new Int32Array(256);
+    var t = new Int32Array(256);
     for (var i = 0; i < 256; ++i) {
-      var c2 = i, k2 = 9;
+      var c = i, k2 = 9;
       while (--k2)
-        c2 = (c2 & 1 && -306674912) ^ c2 >>> 1;
-      t2[i] = c2;
+        c = (c & 1 && -306674912) ^ c >>> 1;
+      t[i] = c;
     }
-    return t2;
+    return t;
   }();
   var crc = function() {
-    var c2 = -1;
+    var c = -1;
     return {
       p: function(d) {
-        var cr = c2;
+        var cr = c;
         for (var i = 0; i < d.length; ++i)
           cr = crct[cr & 255 ^ d[i]] ^ cr >>> 8;
-        c2 = cr;
+        c = cr;
       },
       d: function() {
-        return ~c2;
+        return ~c;
       }
     };
   };
@@ -1021,13 +1060,13 @@
     }
     return dflt(dat, opt.level == null ? 6 : opt.level, opt.mem == null ? st.l ? Math.ceil(Math.max(8, Math.min(13, Math.log(dat.length))) * 1.5) : 20 : 12 + opt.mem, pre, post, st);
   };
-  var mrg = function(a2, b) {
-    var o2 = {};
-    for (var k2 in a2)
-      o2[k2] = a2[k2];
+  var mrg = function(a, b) {
+    var o = {};
+    for (var k2 in a)
+      o[k2] = a[k2];
     for (var k2 in b)
-      o2[k2] = b[k2];
-    return o2;
+      o[k2] = b[k2];
+    return o;
   };
   var wbytes = function(d, b, v) {
     for (; v; ++b)
@@ -1036,16 +1075,16 @@
   function deflateSync(data, opts) {
     return dopt(data, opts || {}, 0, 0);
   }
-  var fltn = function(d, p2, t2, o2) {
+  var fltn = function(d, p2, t, o) {
     for (var k2 in d) {
-      var val = d[k2], n2 = p2 + k2, op = o2;
+      var val = d[k2], n2 = p2 + k2, op = o;
       if (Array.isArray(val))
-        op = mrg(o2, val[1]), val = val[0];
+        op = mrg(o, val[1]), val = val[0];
       if (val instanceof u8)
-        t2[n2] = [val, op];
+        t[n2] = [val, op];
       else {
-        t2[n2 += "/"] = [new u8(0), op];
-        fltn(val, n2, t2, o2);
+        t[n2 += "/"] = [new u8(0), op];
+        fltn(val, n2, t, o);
       }
     }
   };
@@ -1055,7 +1094,7 @@
   try {
     td.decode(et, { stream: true });
     tds = 1;
-  } catch (e2) {
+  } catch (e) {
   }
   function strToU8(str, latin1) {
     var i;
@@ -1064,7 +1103,7 @@
     var l2 = str.length;
     var ar = new u8(str.length + (str.length >> 1));
     var ai = 0;
-    var w2 = function(v) {
+    var w = function(v) {
       ar[ai++] = v;
     };
     for (var i = 0; i < l2; ++i) {
@@ -1073,15 +1112,15 @@
         n2.set(ar);
         ar = n2;
       }
-      var c2 = str.charCodeAt(i);
-      if (c2 < 128 || latin1)
-        w2(c2);
-      else if (c2 < 2048)
-        w2(192 | c2 >> 6), w2(128 | c2 & 63);
-      else if (c2 > 55295 && c2 < 57344)
-        c2 = 65536 + (c2 & 1023 << 10) | str.charCodeAt(++i) & 1023, w2(240 | c2 >> 18), w2(128 | c2 >> 12 & 63), w2(128 | c2 >> 6 & 63), w2(128 | c2 & 63);
+      var c = str.charCodeAt(i);
+      if (c < 128 || latin1)
+        w(c);
+      else if (c < 2048)
+        w(192 | c >> 6), w(128 | c & 63);
+      else if (c > 55295 && c < 57344)
+        c = 65536 + (c & 1023 << 10) | str.charCodeAt(++i) & 1023, w(240 | c >> 18), w(128 | c >> 12 & 63), w(128 | c >> 6 & 63), w(128 | c & 63);
       else
-        w2(224 | c2 >> 12), w2(128 | c2 >> 6 & 63), w2(128 | c2 & 63);
+        w(224 | c >> 12), w(128 | c >> 6 & 63), w(128 | c & 63);
     }
     return slc(ar, 0, ai);
   }
@@ -1097,22 +1136,22 @@
     }
     return le;
   };
-  var wzh = function(d, b, f2, fn, u2, c2, ce, co) {
+  var wzh = function(d, b, f2, fn, u, c, ce, co) {
     var fl2 = fn.length, ex = f2.extra, col = co && co.length;
     var exl = exfl(ex);
     wbytes(d, b, ce != null ? 33639248 : 67324752), b += 4;
     if (ce != null)
       d[b++] = 20, d[b++] = f2.os;
     d[b] = 20, b += 2;
-    d[b++] = f2.flag << 1 | (c2 < 0 && 8), d[b++] = u2 && 8;
+    d[b++] = f2.flag << 1 | (c < 0 && 8), d[b++] = u && 8;
     d[b++] = f2.compression & 255, d[b++] = f2.compression >> 8;
-    var dt = new Date(f2.mtime == null ? Date.now() : f2.mtime), y2 = dt.getFullYear() - 1980;
-    if (y2 < 0 || y2 > 119)
+    var dt = new Date(f2.mtime == null ? Date.now() : f2.mtime), y = dt.getFullYear() - 1980;
+    if (y < 0 || y > 119)
       err(10);
-    wbytes(d, b, y2 << 25 | dt.getMonth() + 1 << 21 | dt.getDate() << 16 | dt.getHours() << 11 | dt.getMinutes() << 5 | dt.getSeconds() >> 1), b += 4;
-    if (c2 != -1) {
+    wbytes(d, b, y << 25 | dt.getMonth() + 1 << 21 | dt.getDate() << 16 | dt.getHours() << 11 | dt.getMinutes() << 5 | dt.getSeconds() >> 1), b += 4;
+    if (c != -1) {
       wbytes(d, b, f2.crc);
-      wbytes(d, b + 4, c2 < 0 ? -c2 - 2 : c2);
+      wbytes(d, b + 4, c < 0 ? -c - 2 : c);
       wbytes(d, b + 8, f2.size);
     }
     wbytes(d, b + 12, fl2);
@@ -1136,114 +1175,114 @@
       d.set(co, b), b += col;
     return b;
   };
-  var wzf = function(o2, b, c2, d, e2) {
-    wbytes(o2, b, 101010256);
-    wbytes(o2, b + 8, c2);
-    wbytes(o2, b + 10, c2);
-    wbytes(o2, b + 12, d);
-    wbytes(o2, b + 16, e2);
+  var wzf = function(o, b, c, d, e) {
+    wbytes(o, b, 101010256);
+    wbytes(o, b + 8, c);
+    wbytes(o, b + 10, c);
+    wbytes(o, b + 12, d);
+    wbytes(o, b + 16, e);
   };
   function zipSync(data, opts) {
     if (!opts)
       opts = {};
-    var r2 = {};
+    var r = {};
     var files2 = [];
-    fltn(data, "", r2, opts);
-    var o2 = 0;
+    fltn(data, "", r, opts);
+    var o = 0;
     var tot = 0;
-    for (var fn in r2) {
-      var _a2 = r2[fn], file = _a2[0], p2 = _a2[1];
+    for (var fn in r) {
+      var _a2 = r[fn], file = _a2[0], p2 = _a2[1];
       var compression = p2.level == 0 ? 0 : 8;
-      var f2 = strToU8(fn), s2 = f2.length;
+      var f2 = strToU8(fn), s = f2.length;
       var com = p2.comment, m2 = com && strToU8(com), ms = m2 && m2.length;
       var exl = exfl(p2.extra);
-      if (s2 > 65535)
+      if (s > 65535)
         err(11);
       var d = compression ? deflateSync(file, p2) : file, l2 = d.length;
-      var c2 = crc();
-      c2.p(file);
+      var c = crc();
+      c.p(file);
       files2.push(mrg(p2, {
         size: file.length,
-        crc: c2.d(),
+        crc: c.d(),
         c: d,
         f: f2,
         m: m2,
-        u: s2 != fn.length || m2 && com.length != ms,
-        o: o2,
+        u: s != fn.length || m2 && com.length != ms,
+        o,
         compression
       }));
-      o2 += 30 + s2 + exl + l2;
-      tot += 76 + 2 * (s2 + exl) + (ms || 0) + l2;
+      o += 30 + s + exl + l2;
+      tot += 76 + 2 * (s + exl) + (ms || 0) + l2;
     }
-    var out = new u8(tot + 22), oe = o2, cdl = tot - o2;
+    var out = new u8(tot + 22), oe = o, cdl = tot - o;
     for (var i = 0; i < files2.length; ++i) {
       var f2 = files2[i];
       wzh(out, f2.o, f2, f2.f, f2.u, f2.c.length);
       var badd = 30 + f2.f.length + exfl(f2.extra);
       out.set(f2.c, f2.o + badd);
-      wzh(out, o2, f2, f2.f, f2.u, f2.c.length, f2.o, f2.m), o2 += 16 + badd + (f2.m ? f2.m.length : 0);
+      wzh(out, o, f2, f2.f, f2.u, f2.c.length, f2.o, f2.m), o += 16 + badd + (f2.m ? f2.m.length : 0);
     }
-    wzf(out, o2, files2.length, cdl, oe);
+    wzf(out, o, files2.length, cdl, oe);
     return out;
   }
   var FileSaver_min = { exports: {} };
   (function(module, exports) {
-    (function(a2, b) {
+    (function(a, b) {
       b();
     })(commonjsGlobal, function() {
-      function b(a3, b2) {
-        return "undefined" == typeof b2 ? b2 = { autoBom: false } : "object" != typeof b2 && (console.warn("Deprecated: Expected third argument to be a object"), b2 = { autoBom: !b2 }), b2.autoBom && /^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(a3.type) ? new Blob(["\uFEFF", a3], { type: a3.type }) : a3;
+      function b(a2, b2) {
+        return "undefined" == typeof b2 ? b2 = { autoBom: false } : "object" != typeof b2 && (console.warn("Deprecated: Expected third argument to be a object"), b2 = { autoBom: !b2 }), b2.autoBom && /^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(a2.type) ? new Blob(["\uFEFF", a2], { type: a2.type }) : a2;
       }
-      function c2(a3, b2, c3) {
+      function c(a2, b2, c2) {
         var d2 = new XMLHttpRequest();
-        d2.open("GET", a3), d2.responseType = "blob", d2.onload = function() {
-          g(d2.response, b2, c3);
+        d2.open("GET", a2), d2.responseType = "blob", d2.onload = function() {
+          g(d2.response, b2, c2);
         }, d2.onerror = function() {
           console.error("could not download file");
         }, d2.send();
       }
-      function d(a3) {
+      function d(a2) {
         var b2 = new XMLHttpRequest();
-        b2.open("HEAD", a3, false);
+        b2.open("HEAD", a2, false);
         try {
           b2.send();
-        } catch (a4) {
+        } catch (a3) {
         }
         return 200 <= b2.status && 299 >= b2.status;
       }
-      function e2(a3) {
+      function e(a2) {
         try {
-          a3.dispatchEvent(new MouseEvent("click"));
-        } catch (c3) {
+          a2.dispatchEvent(new MouseEvent("click"));
+        } catch (c2) {
           var b2 = document.createEvent("MouseEvents");
-          b2.initMouseEvent("click", true, true, window, 0, 0, 0, 80, 20, false, false, false, false, 0, null), a3.dispatchEvent(b2);
+          b2.initMouseEvent("click", true, true, window, 0, 0, 0, 80, 20, false, false, false, false, 0, null), a2.dispatchEvent(b2);
         }
       }
-      var f2 = "object" == typeof window && window.window === window ? window : "object" == typeof self && self.self === self ? self : "object" == typeof commonjsGlobal && commonjsGlobal.global === commonjsGlobal ? commonjsGlobal : void 0, a2 = f2.navigator && /Macintosh/.test(navigator.userAgent) && /AppleWebKit/.test(navigator.userAgent) && !/Safari/.test(navigator.userAgent), g = f2.saveAs || ("object" != typeof window || window !== f2 ? function() {
-      } : "download" in HTMLAnchorElement.prototype && !a2 ? function(b2, g2, h2) {
+      var f2 = "object" == typeof window && window.window === window ? window : "object" == typeof self && self.self === self ? self : "object" == typeof commonjsGlobal && commonjsGlobal.global === commonjsGlobal ? commonjsGlobal : void 0, a = f2.navigator && /Macintosh/.test(navigator.userAgent) && /AppleWebKit/.test(navigator.userAgent) && !/Safari/.test(navigator.userAgent), g = f2.saveAs || ("object" != typeof window || window !== f2 ? function() {
+      } : "download" in HTMLAnchorElement.prototype && !a ? function(b2, g2, h) {
         var i = f2.URL || f2.webkitURL, j = document.createElement("a");
-        g2 = g2 || b2.name || "download", j.download = g2, j.rel = "noopener", "string" == typeof b2 ? (j.href = b2, j.origin === location.origin ? e2(j) : d(j.href) ? c2(b2, g2, h2) : e2(j, j.target = "_blank")) : (j.href = i.createObjectURL(b2), setTimeout(function() {
+        g2 = g2 || b2.name || "download", j.download = g2, j.rel = "noopener", "string" == typeof b2 ? (j.href = b2, j.origin === location.origin ? e(j) : d(j.href) ? c(b2, g2, h) : e(j, j.target = "_blank")) : (j.href = i.createObjectURL(b2), setTimeout(function() {
           i.revokeObjectURL(j.href);
         }, 4e4), setTimeout(function() {
-          e2(j);
+          e(j);
         }, 0));
-      } : "msSaveOrOpenBlob" in navigator ? function(f3, g2, h2) {
-        if (g2 = g2 || f3.name || "download", "string" != typeof f3) navigator.msSaveOrOpenBlob(b(f3, h2), g2);
-        else if (d(f3)) c2(f3, g2, h2);
+      } : "msSaveOrOpenBlob" in navigator ? function(f3, g2, h) {
+        if (g2 = g2 || f3.name || "download", "string" != typeof f3) navigator.msSaveOrOpenBlob(b(f3, h), g2);
+        else if (d(f3)) c(f3, g2, h);
         else {
           var i = document.createElement("a");
           i.href = f3, i.target = "_blank", setTimeout(function() {
-            e2(i);
+            e(i);
           });
         }
-      } : function(b2, d2, e3, g2) {
-        if (g2 = g2 || open("", "_blank"), g2 && (g2.document.title = g2.document.body.innerText = "downloading..."), "string" == typeof b2) return c2(b2, d2, e3);
-        var h2 = "application/octet-stream" === b2.type, i = /constructor/i.test(f2.HTMLElement) || f2.safari, j = /CriOS\/[\d]+/.test(navigator.userAgent);
-        if ((j || h2 && i || a2) && "undefined" != typeof FileReader) {
+      } : function(b2, d2, e2, g2) {
+        if (g2 = g2 || open("", "_blank"), g2 && (g2.document.title = g2.document.body.innerText = "downloading..."), "string" == typeof b2) return c(b2, d2, e2);
+        var h = "application/octet-stream" === b2.type, i = /constructor/i.test(f2.HTMLElement) || f2.safari, j = /CriOS\/[\d]+/.test(navigator.userAgent);
+        if ((j || h && i || a) && "undefined" != typeof FileReader) {
           var k2 = new FileReader();
           k2.onloadend = function() {
-            var a3 = k2.result;
-            a3 = j ? a3 : a3.replace(/^data:[^;]*;/, "data:attachment/file;"), g2 ? g2.location.href = a3 : location = a3, g2 = null;
+            var a2 = k2.result;
+            a2 = j ? a2 : a2.replace(/^data:[^;]*;/, "data:attachment/file;"), g2 ? g2.location.href = a2 : location = a2, g2 = null;
           }, k2.readAsDataURL(b2);
         } else {
           var l2 = f2.URL || f2.webkitURL, m2 = l2.createObjectURL(b2);
@@ -1256,6 +1295,8 @@
     });
   })(FileSaver_min);
   var FileSaver_minExports = FileSaver_min.exports;
+  var _GM_xmlhttpRequest = /* @__PURE__ */ (() => typeof GM_xmlhttpRequest != "undefined" ? GM_xmlhttpRequest : void 0)();
+  var _unsafeWindow = /* @__PURE__ */ (() => typeof unsafeWindow != "undefined" ? unsafeWindow : void 0)();
   class AbstractAdapter {
     generateGallery() {
       throw new Error(`生成Gallery方法未实现`);
@@ -1266,6 +1307,7 @@
     TaskStatus2[TaskStatus2["Running"] = 1] = "Running";
     TaskStatus2[TaskStatus2["Success"] = 2] = "Success";
     TaskStatus2[TaskStatus2["Error"] = 3] = "Error";
+    TaskStatus2[TaskStatus2["All"] = 9] = "All";
     return TaskStatus2;
   })(TaskStatus || {});
   function getStatusName(status = 0) {
@@ -1278,6 +1320,8 @@
         return "success";
       case 3:
         return "error";
+      case 9:
+        return "all";
     }
   }
   function getStatusText(status = 0) {
@@ -1290,24 +1334,26 @@
         return "成功";
       case 3:
         return "错误";
+      case 9:
+        return "全部";
     }
   }
   class TelegraphAdapter extends AbstractAdapter {
     async generateGallery() {
-      const { T: t2 } = _unsafeWindow;
+      const { origin } = _unsafeWindow.location;
+      const { T: t } = _unsafeWindow;
       const tasks = {};
       const imgs = _unsafeWindow.document.querySelectorAll("img");
       imgs.forEach((img, key) => {
         const pageNo = `${key + 1}`.padStart(3, "0");
-        const id = `${t2.pageId}-${pageNo}`;
+        const id = `${t.pageId}-${pageNo}`;
         const url = img.src;
-        const lastDotIndex = url.lastIndexOf(".");
-        const extName = url.substring(lastDotIndex);
         tasks[id] = {
           id,
           url,
           status: TaskStatus.Pending,
-          fileName: `${pageNo}${extName}`
+          name: `${pageNo}`,
+          referer: origin
         };
       });
       const header = _unsafeWindow.document.querySelector(
@@ -1317,7 +1363,7 @@
         throw new Error(`未获取到标题`);
       }
       return {
-        id: t2.pageId,
+        id: t.pageId,
         name: header.innerHTML,
         tasks
       };
@@ -1329,26 +1375,27 @@
       const tasks = {};
       const serverId = nhApp.options.media_server;
       const mediaId = nhGallery.media_id;
+      const baseUrl = `https://i${serverId}.nhentai.net`;
       nhGallery.images.pages.forEach((image, index) => {
         const pageNo = `${index + 1}`;
         const id = `${nhGallery.id}-${pageNo.padStart(3, "0")}`;
         let extName = ``;
         switch (image.t) {
           case "j":
-            extName = "jpg";
+            extName = ".jpg";
             break;
           case "p":
-            extName = "png";
+            extName = ".png";
             break;
           default:
-            extName = "img";
+            console.warn(`未知的图片文件类型：${image.t}`);
             break;
         }
-        const fileName = `${pageNo}.${extName}`;
+        const uri = `/galleries/${mediaId}/${pageNo}${extName}`;
         tasks[id] = {
           id,
-          url: `https://i${serverId}.nhentai.net/galleries/${mediaId}/${pageNo}.${extName}`,
-          fileName,
+          url: `${baseUrl}${uri}`,
+          name: `${pageNo.padStart(3, "0")}`,
           status: TaskStatus.Pending
         };
       });
@@ -1363,7 +1410,17 @@
     return /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "mgpk-button", onClick, children });
   };
   const Flex = (props) => {
-    const { className, direction, justify, align, gap, flex, style, onClick } = props;
+    const {
+      className,
+      direction,
+      justify,
+      align,
+      gap,
+      flex,
+      children,
+      style,
+      onClick
+    } = props;
     return /* @__PURE__ */ jsxRuntimeExports.jsx(
       "div",
       {
@@ -1378,7 +1435,7 @@
           ...style
         },
         onClick,
-        children: props.children
+        children
       }
     );
   };
@@ -1488,7 +1545,7 @@
       }
     );
   };
-  const Progress = ({
+  const ProgressBar = ({
     flex = 1,
     height = 20,
     min = 0,
@@ -1498,6 +1555,7 @@
     statusList = []
   }) => {
     let blocks = [];
+    let text = "";
     if (value !== void 0 && status !== void 0) {
       const delta = max - min;
       const actualValue = value - min;
@@ -1547,9 +1605,15 @@
           )
         );
       }
-      blocks.push();
+      if (max > 0) {
+        text = `${value}/${max} (${percent.toFixed(2)}%)`;
+      }
     } else {
+      let succ = 0;
       blocks = statusList.map((status2, index) => {
+        if (status2 === TaskStatus.Success) {
+          succ++;
+        }
         const statusName = getStatusName(status2);
         return /* @__PURE__ */ jsxRuntimeExports.jsx(
           Flex,
@@ -1560,33 +1624,89 @@
           `block-${index}`
         );
       });
+      const total = statusList.length;
+      let percent = succ * 100 / total;
+      if (total > 0) {
+        text = `${succ}/${total} (${percent.toFixed(2)}%)`;
+      }
     }
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(Flex, { className: "progress-bar", flex, style: { height }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Flex, { className: "blocks", children: blocks }) });
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs(Flex, { className: "progress-bar", direction: "column", flex, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Flex, { className: "blocks", style: { height }, children: blocks }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Flex,
+        {
+          className: "text",
+          justify: "center",
+          style: { height, marginTop: -height, fontSize: height * 0.7 },
+          children: text
+        }
+      )
+    ] });
   };
-  function innerSize() {
+  function getSize() {
     return {
       width: _unsafeWindow.innerWidth,
-      height: _unsafeWindow.innerHeight,
-      scale: _unsafeWindow.devicePixelRatio
+      height: _unsafeWindow.innerHeight
     };
   }
   const useWindowSize = () => {
-    const [size, setSize] = require$$0.useState(innerSize());
+    const [size, setSize] = require$$0.useState(getSize());
     require$$0.useEffect(() => {
-      setSize(innerSize());
+      setSize(getSize());
     }, []);
     return size;
   };
   const store = proxy({
+    // #region state
     gallery: void 0,
-    status: void 0
+    status: void 0,
+    // #endregion
+    // #region computed
+    get tasks() {
+      const results = [];
+      if (this.gallery !== void 0) {
+        const tasks = this.gallery.tasks;
+        for (const id in tasks) {
+          const task = tasks[id];
+          if (task !== void 0) {
+            results.push(task);
+          }
+        }
+      }
+      return results;
+    },
+    get filtered() {
+      if (this.status === void 0 || this.status === TaskStatus.All) {
+        return this.tasks;
+      }
+      return this.tasks.filter((t) => t.status === this.status);
+    },
+    get statusList() {
+      const results = this.tasks.map((t) => t.status);
+      return results;
+    },
+    get statusAmounts() {
+      const amounts = {
+        [TaskStatus.Pending]: 0,
+        [TaskStatus.Running]: 0,
+        [TaskStatus.Success]: 0,
+        [TaskStatus.Error]: 0,
+        [TaskStatus.All]: 0
+      };
+      for (const task of this.tasks) {
+        amounts[task.status]++;
+        amounts[TaskStatus.All]++;
+      }
+      return amounts;
+    }
+    // #endregion
   });
   const TaskView = ({ task }) => {
-    const { id, fileName = `${id}.png`, status, total, loaded } = task;
+    const { id, name, status, total, loaded } = task;
     return /* @__PURE__ */ jsxRuntimeExports.jsxs(Flex, { className: "task-view", gap: 8, align: "center", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Flex, { className: "task-file-name", justify: "end", children: fileName }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Flex, { className: "task-name", justify: "end", children: name }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(
-        Progress,
+        ProgressBar,
         {
           className: "task-progress-bar",
           min: 0,
@@ -1611,13 +1731,13 @@
     TaskStatus.Success
   ];
   const TaskFilter = ({ status, onChange }) => {
-    const items = TaskStatusList.map((s2) => {
-      const statusName = getStatusName(s2);
+    const items = TaskStatusList.map((s) => {
+      const statusName = getStatusName(s);
       const classNames = [
         "task-filter-item",
         `task-filter-item-${statusName}`
       ];
-      if (status === s2) {
+      if (status === s) {
         classNames.push(`task-filter-item-${statusName}-active`);
       }
       return /* @__PURE__ */ jsxRuntimeExports.jsxs(
@@ -1627,13 +1747,13 @@
           flex: 1,
           justify: "center",
           align: "center",
-          onClick: () => onChange(s2),
+          onClick: () => onChange(s),
           children: [
-            getStatusText(s2),
+            getStatusText(s),
             " (999)"
           ]
         },
-        `${s2}`
+        `${s}`
       );
     });
     return /* @__PURE__ */ jsxRuntimeExports.jsxs(Flex, { className: "task-filter", children: [
@@ -1655,6 +1775,34 @@
       items
     ] });
   };
+  const version = "1.7.0";
+  function RadioGroup({ value, items = [], onChange }) {
+    const radios = items.map(
+      ({ value: radioValue, element }) => {
+        const children = element ?? `${radioValue}`;
+        const backgroundColor = value === radioValue ? "rgba(128, 128, 128, 0.3)" : void 0;
+        return /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Flex,
+          {
+            flex: 1,
+            justify: "center",
+            style: {
+              backgroundColor,
+              borderRadius: 5
+            },
+            onClick: () => {
+              if (onChange !== void 0) {
+                onChange(radioValue);
+              }
+            },
+            children
+          },
+          `radio-${radioValue}`
+        );
+      }
+    );
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(Flex, { flex: 1, children: radios });
+  }
   const files = {};
   const TaskPanel = (props) => {
     const windowSize = useWindowSize();
@@ -1662,28 +1810,10 @@
     const panelHeight = windowSize.height - 2 * (margin + padding + border);
     const [minimized, setMinimized] = require$$0.useState(false);
     const snap = useSnapshot(store);
-    const tasks = [];
-    if (snap.gallery !== void 0) {
-      for (const key in snap.gallery.tasks) {
-        const task = snap.gallery.tasks[key];
-        if (task !== void 0) {
-          tasks.push(task);
-        }
-      }
-    }
-    const statusList = [];
-    const filteredTasks = [];
-    for (const task of tasks) {
-      const taskStatus = task.status ?? TaskStatus.Pending;
-      statusList.push(taskStatus);
-      if (snap.status === void 0 || snap.status === taskStatus) {
-        filteredTasks.push(task);
-      }
-    }
     const sizeToggleIcon = minimized ? /* @__PURE__ */ jsxRuntimeExports.jsx(IconDown, {}) : /* @__PURE__ */ jsxRuntimeExports.jsx(IconUp, {});
     function onDownloadAllClick() {
       console.debug(`点击下载按钮`);
-      for (const task of tasks) {
+      for (const task of snap.tasks) {
         if (task.status !== TaskStatus.Success) {
           download(task);
         }
@@ -1709,9 +1839,14 @@
     }
     function download(task) {
       console.debug(`任务 ${task.id} 开始下载：`, task.url);
+      const headers = {};
+      if (task.referer !== void 0) {
+        headers.Referer = task.referer;
+      }
       _GM_xmlhttpRequest({
         method: "GET",
         url: task.url,
+        headers,
         responseType: "blob",
         onprogress: (event) => {
           console.info(
@@ -1727,7 +1862,7 @@
         onload: async (event) => {
           const blob = event.response;
           console.info(
-            `任务 ${task.id} 下载完成，状态码：${event.status}（${event.statusText}），长度：${blob.size}`
+            `任务 ${task.id} 下载完成，状态码：${event.status}，长度：${blob.size}，类型：${blob.type}`
           );
           if (event.status === 200) {
             updateTask({
@@ -1737,7 +1872,20 @@
               total: blob.size
             });
             const buffer = await blob.arrayBuffer();
-            files[task.fileName] = new Uint8Array(buffer);
+            let extName = "img";
+            switch (blob.type) {
+              case "image/jpeg":
+                extName = "jpg";
+                break;
+              case "image/png":
+                extName = "png";
+                break;
+              default:
+                console.warn(`未知的blob类型：${blob.type}`);
+                break;
+            }
+            const fileName = `${task.name}.${extName}`;
+            files[fileName] = new Uint8Array(buffer);
           } else {
             updateTask({
               id: task.id,
@@ -1788,14 +1936,45 @@
     require$$0.useEffect(() => {
       init();
     }, []);
+    /* @__PURE__ */ jsxRuntimeExports.jsx(TaskFilter, { status: snap.status, onChange: onTaskFilterChange });
     const hidable = minimized ? null : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(TaskFilter, { status: snap.status, onChange: onTaskFilterChange }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        RadioGroup,
+        {
+          value: store.status,
+          items: [
+            {
+              value: TaskStatus.All,
+              element: `全部 (${snap.statusAmounts[TaskStatus.All]})`
+            },
+            {
+              value: TaskStatus.Pending,
+              element: `等待 (${snap.statusAmounts[TaskStatus.Pending]})`
+            },
+            {
+              value: TaskStatus.Running,
+              element: `下载 (${snap.statusAmounts[TaskStatus.Running]})`
+            },
+            {
+              value: TaskStatus.Error,
+              element: `错误 (${snap.statusAmounts[TaskStatus.Error]})`
+            },
+            {
+              value: TaskStatus.Success,
+              element: `完成 (${snap.statusAmounts[TaskStatus.Success]})`
+            }
+          ],
+          onChange: (value) => {
+            console.info(`任务状态过滤器切换为：`, value);
+            store.status = value;
+          }
+        }
+      ),
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         TaskList,
         {
-          tasks: filteredTasks,
+          tasks: store.filtered,
           style: {
-            // backgroundColor: "#cccccc",
             height: panelHeight - 99
           }
         }
@@ -1820,9 +1999,22 @@
               /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { className: "btn-download", onClick: onDownloadAllClick, children: /* @__PURE__ */ jsxRuntimeExports.jsx(IconDownload, {}) }),
               /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { className: "btn-save", onClick: onSaveClick, children: /* @__PURE__ */ jsxRuntimeExports.jsx(IconSave, {}) })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Flex, { className: "buttons-right", flex: 1, justify: "end", gap: 8, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { className: "btn-toggle", onClick: onToggleClick, children: sizeToggleIcon }) })
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              Flex,
+              {
+                className: "buttons-right",
+                flex: 1,
+                justify: "end",
+                align: "center",
+                gap: 8,
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: version }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { className: "btn-toggle", onClick: onToggleClick, children: sizeToggleIcon })
+                ]
+              }
+            )
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Flex, { className: "total-progress-row", align: "center", gap: 8, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Progress, { flex: 1, statusList }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Flex, { className: "total-progress-row", align: "center", gap: 8, children: /* @__PURE__ */ jsxRuntimeExports.jsx(ProgressBar, { flex: 1, statusList: store.statusList }) }),
           hidable
         ]
       }

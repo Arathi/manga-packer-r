@@ -15,6 +15,7 @@ interface T {
 
 export default class TelegraphAdapter extends AbstractAdapter {
   async generateGallery(): Promise<Gallery> {
+    const { origin } = unsafeWindow.location;
     const { T: t } = unsafeWindow as unknown as { T: T };
 
     const tasks: Record<string | number, Task> = {};
@@ -28,6 +29,7 @@ export default class TelegraphAdapter extends AbstractAdapter {
         url,
         status: TaskStatus.Pending,
         name: `${pageNo}`,
+        referer: origin,
       };
     });
 

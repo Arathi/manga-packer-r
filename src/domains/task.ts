@@ -3,6 +3,7 @@ export default interface Task {
   url: string;
   name: string;
   status: TaskStatus;
+  referer?: string;
   total?: number;
   loaded?: number;
 }
