@@ -12,7 +12,7 @@ Manga Packer，油猴插件，用于从网页上打包下载图片资源，目�
 可以点击以下链接开始安装：
 
 - [GitHub](https://github.com/Arathi/manga-packer-r/raw/master/dist/manga-packer-r.user.js)
-- [GitHub Proxy](https://mirror.ghproxy.com/https://github.com/Arathi/manga-packer-r/raw/master/dist/manga-packer-r.user.js)
+- [GitHub Proxy](https://ghp.ci/https://github.com/Arathi/manga-packer-r/raw/master/dist/manga-packer-r.user.js)
 - [jsDelivr](https://cdn.jsdelivr.net/gh/Arathi/manga-packer-r/dist/manga-packer-r.user.js)
 
 ## 编译运行
@@ -57,7 +57,5 @@ pnpm build && pnpm preview
 
 ## 后续计划
 
-- <del>剥离 jotai 相关依赖</del>
-- 剥离 arco 相关依赖
 - 支持 e-hentai
 - 支持 aria2
