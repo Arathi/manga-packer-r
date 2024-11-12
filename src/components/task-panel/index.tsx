@@ -109,8 +109,14 @@ const TaskPanel: React.FC<Props> = (props) => {
             case "image/png":
               extName = "png";
               break;
+            case "image/webp":
+              extName = "webp";
+              break;
             default:
               console.warn(`未知的blob类型：${blob.type}`);
+              if (blob.type.startsWith("image/")) {
+                extName = blob.type.substring(6);
+              }
               break;
           }
           const fileName = `${task.name}.${extName}`;

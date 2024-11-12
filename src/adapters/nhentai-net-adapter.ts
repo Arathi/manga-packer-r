@@ -78,6 +78,9 @@ export default class NHentaiNetAdapter extends AbstractAdapter {
         case "p":
           extName = ".png";
           break;
+        case "w":
+          extName = ".webp";
+          break;
         default:
           console.warn(`未知的图片文件类型：${image.t}`);
           break;

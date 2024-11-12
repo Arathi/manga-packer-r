@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Manga Packer R
 // @namespace    com.undsf.tmus.mgpk
-// @version      1.7.0
+// @version      1.7.1
 // @author       Arathi of Nebnizilla
 // @icon         https://vitejs.dev/logo.svg
 // @homepageURL  https://github.com/Arathi/manga-packer-r
@@ -318,7 +318,7 @@
         const [target2, ensureVersion] = proxyStateMap.get(
           value
         );
-        desc.value = createSnapshot(target2, ensureVersion());
+        desc.value = createSnapshotDefault(target2, ensureVersion());
       }
       Object.defineProperty(snap, key, desc);
     });
@@ -1387,6 +1387,9 @@
           case "p":
             extName = ".png";
             break;
+          case "w":
+            extName = ".webp";
+            break;
           default:
             console.warn(`未知的图片文件类型：${image.t}`);
             break;
@@ -1775,7 +1778,7 @@
       items
     ] });
   };
-  const version = "1.7.0";
+  const version = "1.7.1";
   function RadioGroup({ value, items = [], onChange }) {
     const radios = items.map(
       ({ value: radioValue, element }) => {
@@ -1880,8 +1883,14 @@
               case "image/png":
                 extName = "png";
                 break;
+              case "image/webp":
+                extName = "webp";
+                break;
               default:
                 console.warn(`未知的blob类型：${blob.type}`);
+                if (blob.type.startsWith("image/")) {
+                  extName = blob.type.substring(6);
+                }
                 break;
             }
             const fileName = `${task.name}.${extName}`;
