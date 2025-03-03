@@ -1,0 +1,23 @@
+@import "../../styles/flex.less";
+
+.mgpk-task-filter {
+  .flex(row, start, center, 3px);
+  background-color: #F5F5F5;
+  border-radius: 3px;
+  padding: 3px;
+
+  &-item {
+    .flex(column, center, center, 0px);
+    flex: 1;
+    border-radius: 3px;
+    padding: 3px 0;
+
+    &:hover {
+      background-color: #E7E7E7;
+    }
+
+    &.active {
+      background-color: white;
+    }
+  }
+}

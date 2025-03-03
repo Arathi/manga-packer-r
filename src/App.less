@@ -1,0 +1,28 @@
+@import "./styles/flex.less";
+
+.mgpk-app {
+  .flex(column, start, undefined, 8px);
+
+  position: fixed;
+  width: 300px;
+  height: 500px;
+  right: 8px;
+  top: 8px;
+
+  background-color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(100, 100, 100, 0.8);
+  padding: 8px;
+
+  &-header {
+    .flex(row, start, center, 8px);
+  }
+
+  &-buttons {
+    .flex(row, start, center, 8px);
+    flex: 1;
+  }
+
+  &-version {
+    .flex(row, start, center, 8px);
+  }
+}
