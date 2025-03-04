@@ -1,8 +1,8 @@
-import { defineConfig } from "vite";
+import { resolve } from "node:path";
 import react from "@vitejs/plugin-react";
-import monkey, { cdn } from "vite-plugin-monkey";
 import { visualizer } from "rollup-plugin-visualizer";
-import { resolve } from "path";
+import { defineConfig } from "vite";
+import monkey, { cdn } from "vite-plugin-monkey";
 
 const HOMEPAGE_URL = `https://github.com/Arathi/manga-packer-r`;
 const USER_JS_PATH = "/raw/master/dist/manga-packer-r.user.js";

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Manga Packer R
 // @namespace    com.undsf.tmus.mgpk
-// @version      1.7.1
+// @version      1.7.2
 // @author       Arathi of Nebnizilla
 // @icon         https://vitejs.dev/logo.svg
 // @homepageURL  https://github.com/Arathi/manga-packer-r
@@ -1646,16 +1646,18 @@
       )
     ] });
   };
-  function getSize() {
-    return {
+  const useWindowSize = () => {
+    const [size, setSize] = require$$0.useState({
       width: _unsafeWindow.innerWidth,
       height: _unsafeWindow.innerHeight
-    };
-  }
-  const useWindowSize = () => {
-    const [size, setSize] = require$$0.useState(getSize());
+    });
     require$$0.useEffect(() => {
-      setSize(getSize());
+      addEventListener("resize", () => {
+        setSize({
+          width: _unsafeWindow.innerWidth,
+          height: _unsafeWindow.innerHeight
+        });
+      });
     }, []);
     return size;
   };
@@ -1778,7 +1780,7 @@
       items
     ] });
   };
-  const version = "1.7.1";
+  const version = "1.7.2";
   function RadioGroup({ value, items = [], onChange }) {
     const radios = items.map(
       ({ value: radioValue, element }) => {
@@ -1864,8 +1866,14 @@
         },
         onload: async (event) => {
           const blob = event.response;
+          const url = event.finalUrl;
           console.info(
-            `任务 ${task.id} 下载完成，状态码：${event.status}，长度：${blob.size}，类型：${blob.type}`
+            `任务 ${task.id} 下载完成`,
+            {
+              size: blob.size,
+              type: blob.type,
+              url
+            }
           );
           if (event.status === 200) {
             updateTask({
@@ -1875,23 +1883,38 @@
               total: blob.size
             });
             const buffer = await blob.arrayBuffer();
-            let extName = "img";
-            switch (blob.type) {
-              case "image/jpeg":
-                extName = "jpg";
-                break;
-              case "image/png":
-                extName = "png";
-                break;
-              case "image/webp":
-                extName = "webp";
-                break;
-              default:
-                console.warn(`未知的blob类型：${blob.type}`);
-                if (blob.type.startsWith("image/")) {
-                  extName = blob.type.substring(6);
-                }
-                break;
+            let extName = void 0;
+            const slash = url.lastIndexOf("/");
+            if (slash > 0) {
+              const fileName2 = url.substring(slash + 1);
+              const dot = fileName2.lastIndexOf(".");
+              if (dot > 0) {
+                extName = fileName2.substring(dot + 1);
+              }
+            }
+            if (extName === void 0) {
+              console.warn("无法从url获取扩展名：", url);
+              switch (blob.type) {
+                case "image/jpeg":
+                  extName = "jpg";
+                  break;
+                case "image/png":
+                  extName = "png";
+                  break;
+                case "image/webp":
+                  extName = "webp";
+                  break;
+                default:
+                  console.warn(`未知的blob类型：${blob.type}`);
+                  if (blob.type.startsWith("image/")) {
+                    extName = blob.type.substring(6);
+                  }
+                  break;
+              }
+            }
+            if (extName === void 0) {
+              console.warn("无法从blob获取扩展名", blob.type);
+              extName = "jpg";
             }
             const fileName = `${task.name}.${extName}`;
             files[fileName] = new Uint8Array(buffer);
