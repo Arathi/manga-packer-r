@@ -6,18 +6,21 @@ export interface WindowSize {
   height: number;
 }
 
-function getSize(): WindowSize {
-  return {
+const useWindowSize = () => {
+  const [size, setSize] = useState<WindowSize>({
     width: unsafeWindow.innerWidth,
     height: unsafeWindow.innerHeight,
-  };
-}
+  });
 
-const useWindowSize = () => {
-  const [size, setSize] = useState<WindowSize>(getSize());
   useEffect(() => {
-    setSize(getSize());
+    addEventListener('resize', () => {
+      setSize({
+        width: unsafeWindow.innerWidth,
+        height: unsafeWindow.innerHeight,
+      });
+    })
   }, []);
+
   return size;
 };
 

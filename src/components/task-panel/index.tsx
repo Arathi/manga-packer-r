@@ -90,9 +90,15 @@ const TaskPanel: React.FC<Props> = (props) => {
       },
       onload: async (event) => {
         const blob = event.response;
+        const url = event.finalUrl;
         console.info(
-          `任务 ${task.id} 下载完成，状态码：${event.status}，长度：${blob.size}，类型：${blob.type}`
+          `任务 ${task.id} 下载完成`, {
+            size: blob.size,
+            type: blob.type,
+            url,
+          }
         );
+
         if (event.status === 200) {
           updateTask({
             id: task.id,
@@ -101,24 +107,42 @@ const TaskPanel: React.FC<Props> = (props) => {
             total: blob.size,
           });
           const buffer = await blob.arrayBuffer();
-          let extName = "img";
-          switch (blob.type) {
-            case "image/jpeg":
-              extName = "jpg";
-              break;
-            case "image/png":
-              extName = "png";
-              break;
-            case "image/webp":
-              extName = "webp";
-              break;
-            default:
-              console.warn(`未知的blob类型：${blob.type}`);
-              if (blob.type.startsWith("image/")) {
-                extName = blob.type.substring(6);
-              }
-              break;
+
+          let extName: string | undefined = undefined;
+          const slash = url.lastIndexOf('/');
+          if (slash > 0) {
+            const fileName = url.substring(slash + 1);
+            const dot = fileName.lastIndexOf('.');
+            if (dot > 0) {
+              extName = fileName.substring(dot + 1);
+            }
           }
+
+          if (extName === undefined) {
+            console.warn("无法从url获取扩展名：", url);
+            switch (blob.type) {
+              case "image/jpeg":
+                extName = "jpg";
+                break;
+              case "image/png":
+                extName = "png";
+                break;
+              case "image/webp":
+                extName = "webp";
+                break;
+              default:
+                console.warn(`未知的blob类型：${blob.type}`);
+                if (blob.type.startsWith("image/")) {
+                  extName = blob.type.substring(6);
+                }
+                break;
+            }
+          }
+          if (extName === undefined) {
+            console.warn("无法从blob获取扩展名", blob.type);
+            extName = 'jpg';
+          }
+
           const fileName = `${task.name}.${extName}`;
           files[fileName] = new Uint8Array(buffer);
         } else {

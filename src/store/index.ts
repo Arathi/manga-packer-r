@@ -22,7 +22,9 @@ interface Computed {
   get statusAmounts(): Record<TaskStatus, number>;
 }
 
-const store = proxy<State & Computed>({
+type Store = State & Computed;
+
+const store = proxy<Store>({
   // #region state
   gallery: undefined,
   status: undefined,
