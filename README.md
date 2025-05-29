@@ -2,7 +2,7 @@
 
 ## 简介
 
-Manga Packer，油猴插件，用于从网页上打包下载图片资源，目前支持 `Telegraph` 和 [NHentai](https://nhentai.net/) 。
+Manga Packer，油猴插件，用于从网页上打包下载图片资源，目前支持 `Telegraph` 和 [NHentai](https://nhentai.net/) 以及 [绅士漫画](https://www.wnacg.com/)。
 
 ## 下载安装
 
@@ -12,7 +12,7 @@ Manga Packer，油猴插件，用于从网页上打包下载图片资源，目�
 可以点击以下链接开始安装：
 
 - [GitHub](https://github.com/Arathi/manga-packer-r/raw/master/dist/manga-packer-r.user.js)
-- [GitHub Proxy](https://ghp.ci/https://github.com/Arathi/manga-packer-r/raw/master/dist/manga-packer-r.user.js)
+- [GitHub Proxy](https://ghfast.top/https://github.com/Arathi/manga-packer-r/raw/master/dist/manga-packer-r.user.js)
 - [jsDelivr](https://cdn.jsdelivr.net/gh/Arathi/manga-packer-r/dist/manga-packer-r.user.js)
 
 ## 编译运行

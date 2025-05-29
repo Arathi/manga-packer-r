@@ -4,7 +4,7 @@ import { zipSync } from "fflate";
 import { saveAs } from "file-saver";
 import { GM_xmlhttpRequest, unsafeWindow } from "$";
 
-import { Adapter, TelegraphAdapter, NHentaiNetAdapter } from "@/adapters";
+import { Adapter, TelegraphAdapter, NHentaiNetAdapter, WnacgAdapter } from "@/adapters";
 import Button from "@/components/button";
 import Flex from "@/components/flex";
 import { IconDown, IconDownload, IconSave, IconUp } from "@/components/icon";
@@ -185,6 +185,9 @@ const TaskPanel: React.FC<Props> = (props) => {
           break;
         case "nhentai.net":
           adapter = new NHentaiNetAdapter();
+          break;
+        case "www.wnacg.com":
+          adapter = new WnacgAdapter();
           break;
       }
 
