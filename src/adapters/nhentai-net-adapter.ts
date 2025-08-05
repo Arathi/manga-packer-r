@@ -50,7 +50,7 @@ type NHentaiApp = {
 
 type NHentaiOptions = {
   csrf_token: string;
-  media_server: number;
+  image_cdn_urls: string[];
 };
 // #endregion
 
@@ -62,10 +62,9 @@ export default class NHentaiNetAdapter extends AbstractAdapter {
     };
 
     const tasks: Record<string | number, Task> = {};
-    const serverId = nhApp.options.media_server;
     const mediaId = nhGallery.media_id;
 
-    const baseUrl = `https://i${serverId}.nhentai.net`;
+    const baseUrl = `https://${nhApp.options.image_cdn_urls[0]}`;
 
     nhGallery.images.pages.forEach((image, index) => {
       const pageNo = `${index + 1}`;
