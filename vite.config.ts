@@ -31,6 +31,7 @@ export default defineConfig({
         updateURL: DOWNLOAD_URL,
         match: [
           "https://telegra.ph/*",
+          "https://graph.org/*",
           "https://nhentai.net/g/*/",
           "https://nhentai.xxx/g/*/",
           "https://e-hentai.org/g/*/*/",

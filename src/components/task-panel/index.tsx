@@ -181,6 +181,7 @@ const TaskPanel: React.FC<Props> = (props) => {
       let adapter: Adapter | undefined = undefined;
       switch (unsafeWindow.location.host) {
         case "telegra.ph":
+        case "graph.org":
           adapter = new TelegraphAdapter();
           break;
         case "nhentai.net":

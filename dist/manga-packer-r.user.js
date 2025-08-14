@@ -1,13 +1,14 @@
 // ==UserScript==
 // @name         Manga Packer R
 // @namespace    com.undsf.tmus.mgpk
-// @version      1.8.2
+// @version      1.8.3
 // @author       Arathi of Nebnizilla
 // @icon         https://vitejs.dev/logo.svg
 // @homepageURL  https://github.com/Arathi/manga-packer-r
 // @downloadURL  https://github.com/Arathi/manga-packer-r/raw/master/dist/manga-packer-r.user.js
 // @updateURL    https://github.com/Arathi/manga-packer-r/raw/master/dist/manga-packer-r.user.js
 // @match        https://telegra.ph/*
+// @match        https://graph.org/*
 // @match        https://nhentai.net/g/*/
 // @match        https://nhentai.xxx/g/*/
 // @match        https://e-hentai.org/g/*/*/
@@ -25,6 +26,9 @@
   'use strict';
 
   var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
+  function getDefaultExportFromCjs(x) {
+    return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
+  }
   var jsxRuntime = { exports: {} };
   var reactJsxRuntime_production_min = {};
   /**
@@ -36,29 +40,49 @@
    * This source code is licensed under the MIT license found in the
    * LICENSE file in the root directory of this source tree.
    */
-  var f = require$$0, k = Symbol.for("react.element"), l = Symbol.for("react.fragment"), m$1 = Object.prototype.hasOwnProperty, n = f.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner, p = { key: true, ref: true, __self: true, __source: true };
-  function q(c, a, g) {
-    var b, d = {}, e = null, h = null;
-    void 0 !== g && (e = "" + g);
-    void 0 !== a.key && (e = "" + a.key);
-    void 0 !== a.ref && (h = a.ref);
-    for (b in a) m$1.call(a, b) && !p.hasOwnProperty(b) && (d[b] = a[b]);
-    if (c && c.defaultProps) for (b in a = c.defaultProps, a) void 0 === d[b] && (d[b] = a[b]);
-    return { $$typeof: k, type: c, key: e, ref: h, props: d, _owner: n.current };
+  var hasRequiredReactJsxRuntime_production_min;
+  function requireReactJsxRuntime_production_min() {
+    if (hasRequiredReactJsxRuntime_production_min) return reactJsxRuntime_production_min;
+    hasRequiredReactJsxRuntime_production_min = 1;
+    var f = require$$0, k = Symbol.for("react.element"), l = Symbol.for("react.fragment"), m = Object.prototype.hasOwnProperty, n = f.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner, p = { key: true, ref: true, __self: true, __source: true };
+    function q(c, a, g) {
+      var b, d = {}, e = null, h = null;
+      void 0 !== g && (e = "" + g);
+      void 0 !== a.key && (e = "" + a.key);
+      void 0 !== a.ref && (h = a.ref);
+      for (b in a) m.call(a, b) && !p.hasOwnProperty(b) && (d[b] = a[b]);
+      if (c && c.defaultProps) for (b in a = c.defaultProps, a) void 0 === d[b] && (d[b] = a[b]);
+      return { $$typeof: k, type: c, key: e, ref: h, props: d, _owner: n.current };
+    }
+    reactJsxRuntime_production_min.Fragment = l;
+    reactJsxRuntime_production_min.jsx = q;
+    reactJsxRuntime_production_min.jsxs = q;
+    return reactJsxRuntime_production_min;
   }
-  reactJsxRuntime_production_min.Fragment = l;
-  reactJsxRuntime_production_min.jsx = q;
-  reactJsxRuntime_production_min.jsxs = q;
-  {
-    jsxRuntime.exports = reactJsxRuntime_production_min;
+  var hasRequiredJsxRuntime;
+  function requireJsxRuntime() {
+    if (hasRequiredJsxRuntime) return jsxRuntime.exports;
+    hasRequiredJsxRuntime = 1;
+    {
+      jsxRuntime.exports = requireReactJsxRuntime_production_min();
+    }
+    return jsxRuntime.exports;
   }
-  var jsxRuntimeExports = jsxRuntime.exports;
+  var jsxRuntimeExports = requireJsxRuntime();
   var client = {};
-  var m = require$$0$1;
-  {
-    client.createRoot = m.createRoot;
-    client.hydrateRoot = m.hydrateRoot;
+  var hasRequiredClient;
+  function requireClient() {
+    if (hasRequiredClient) return client;
+    hasRequiredClient = 1;
+    var m = require$$0$1;
+    {
+      client.createRoot = m.createRoot;
+      client.hydrateRoot = m.hydrateRoot;
+    }
+    return client;
   }
+  var clientExports = requireClient();
+  const ReactDOM = /* @__PURE__ */ getDefaultExportFromCjs(clientExports);
   const TRACK_MEMO_SYMBOL = Symbol();
   const GET_ORIGINAL_SYMBOL = Symbol();
   const AFFECTED_PROPERTY = "a";
@@ -66,8 +90,6 @@
   const PROXY_PROPERTY = "p";
   const PROXY_CACHE_PROPERTY = "c";
   const TARGET_CACHE_PROPERTY = "t";
-  const NEXT_OBJECT_PROPERTY = "n";
-  const CHANGED_PROPERTY = "g";
   const HAS_KEY_PROPERTY = "h";
   const ALL_OWN_KEYS_PROPERTY = "w";
   const HAS_OWN_KEY_PROPERTY = "o";
@@ -181,7 +203,7 @@
   const isAllOwnKeysChanged = (prevObj, nextObj) => {
     const prevKeys = Reflect.ownKeys(prevObj);
     const nextKeys = Reflect.ownKeys(nextObj);
-    return prevKeys.length !== nextKeys.length || prevKeys.some((k2, i) => k2 !== nextKeys[i]);
+    return prevKeys.length !== nextKeys.length || prevKeys.some((k, i) => k !== nextKeys[i]);
   };
   const isChanged = (prevObj, nextObj, affected, cache, isEqual = Object.is) => {
     if (isEqual(prevObj, nextObj)) {
@@ -194,50 +216,38 @@
       return true;
     if (cache) {
       const hit = cache.get(prevObj);
-      if (hit && hit[NEXT_OBJECT_PROPERTY] === nextObj) {
-        return hit[CHANGED_PROPERTY];
+      if (hit === nextObj) {
+        return false;
       }
-      cache.set(prevObj, {
-        [NEXT_OBJECT_PROPERTY]: nextObj,
-        [CHANGED_PROPERTY]: false
-      });
+      cache.set(prevObj, nextObj);
     }
     let changed = null;
-    try {
-      for (const key of used[HAS_KEY_PROPERTY] || []) {
-        changed = Reflect.has(prevObj, key) !== Reflect.has(nextObj, key);
+    for (const key of used[HAS_KEY_PROPERTY] || []) {
+      changed = Reflect.has(prevObj, key) !== Reflect.has(nextObj, key);
+      if (changed)
+        return changed;
+    }
+    if (used[ALL_OWN_KEYS_PROPERTY] === true) {
+      changed = isAllOwnKeysChanged(prevObj, nextObj);
+      if (changed)
+        return changed;
+    } else {
+      for (const key of used[HAS_OWN_KEY_PROPERTY] || []) {
+        const hasPrev = !!Reflect.getOwnPropertyDescriptor(prevObj, key);
+        const hasNext = !!Reflect.getOwnPropertyDescriptor(nextObj, key);
+        changed = hasPrev !== hasNext;
         if (changed)
           return changed;
-      }
-      if (used[ALL_OWN_KEYS_PROPERTY] === true) {
-        changed = isAllOwnKeysChanged(prevObj, nextObj);
-        if (changed)
-          return changed;
-      } else {
-        for (const key of used[HAS_OWN_KEY_PROPERTY] || []) {
-          const hasPrev = !!Reflect.getOwnPropertyDescriptor(prevObj, key);
-          const hasNext = !!Reflect.getOwnPropertyDescriptor(nextObj, key);
-          changed = hasPrev !== hasNext;
-          if (changed)
-            return changed;
-        }
-      }
-      for (const key of used[KEYS_PROPERTY] || []) {
-        changed = isChanged(prevObj[key], nextObj[key], affected, cache, isEqual);
-        if (changed)
-          return changed;
-      }
-      if (changed === null)
-        changed = true;
-      return changed;
-    } finally {
-      if (cache) {
-        cache.set(prevObj, {
-          [NEXT_OBJECT_PROPERTY]: nextObj,
-          [CHANGED_PROPERTY]: changed
-        });
       }
     }
+    for (const key of used[KEYS_PROPERTY] || []) {
+      changed = isChanged(prevObj[key], nextObj[key], affected, cache, isEqual);
+      if (changed)
+        return changed;
+    }
+    if (changed === null)
+      throw new Error("invalid used");
+    return changed;
   };
   const getUntracked = (obj) => {
     if (isObjectToTrack(obj)) {
@@ -286,7 +296,7 @@
     walk(obj);
     return list;
   };
-  const __vite_import_meta_env__$1 = { "BASE_URL": "/", "DEV": false, "MODE": "production", "PROD": true, "SSR": false };
+  const __vite_import_meta_env__$1 = {};
   const isObject = (x) => typeof x === "object" && x !== null;
   const canProxyDefault = (x) => isObject(x) && !refSet.has(x) && (Array.isArray(x) || !(Symbol.iterator in x)) && !(x instanceof WeakMap) && !(x instanceof WeakSet) && !(x instanceof Error) && !(x instanceof Number) && !(x instanceof Date) && !(x instanceof String) && !(x instanceof RegExp) && !(x instanceof ArrayBuffer) && !(x instanceof Promise);
   const createSnapshotDefault = (target, version2) => {
@@ -319,7 +329,7 @@
         const [target2, ensureVersion] = proxyStateMap.get(
           value
         );
-        desc.value = createSnapshot(target2, ensureVersion());
+        desc.value = createSnapshotDefault(target2, ensureVersion());
       }
       Object.defineProperty(snap, key, desc);
     });
@@ -501,9 +511,9 @@
     const [target, ensureVersion] = proxyState;
     return createSnapshot(target, ensureVersion());
   }
-  const __vite_import_meta_env__ = { "BASE_URL": "/", "DEV": false, "MODE": "production", "PROD": true, "SSR": false };
+  const __vite_import_meta_env__ = {};
   const useAffectedDebugValue = (state, affected) => {
-    const pathList = require$$0.useRef();
+    const pathList = require$$0.useRef(void 0);
     require$$0.useEffect(() => {
       pathList.current = affectedToPathList(state, affected);
     });
@@ -517,7 +527,7 @@
       () => proxyObject && /* @__PURE__ */ new WeakMap(),
       [proxyObject]
     );
-    const lastSnapshot = require$$0.useRef();
+    const lastSnapshot = require$$0.useRef(void 0);
     let inRender = true;
     const currSnapshot = require$$0.useSyncExternalStore(
       require$$0.useCallback(
@@ -651,17 +661,17 @@
     x = (x & 61680) >> 4 | (x & 3855) << 4;
     rev[i] = ((x & 65280) >> 8 | (x & 255) << 8) >> 1;
   }
-  var hMap = function(cd, mb, r) {
+  var hMap = (function(cd, mb, r) {
     var s = cd.length;
     var i = 0;
-    var l2 = new u16(mb);
+    var l = new u16(mb);
     for (; i < s; ++i) {
       if (cd[i])
-        ++l2[cd[i] - 1];
+        ++l[cd[i] - 1];
     }
     var le = new u16(mb);
     for (i = 1; i < mb; ++i) {
-      le[i] = le[i - 1] + l2[i - 1] << 1;
+      le[i] = le[i - 1] + l[i - 1] << 1;
     }
     var co;
     {
@@ -673,7 +683,7 @@
       }
     }
     return co;
-  };
+  });
   var flt = new u8(288);
   for (var i = 0; i < 144; ++i)
     flt[i] = 8;
@@ -688,8 +698,8 @@
     fdt[i] = 5;
   var flm = /* @__PURE__ */ hMap(flt, 9);
   var fdm = /* @__PURE__ */ hMap(fdt, 5);
-  var shft = function(p2) {
-    return (p2 + 7) / 8 | 0;
+  var shft = function(p) {
+    return (p + 7) / 8 | 0;
   };
   var slc = function(v, s, e) {
     if (e == null || e > v.length)
@@ -722,15 +732,15 @@
       throw e;
     return e;
   };
-  var wbits = function(d, p2, v) {
-    v <<= p2 & 7;
-    var o = p2 / 8 | 0;
+  var wbits = function(d, p, v) {
+    v <<= p & 7;
+    var o = p / 8 | 0;
     d[o] |= v;
     d[o + 1] |= v >> 8;
   };
-  var wbits16 = function(d, p2, v) {
-    v <<= p2 & 7;
-    var o = p2 / 8 | 0;
+  var wbits16 = function(d, p, v) {
+    v <<= p & 7;
+    var o = p / 8 | 0;
     d[o] |= v;
     d[o + 1] |= v >> 8;
     d[o + 2] |= v >> 16;
@@ -754,12 +764,12 @@
       return a.f - b.f;
     });
     t.push({ s: -1, f: 25001 });
-    var l2 = t[0], r = t[1], i0 = 0, i1 = 1, i2 = 2;
-    t[0] = { s: -1, f: l2.f + r.f, l: l2, r };
+    var l = t[0], r = t[1], i0 = 0, i1 = 1, i2 = 2;
+    t[0] = { s: -1, f: l.f + r.f, l, r };
     while (i1 != s - 1) {
-      l2 = t[t[i0].f < t[i2].f ? i0++ : i2++];
+      l = t[t[i0].f < t[i2].f ? i0++ : i2++];
       r = t[i0 != i1 && t[i0].f < t[i2].f ? i0++ : i2++];
-      t[i1++] = { s: -1, f: l2.f + r.f, l: l2, r };
+      t[i1++] = { s: -1, f: l.f + r.f, l, r };
     }
     var maxSym = t2[0].s;
     for (var i = 1; i < s; ++i) {
@@ -801,8 +811,8 @@
     }
     return { t: new u8(tr), l: mbt };
   };
-  var ln = function(n2, l2, d) {
-    return n2.s == -1 ? Math.max(ln(n2.l, l2, d + 1), ln(n2.r, l2, d + 1)) : l2[n2.s] = d;
+  var ln = function(n, l, d) {
+    return n.s == -1 ? Math.max(ln(n.l, l, d + 1), ln(n.r, l, d + 1)) : l[n.s] = d;
   };
   var lc = function(c) {
     var s = c.length;
@@ -840,10 +850,10 @@
     return { c: cl.subarray(0, cli), n: s };
   };
   var clen = function(cf, cl) {
-    var l2 = 0;
+    var l = 0;
     for (var i = 0; i < cl.length; ++i)
-      l2 += cf[i] * cl[i];
-    return l2;
+      l += cf[i] * cl[i];
+    return l;
   };
   var wfblk = function(out, pos, dat) {
     var s = dat.length;
@@ -856,8 +866,8 @@
       out[o + i + 4] = dat[i];
     return (o + 4 + s) * 8;
   };
-  var wblk = function(dat, out, final, syms, lf, df, eb, li, bs, bl, p2) {
-    wbits(out, p2++, final);
+  var wblk = function(dat, out, final, syms, lf, df, eb, li, bs, bl, p) {
+    wbits(out, p++, final);
     ++lf[256];
     var _a2 = hTree(lf, 15), dlt = _a2.t, mlb = _a2.l;
     var _b2 = hTree(df, 15), ddt = _b2.t, mdb = _b2.l;
@@ -876,27 +886,27 @@
     var ftlen = clen(lf, flt) + clen(df, fdt) + eb;
     var dtlen = clen(lf, dlt) + clen(df, ddt) + eb + 14 + 3 * nlcc + clen(lcfreq, lct) + 2 * lcfreq[16] + 3 * lcfreq[17] + 7 * lcfreq[18];
     if (bs >= 0 && flen <= ftlen && flen <= dtlen)
-      return wfblk(out, p2, dat.subarray(bs, bs + bl));
+      return wfblk(out, p, dat.subarray(bs, bs + bl));
     var lm, ll, dm, dl;
-    wbits(out, p2, 1 + (dtlen < ftlen)), p2 += 2;
+    wbits(out, p, 1 + (dtlen < ftlen)), p += 2;
     if (dtlen < ftlen) {
       lm = hMap(dlt, mlb), ll = dlt, dm = hMap(ddt, mdb), dl = ddt;
       var llm = hMap(lct, mlcb);
-      wbits(out, p2, nlc - 257);
-      wbits(out, p2 + 5, ndc - 1);
-      wbits(out, p2 + 10, nlcc - 4);
-      p2 += 14;
+      wbits(out, p, nlc - 257);
+      wbits(out, p + 5, ndc - 1);
+      wbits(out, p + 10, nlcc - 4);
+      p += 14;
       for (var i = 0; i < nlcc; ++i)
-        wbits(out, p2 + 3 * i, lct[clim[i]]);
-      p2 += 3 * nlcc;
+        wbits(out, p + 3 * i, lct[clim[i]]);
+      p += 3 * nlcc;
       var lcts = [lclt, lcdt];
       for (var it = 0; it < 2; ++it) {
         var clct = lcts[it];
         for (var i = 0; i < clct.length; ++i) {
           var len = clct[i] & 31;
-          wbits(out, p2, llm[len]), p2 += lct[len];
+          wbits(out, p, llm[len]), p += lct[len];
           if (len > 15)
-            wbits(out, p2, clct[i] >> 5 & 127), p2 += clct[i] >> 12;
+            wbits(out, p, clct[i] >> 5 & 127), p += clct[i] >> 12;
         }
       }
     } else {
@@ -906,19 +916,19 @@
       var sym = syms[i];
       if (sym > 255) {
         var len = sym >> 18 & 31;
-        wbits16(out, p2, lm[len + 257]), p2 += ll[len + 257];
+        wbits16(out, p, lm[len + 257]), p += ll[len + 257];
         if (len > 7)
-          wbits(out, p2, sym >> 23 & 31), p2 += fleb[len];
+          wbits(out, p, sym >> 23 & 31), p += fleb[len];
         var dst = sym & 31;
-        wbits16(out, p2, dm[dst]), p2 += dl[dst];
+        wbits16(out, p, dm[dst]), p += dl[dst];
         if (dst > 3)
-          wbits16(out, p2, sym >> 5 & 8191), p2 += fdeb[dst];
+          wbits16(out, p, sym >> 5 & 8191), p += fdeb[dst];
       } else {
-        wbits16(out, p2, lm[sym]), p2 += ll[sym];
+        wbits16(out, p, lm[sym]), p += ll[sym];
       }
     }
-    wbits16(out, p2, lm[256]);
-    return p2 + ll[256];
+    wbits16(out, p, lm[256]);
+    return p + ll[256];
   };
   var deo = /* @__PURE__ */ new i32([65540, 131080, 131088, 131104, 262176, 1048704, 1048832, 2114560, 2117632]);
   var et = /* @__PURE__ */ new u8(0);
@@ -932,7 +942,7 @@
       if (pos)
         w[0] = st.r >> 3;
       var opt = deo[lvl - 1];
-      var n2 = opt >> 13, c = opt & 8191;
+      var n = opt >> 13, c = opt & 8191;
       var msk_1 = (1 << plvl) - 1;
       var prev = st.p || new u16(32768), head = st.h || new u16(msk_1 + 1);
       var bs1_1 = Math.ceil(plvl / 3), bs2_1 = 2 * bs1_1;
@@ -957,18 +967,18 @@
             for (var j = 0; j < 30; ++j)
               df[j] = 0;
           }
-          var l2 = 2, d = 0, ch_1 = c, dif = imod - pimod & 32767;
+          var l = 2, d = 0, ch_1 = c, dif = imod - pimod & 32767;
           if (rem > 2 && hv == hsh(i - dif)) {
-            var maxn = Math.min(n2, rem) - 1;
+            var maxn = Math.min(n, rem) - 1;
             var maxd = Math.min(32767, i);
             var ml = Math.min(258, rem);
             while (dif <= maxd && --ch_1 && imod != pimod) {
-              if (dat[i + l2] == dat[i + l2 - dif]) {
+              if (dat[i + l] == dat[i + l - dif]) {
                 var nl = 0;
                 for (; nl < ml && dat[i + nl] == dat[i + nl - dif]; ++nl)
                   ;
-                if (nl > l2) {
-                  l2 = nl, d = dif;
+                if (nl > l) {
+                  l = nl, d = dif;
                   if (nl > maxn)
                     break;
                   var mmd = Math.min(dif, nl - 2);
@@ -987,12 +997,12 @@
             }
           }
           if (d) {
-            syms[li++] = 268435456 | revfl[l2] << 18 | revfd[d];
-            var lin = revfl[l2] & 31, din = revfd[d] & 31;
+            syms[li++] = 268435456 | revfl[l] << 18 | revfd[d];
+            var lin = revfl[l] & 31, din = revfd[d] & 31;
             eb += fleb[lin] + fdeb[din];
             ++lf[257 + lin];
             ++df[din];
-            wi = i + l2;
+            wi = i + l;
             ++lc_1;
           } else {
             syms[li++] = dat[i];
@@ -1023,16 +1033,16 @@
     }
     return slc(o, 0, pre + shft(pos) + post);
   };
-  var crct = /* @__PURE__ */ function() {
+  var crct = /* @__PURE__ */ (function() {
     var t = new Int32Array(256);
     for (var i = 0; i < 256; ++i) {
-      var c = i, k2 = 9;
-      while (--k2)
+      var c = i, k = 9;
+      while (--k)
         c = (c & 1 && -306674912) ^ c >>> 1;
       t[i] = c;
     }
     return t;
-  }();
+  })();
   var crc = function() {
     var c = -1;
     return {
@@ -1063,10 +1073,10 @@
   };
   var mrg = function(a, b) {
     var o = {};
-    for (var k2 in a)
-      o[k2] = a[k2];
-    for (var k2 in b)
-      o[k2] = b[k2];
+    for (var k in a)
+      o[k] = a[k];
+    for (var k in b)
+      o[k] = b[k];
     return o;
   };
   var wbytes = function(d, b, v) {
@@ -1076,16 +1086,16 @@
   function deflateSync(data, opts) {
     return dopt(data, opts || {}, 0, 0);
   }
-  var fltn = function(d, p2, t, o) {
-    for (var k2 in d) {
-      var val = d[k2], n2 = p2 + k2, op = o;
+  var fltn = function(d, p, t, o) {
+    for (var k in d) {
+      var val = d[k], n = p + k, op = o;
       if (Array.isArray(val))
         op = mrg(o, val[1]), val = val[0];
       if (val instanceof u8)
-        t[n2] = [val, op];
+        t[n] = [val, op];
       else {
-        t[n2 += "/"] = [new u8(0), op];
-        fltn(val, n2, t, o);
+        t[n += "/"] = [new u8(0), op];
+        fltn(val, n, t, o);
       }
     }
   };
@@ -1101,17 +1111,17 @@
     var i;
     if (te)
       return te.encode(str);
-    var l2 = str.length;
+    var l = str.length;
     var ar = new u8(str.length + (str.length >> 1));
     var ai = 0;
     var w = function(v) {
       ar[ai++] = v;
     };
-    for (var i = 0; i < l2; ++i) {
+    for (var i = 0; i < l; ++i) {
       if (ai + 5 > ar.length) {
-        var n2 = new u8(ai + 8 + (l2 - i << 1));
-        n2.set(ar);
-        ar = n2;
+        var n = new u8(ai + 8 + (l - i << 1));
+        n.set(ar);
+        ar = n;
       }
       var c = str.charCodeAt(i);
       if (c < 128 || latin1)
@@ -1128,48 +1138,48 @@
   var exfl = function(ex) {
     var le = 0;
     if (ex) {
-      for (var k2 in ex) {
-        var l2 = ex[k2].length;
-        if (l2 > 65535)
+      for (var k in ex) {
+        var l = ex[k].length;
+        if (l > 65535)
           err(9);
-        le += l2 + 4;
+        le += l + 4;
       }
     }
     return le;
   };
-  var wzh = function(d, b, f2, fn, u, c, ce, co) {
-    var fl2 = fn.length, ex = f2.extra, col = co && co.length;
+  var wzh = function(d, b, f, fn, u, c, ce, co) {
+    var fl2 = fn.length, ex = f.extra, col = co && co.length;
     var exl = exfl(ex);
     wbytes(d, b, ce != null ? 33639248 : 67324752), b += 4;
     if (ce != null)
-      d[b++] = 20, d[b++] = f2.os;
+      d[b++] = 20, d[b++] = f.os;
     d[b] = 20, b += 2;
-    d[b++] = f2.flag << 1 | (c < 0 && 8), d[b++] = u && 8;
-    d[b++] = f2.compression & 255, d[b++] = f2.compression >> 8;
-    var dt = new Date(f2.mtime == null ? Date.now() : f2.mtime), y = dt.getFullYear() - 1980;
+    d[b++] = f.flag << 1 | (c < 0 && 8), d[b++] = u && 8;
+    d[b++] = f.compression & 255, d[b++] = f.compression >> 8;
+    var dt = new Date(f.mtime == null ? Date.now() : f.mtime), y = dt.getFullYear() - 1980;
     if (y < 0 || y > 119)
       err(10);
     wbytes(d, b, y << 25 | dt.getMonth() + 1 << 21 | dt.getDate() << 16 | dt.getHours() << 11 | dt.getMinutes() << 5 | dt.getSeconds() >> 1), b += 4;
     if (c != -1) {
-      wbytes(d, b, f2.crc);
+      wbytes(d, b, f.crc);
       wbytes(d, b + 4, c < 0 ? -c - 2 : c);
-      wbytes(d, b + 8, f2.size);
+      wbytes(d, b + 8, f.size);
     }
     wbytes(d, b + 12, fl2);
     wbytes(d, b + 14, exl), b += 16;
     if (ce != null) {
       wbytes(d, b, col);
-      wbytes(d, b + 6, f2.attrs);
+      wbytes(d, b + 6, f.attrs);
       wbytes(d, b + 10, ce), b += 14;
     }
     d.set(fn, b);
     b += fl2;
     if (exl) {
-      for (var k2 in ex) {
-        var exf = ex[k2], l2 = exf.length;
-        wbytes(d, b, +k2);
-        wbytes(d, b + 2, l2);
-        d.set(exf, b + 4), b += 4 + l2;
+      for (var k in ex) {
+        var exf = ex[k], l = exf.length;
+        wbytes(d, b, +k);
+        wbytes(d, b + 2, l);
+        d.set(exf, b + 4), b += 4 + l;
       }
     }
     if (col)
@@ -1192,110 +1202,117 @@
     var o = 0;
     var tot = 0;
     for (var fn in r) {
-      var _a2 = r[fn], file = _a2[0], p2 = _a2[1];
-      var compression = p2.level == 0 ? 0 : 8;
-      var f2 = strToU8(fn), s = f2.length;
-      var com = p2.comment, m2 = com && strToU8(com), ms = m2 && m2.length;
-      var exl = exfl(p2.extra);
+      var _a2 = r[fn], file = _a2[0], p = _a2[1];
+      var compression = p.level == 0 ? 0 : 8;
+      var f = strToU8(fn), s = f.length;
+      var com = p.comment, m = com && strToU8(com), ms = m && m.length;
+      var exl = exfl(p.extra);
       if (s > 65535)
         err(11);
-      var d = compression ? deflateSync(file, p2) : file, l2 = d.length;
+      var d = compression ? deflateSync(file, p) : file, l = d.length;
       var c = crc();
       c.p(file);
-      files2.push(mrg(p2, {
+      files2.push(mrg(p, {
         size: file.length,
         crc: c.d(),
         c: d,
-        f: f2,
-        m: m2,
-        u: s != fn.length || m2 && com.length != ms,
+        f,
+        m,
+        u: s != fn.length || m && com.length != ms,
         o,
         compression
       }));
-      o += 30 + s + exl + l2;
-      tot += 76 + 2 * (s + exl) + (ms || 0) + l2;
+      o += 30 + s + exl + l;
+      tot += 76 + 2 * (s + exl) + (ms || 0) + l;
     }
     var out = new u8(tot + 22), oe = o, cdl = tot - o;
     for (var i = 0; i < files2.length; ++i) {
-      var f2 = files2[i];
-      wzh(out, f2.o, f2, f2.f, f2.u, f2.c.length);
-      var badd = 30 + f2.f.length + exfl(f2.extra);
-      out.set(f2.c, f2.o + badd);
-      wzh(out, o, f2, f2.f, f2.u, f2.c.length, f2.o, f2.m), o += 16 + badd + (f2.m ? f2.m.length : 0);
+      var f = files2[i];
+      wzh(out, f.o, f, f.f, f.u, f.c.length);
+      var badd = 30 + f.f.length + exfl(f.extra);
+      out.set(f.c, f.o + badd);
+      wzh(out, o, f, f.f, f.u, f.c.length, f.o, f.m), o += 16 + badd + (f.m ? f.m.length : 0);
     }
     wzf(out, o, files2.length, cdl, oe);
     return out;
   }
-  var FileSaver_min = { exports: {} };
-  (function(module, exports) {
-    (function(a, b) {
-      b();
-    })(commonjsGlobal, function() {
-      function b(a2, b2) {
-        return "undefined" == typeof b2 ? b2 = { autoBom: false } : "object" != typeof b2 && (console.warn("Deprecated: Expected third argument to be a object"), b2 = { autoBom: !b2 }), b2.autoBom && /^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(a2.type) ? new Blob(["\uFEFF", a2], { type: a2.type }) : a2;
-      }
-      function c(a2, b2, c2) {
-        var d2 = new XMLHttpRequest();
-        d2.open("GET", a2), d2.responseType = "blob", d2.onload = function() {
-          g(d2.response, b2, c2);
-        }, d2.onerror = function() {
-          console.error("could not download file");
-        }, d2.send();
-      }
-      function d(a2) {
-        var b2 = new XMLHttpRequest();
-        b2.open("HEAD", a2, false);
-        try {
-          b2.send();
-        } catch (a3) {
+  var FileSaver_min$1 = { exports: {} };
+  var FileSaver_min = FileSaver_min$1.exports;
+  var hasRequiredFileSaver_min;
+  function requireFileSaver_min() {
+    if (hasRequiredFileSaver_min) return FileSaver_min$1.exports;
+    hasRequiredFileSaver_min = 1;
+    (function(module, exports) {
+      (function(a, b) {
+        b();
+      })(FileSaver_min, function() {
+        function b(a2, b2) {
+          return "undefined" == typeof b2 ? b2 = { autoBom: false } : "object" != typeof b2 && (console.warn("Deprecated: Expected third argument to be a object"), b2 = { autoBom: !b2 }), b2.autoBom && /^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(a2.type) ? new Blob(["\uFEFF", a2], { type: a2.type }) : a2;
         }
-        return 200 <= b2.status && 299 >= b2.status;
-      }
-      function e(a2) {
-        try {
-          a2.dispatchEvent(new MouseEvent("click"));
-        } catch (c2) {
-          var b2 = document.createEvent("MouseEvents");
-          b2.initMouseEvent("click", true, true, window, 0, 0, 0, 80, 20, false, false, false, false, 0, null), a2.dispatchEvent(b2);
+        function c(a2, b2, c2) {
+          var d2 = new XMLHttpRequest();
+          d2.open("GET", a2), d2.responseType = "blob", d2.onload = function() {
+            g(d2.response, b2, c2);
+          }, d2.onerror = function() {
+            console.error("could not download file");
+          }, d2.send();
         }
-      }
-      var f2 = "object" == typeof window && window.window === window ? window : "object" == typeof self && self.self === self ? self : "object" == typeof commonjsGlobal && commonjsGlobal.global === commonjsGlobal ? commonjsGlobal : void 0, a = f2.navigator && /Macintosh/.test(navigator.userAgent) && /AppleWebKit/.test(navigator.userAgent) && !/Safari/.test(navigator.userAgent), g = f2.saveAs || ("object" != typeof window || window !== f2 ? function() {
-      } : "download" in HTMLAnchorElement.prototype && !a ? function(b2, g2, h) {
-        var i = f2.URL || f2.webkitURL, j = document.createElement("a");
-        g2 = g2 || b2.name || "download", j.download = g2, j.rel = "noopener", "string" == typeof b2 ? (j.href = b2, j.origin === location.origin ? e(j) : d(j.href) ? c(b2, g2, h) : e(j, j.target = "_blank")) : (j.href = i.createObjectURL(b2), setTimeout(function() {
-          i.revokeObjectURL(j.href);
-        }, 4e4), setTimeout(function() {
-          e(j);
-        }, 0));
-      } : "msSaveOrOpenBlob" in navigator ? function(f3, g2, h) {
-        if (g2 = g2 || f3.name || "download", "string" != typeof f3) navigator.msSaveOrOpenBlob(b(f3, h), g2);
-        else if (d(f3)) c(f3, g2, h);
-        else {
-          var i = document.createElement("a");
-          i.href = f3, i.target = "_blank", setTimeout(function() {
-            e(i);
-          });
+        function d(a2) {
+          var b2 = new XMLHttpRequest();
+          b2.open("HEAD", a2, false);
+          try {
+            b2.send();
+          } catch (a3) {
+          }
+          return 200 <= b2.status && 299 >= b2.status;
         }
-      } : function(b2, d2, e2, g2) {
-        if (g2 = g2 || open("", "_blank"), g2 && (g2.document.title = g2.document.body.innerText = "downloading..."), "string" == typeof b2) return c(b2, d2, e2);
-        var h = "application/octet-stream" === b2.type, i = /constructor/i.test(f2.HTMLElement) || f2.safari, j = /CriOS\/[\d]+/.test(navigator.userAgent);
-        if ((j || h && i || a) && "undefined" != typeof FileReader) {
-          var k2 = new FileReader();
-          k2.onloadend = function() {
-            var a2 = k2.result;
-            a2 = j ? a2 : a2.replace(/^data:[^;]*;/, "data:attachment/file;"), g2 ? g2.location.href = a2 : location = a2, g2 = null;
-          }, k2.readAsDataURL(b2);
-        } else {
-          var l2 = f2.URL || f2.webkitURL, m2 = l2.createObjectURL(b2);
-          g2 ? g2.location = m2 : location.href = m2, g2 = null, setTimeout(function() {
-            l2.revokeObjectURL(m2);
-          }, 4e4);
+        function e(a2) {
+          try {
+            a2.dispatchEvent(new MouseEvent("click"));
+          } catch (c2) {
+            var b2 = document.createEvent("MouseEvents");
+            b2.initMouseEvent("click", true, true, window, 0, 0, 0, 80, 20, false, false, false, false, 0, null), a2.dispatchEvent(b2);
+          }
         }
+        var f = "object" == typeof window && window.window === window ? window : "object" == typeof self && self.self === self ? self : "object" == typeof commonjsGlobal && commonjsGlobal.global === commonjsGlobal ? commonjsGlobal : void 0, a = f.navigator && /Macintosh/.test(navigator.userAgent) && /AppleWebKit/.test(navigator.userAgent) && !/Safari/.test(navigator.userAgent), g = f.saveAs || ("object" != typeof window || window !== f ? function() {
+        } : "download" in HTMLAnchorElement.prototype && !a ? function(b2, g2, h) {
+          var i = f.URL || f.webkitURL, j = document.createElement("a");
+          g2 = g2 || b2.name || "download", j.download = g2, j.rel = "noopener", "string" == typeof b2 ? (j.href = b2, j.origin === location.origin ? e(j) : d(j.href) ? c(b2, g2, h) : e(j, j.target = "_blank")) : (j.href = i.createObjectURL(b2), setTimeout(function() {
+            i.revokeObjectURL(j.href);
+          }, 4e4), setTimeout(function() {
+            e(j);
+          }, 0));
+        } : "msSaveOrOpenBlob" in navigator ? function(f2, g2, h) {
+          if (g2 = g2 || f2.name || "download", "string" != typeof f2) navigator.msSaveOrOpenBlob(b(f2, h), g2);
+          else if (d(f2)) c(f2, g2, h);
+          else {
+            var i = document.createElement("a");
+            i.href = f2, i.target = "_blank", setTimeout(function() {
+              e(i);
+            });
+          }
+        } : function(b2, d2, e2, g2) {
+          if (g2 = g2 || open("", "_blank"), g2 && (g2.document.title = g2.document.body.innerText = "downloading..."), "string" == typeof b2) return c(b2, d2, e2);
+          var h = "application/octet-stream" === b2.type, i = /constructor/i.test(f.HTMLElement) || f.safari, j = /CriOS\/[\d]+/.test(navigator.userAgent);
+          if ((j || h && i || a) && "undefined" != typeof FileReader) {
+            var k = new FileReader();
+            k.onloadend = function() {
+              var a2 = k.result;
+              a2 = j ? a2 : a2.replace(/^data:[^;]*;/, "data:attachment/file;"), g2 ? g2.location.href = a2 : location = a2, g2 = null;
+            }, k.readAsDataURL(b2);
+          } else {
+            var l = f.URL || f.webkitURL, m = l.createObjectURL(b2);
+            g2 ? g2.location = m : location.href = m, g2 = null, setTimeout(function() {
+              l.revokeObjectURL(m);
+            }, 4e4);
+          }
+        });
+        f.saveAs = g.saveAs = g, module.exports = g;
       });
-      f2.saveAs = g.saveAs = g, module.exports = g;
-    });
-  })(FileSaver_min);
-  var FileSaver_minExports = FileSaver_min.exports;
+    })(FileSaver_min$1);
+    return FileSaver_min$1.exports;
+  }
+  var FileSaver_minExports = requireFileSaver_min();
   var _GM_xmlhttpRequest = /* @__PURE__ */ (() => typeof GM_xmlhttpRequest != "undefined" ? GM_xmlhttpRequest : void 0)();
   var _unsafeWindow = /* @__PURE__ */ (() => typeof unsafeWindow != "undefined" ? unsafeWindow : void 0)();
   class AbstractAdapter {
@@ -1820,7 +1837,7 @@
       items
     ] });
   };
-  const version = "1.8.2";
+  const version = "1.8.3";
   function RadioGroup({ value, items = [], onChange }) {
     const radios = items.map(
       ({ value: radioValue, element }) => {
@@ -1992,6 +2009,7 @@
         let adapter = void 0;
         switch (_unsafeWindow.location.host) {
           case "telegra.ph":
+          case "graph.org":
             adapter = new TelegraphAdapter();
             break;
           case "nhentai.net":
@@ -2095,7 +2113,7 @@
       }
     );
   };
-  client.createRoot(
+  ReactDOM.createRoot(
     (() => {
       const app = document.createElement("div");
       app.className = "app";
