@@ -52,7 +52,7 @@ const TaskPanel: React.FC<Props> = (props) => {
       const zipBlob = new Blob([zipBytes], {
         type: "application/zip",
       });
-      const zipName = `${snap.gallery.name}.zip`;
+      const zipName = `${snap.gallery.name}.cbz`;
       saveAs(zipBlob, zipName);
     }
   }

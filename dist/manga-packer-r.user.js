@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Manga Packer R
 // @namespace    com.undsf.tmus.mgpk
-// @version      1.8.3
+// @version      1.8.4
 // @author       Arathi of Nebnizilla
 // @icon         https://vitejs.dev/logo.svg
 // @homepageURL  https://github.com/Arathi/manga-packer-r
@@ -111,16 +111,16 @@
     return Object.create(getProto(obj), descriptors);
   };
   const createProxyHandler = (origObj, isTargetCopied) => {
-    const state = {
+    const state2 = {
       [IS_TARGET_COPIED_PROPERTY]: isTargetCopied
     };
     let trackObject = false;
     const recordUsage = (type, key) => {
       if (!trackObject) {
-        let used = state[AFFECTED_PROPERTY].get(origObj);
+        let used = state2[AFFECTED_PROPERTY].get(origObj);
         if (!used) {
           used = {};
-          state[AFFECTED_PROPERTY].set(origObj, used);
+          state2[AFFECTED_PROPERTY].set(origObj, used);
         }
         if (type === ALL_OWN_KEYS_PROPERTY) {
           used[ALL_OWN_KEYS_PROPERTY] = true;
@@ -136,7 +136,7 @@
     };
     const recordObjectAsUsed = () => {
       trackObject = true;
-      state[AFFECTED_PROPERTY].delete(origObj);
+      state2[AFFECTED_PROPERTY].delete(origObj);
     };
     const handler = {
       get(target, key) {
@@ -144,7 +144,7 @@
           return origObj;
         }
         recordUsage(KEYS_PROPERTY, key);
-        return createProxy(Reflect.get(target, key), state[AFFECTED_PROPERTY], state[PROXY_CACHE_PROPERTY], state[TARGET_CACHE_PROPERTY]);
+        return createProxy(Reflect.get(target, key), state2[AFFECTED_PROPERTY], state2[PROXY_CACHE_PROPERTY], state2[TARGET_CACHE_PROPERTY]);
       },
       has(target, key) {
         if (key === TRACK_MEMO_SYMBOL) {
@@ -166,7 +166,7 @@
     if (isTargetCopied) {
       handler.set = handler.deleteProperty = () => false;
     }
-    return [handler, state];
+    return [handler, state2];
   };
   const getOriginalObject = (obj) => (
     // unwrap proxy
@@ -512,10 +512,10 @@
     return createSnapshot(target, ensureVersion());
   }
   const __vite_import_meta_env__ = {};
-  const useAffectedDebugValue = (state, affected) => {
+  const useAffectedDebugValue = (state2, affected) => {
     const pathList = require$$0.useRef(void 0);
     require$$0.useEffect(() => {
-      pathList.current = affectedToPathList(state, affected);
+      pathList.current = affectedToPathList(state2, affected);
     });
     require$$0.useDebugValue(pathList.current);
   };
@@ -1718,8 +1718,8 @@
     }, []);
     return size;
   };
-  const store = proxy({
-    // #region state
+  const state = proxy({
+    // #region data
     gallery: void 0,
     status: void 0,
     // #endregion
@@ -1837,7 +1837,7 @@
       items
     ] });
   };
-  const version = "1.8.3";
+  const version = "1.8.4";
   function RadioGroup({ value, items = [], onChange }) {
     const radios = items.map(
       ({ value: radioValue, element }) => {
@@ -1871,7 +1871,7 @@
     const { margin = 8, padding = 8, border = 1 } = props;
     const panelHeight = windowSize.height - 2 * (margin + padding + border);
     const [minimized, setMinimized] = require$$0.useState(false);
-    const snap = useSnapshot(store);
+    const snap = useSnapshot(state);
     const sizeToggleIcon = minimized ? /* @__PURE__ */ jsxRuntimeExports.jsx(IconDown, {}) : /* @__PURE__ */ jsxRuntimeExports.jsx(IconUp, {});
     function onDownloadAllClick() {
       console.debug(`点击下载按钮`);
@@ -1888,7 +1888,7 @@
         const zipBlob = new Blob([zipBytes], {
           type: "application/zip"
         });
-        const zipName = `${snap.gallery.name}.zip`;
+        const zipName = `${snap.gallery.name}.cbz`;
         FileSaver_minExports.saveAs(zipBlob, zipName);
       }
     }
@@ -1897,7 +1897,7 @@
       setMinimized(!minimized);
     }
     function onTaskFilterChange(status) {
-      store.status = status;
+      state.status = status;
     }
     function download(task) {
       console.debug(`任务 ${task.id} 开始下载：`, task.url);
@@ -1992,11 +1992,11 @@
       });
     }
     function updateTask(patch) {
-      if (store.gallery !== void 0 && patch.id !== void 0) {
+      if (state.gallery !== void 0 && patch.id !== void 0) {
         const id = patch.id;
-        const task = store.gallery.tasks[id];
+        const task = state.gallery.tasks[id];
         if (task !== void 0) {
-          store.gallery.tasks[id] = {
+          state.gallery.tasks[id] = {
             ...task,
             ...patch
           };
@@ -2022,7 +2022,7 @@
         if (adapter !== void 0) {
           console.info(`正在生成gallery`);
           const gallery = await adapter.generateGallery();
-          store.gallery = gallery;
+          state.gallery = gallery;
         }
       }
     }
@@ -2034,7 +2034,7 @@
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         RadioGroup,
         {
-          value: store.status,
+          value: state.status,
           items: [
             {
               value: TaskStatus.All,
@@ -2059,14 +2059,14 @@
           ],
           onChange: (value) => {
             console.info(`任务状态过滤器切换为：`, value);
-            store.status = value;
+            state.status = value;
           }
         }
       ),
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         TaskList,
         {
-          tasks: store.filtered,
+          tasks: state.filtered,
           style: {
             height: panelHeight - 99
           }
@@ -2107,20 +2107,16 @@
               }
             )
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Flex, { className: "total-progress-row", align: "center", gap: 8, children: /* @__PURE__ */ jsxRuntimeExports.jsx(ProgressBar, { flex: 1, statusList: store.statusList }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Flex, { className: "total-progress-row", align: "center", gap: 8, children: /* @__PURE__ */ jsxRuntimeExports.jsx(ProgressBar, { flex: 1, statusList: state.statusList }) }),
           hidable
         ]
       }
     );
   };
-  ReactDOM.createRoot(
-    (() => {
-      const app = document.createElement("div");
-      app.className = "app";
-      app.id = "mgpk";
-      document.body.append(app);
-      return app;
-    })()
-  ).render(/* @__PURE__ */ jsxRuntimeExports.jsx(TaskPanel, { margin: 8, padding: 8 }));
+  const root = document.createElement("div");
+  root.className = "app";
+  root.id = "mgpk";
+  document.body.append(root);
+  ReactDOM.createRoot(root).render(/* @__PURE__ */ jsxRuntimeExports.jsx(TaskPanel, { margin: 8, padding: 8 }));
 
 })(React, ReactDOM);

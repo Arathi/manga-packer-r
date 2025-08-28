@@ -3,7 +3,7 @@ import { proxy } from "valtio";
 import Gallery from "@/domains/gallery";
 import Task, { TaskStatus } from "@/domains/task";
 
-interface State {
+interface Data {
   gallery?: Gallery;
   status?: TaskStatus;
 }
@@ -22,10 +22,10 @@ interface Computed {
   get statusAmounts(): Record<TaskStatus, number>;
 }
 
-type Store = State & Computed;
+type State = Data & Computed;
 
-const store = proxy<Store>({
-  // #region state
+const state = proxy<State>({
+  // #region data
   gallery: undefined,
   status: undefined,
   // #endregion
@@ -74,4 +74,4 @@ const store = proxy<Store>({
   // #endregion
 });
 
-export default store;
+export default state;
