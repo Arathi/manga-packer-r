@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Manga Packer R
 // @namespace    com.undsf.tmus.mgpk
-// @version      1.8.4
+// @version      1.9.0
 // @author       Arathi of Nebnizilla
 // @icon         https://vitejs.dev/logo.svg
 // @homepageURL  https://github.com/Arathi/manga-packer-r
@@ -13,6 +13,7 @@
 // @match        https://nhentai.xxx/g/*/
 // @match        https://e-hentai.org/g/*/*/
 // @match        https://www.wnacg.com/photos-slide-aid-*.html
+// @match        https://www.manhuagui.com/comic/*/*.html
 // @require      https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js
 // @require      https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js
 // @grant        GM_addStyle
@@ -20,10 +21,10 @@
 // @grant        unsafeWindow
 // ==/UserScript==
 
-(r=>{if(typeof GM_addStyle=="function"){GM_addStyle(r);return}const o=document.createElement("style");o.textContent=r,document.head.append(o)})(" .mgpk-button{padding:5px 10px 1px}.progress-bar{border:1px solid gray}.progress-bar .blocks{width:100%}.progress-bar .blocks .progress-block-pending{background-color:#dadada}.progress-bar .blocks .progress-block-running{background-color:#165dff}.progress-bar .blocks .progress-block-success{background-color:#00b42a}.progress-bar .blocks .progress-block-error{background-color:#f53f3f}.task-view .task-file-name{width:40px;-webkit-user-select:none;user-select:none}.task-list{padding-right:2px;overflow-x:hidden;overflow-y:scroll}.task-list::-webkit-scrollbar{width:2px}.task-list::-webkit-scrollbar-thumb{background-color:#0006}.task-list::-webkit-scrollbar-track{background-color:#0000001a}.task-filter{border:1px solid gray;border-radius:0;font-size:12px}.task-filter .task-filter-item{padding:3px;border-left:1px solid gray;-webkit-user-select:none;user-select:none}.task-filter .task-filter-item:first-child{border-left:unset}.task-filter .task-filter-item-all-active{background:linear-gradient(to right,#dadada,#165dff,#f53f3f,#00b42a);color:#fff}.task-filter .task-filter-item-pending-active{background-color:#dadada;color:#000}.task-filter .task-filter-item-running-active{background-color:#165dff;color:#fff}.task-filter .task-filter-item-error-active{background-color:#f53f3f;color:#fff}.task-filter .task-filter-item-success-active{background-color:#00b42a;color:#fff}.task-panel{position:fixed;width:400px;top:8px;right:8px;background-color:#ffffffe6;border:solid 1px rgba(127,127,127,.8);border-radius:5px;padding:8px;font-size:16px;font-weight:400;color:#000} ");
-
 (function (require$$0, require$$0$1) {
   'use strict';
+
+  const d=new Set;const importCSS = async e=>{d.has(e)||(d.add(e),(t=>{typeof GM_addStyle=="function"?GM_addStyle(t):document.head.appendChild(document.createElement("style")).append(t);})(e));};
 
   var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
   function getDefaultExportFromCjs(x) {
@@ -82,7 +83,7 @@
     return client;
   }
   var clientExports = requireClient();
-  const ReactDOM = /* @__PURE__ */ getDefaultExportFromCjs(clientExports);
+  const ReactDOM = getDefaultExportFromCjs(clientExports);
   const TRACK_MEMO_SYMBOL = Symbol();
   const GET_ORIGINAL_SYMBOL = Symbol();
   const AFFECTED_PROPERTY = "a";
@@ -96,7 +97,7 @@
   const KEYS_PROPERTY = "k";
   let newProxy$1 = (target, handler) => new Proxy(target, handler);
   const getProto = Object.getPrototypeOf;
-  const objectsToTrack = /* @__PURE__ */ new WeakMap();
+  const objectsToTrack = new WeakMap();
   const isObjectToTrack = (obj) => obj && (objectsToTrack.has(obj) ? objectsToTrack.get(obj) : getProto(obj) === Object.prototype || getProto(obj) === Array.prototype);
   const isObject$1 = (x) => typeof x === "object" && x !== null;
   const needsToCopyTargetObject = (obj) => Object.values(Object.getOwnPropertyDescriptors(obj)).some((descriptor) => !descriptor.configurable && !descriptor.writable);
@@ -127,7 +128,7 @@
         } else {
           let set = used[type];
           if (!set) {
-            set = /* @__PURE__ */ new Set();
+            set = new Set();
             used[type] = set;
           }
           set.add(key);
@@ -169,9 +170,8 @@
     return [handler, state2];
   };
   const getOriginalObject = (obj) => (
-    // unwrap proxy
-    obj[GET_ORIGINAL_SYMBOL] || // otherwise
-    obj
+obj[GET_ORIGINAL_SYMBOL] ||
+obj
   );
   const createProxy = (obj, affected, proxyCache2, targetCache2) => {
     if (!isObjectToTrack(obj))
@@ -260,7 +260,7 @@
   };
   const affectedToPathList = (obj, affected, onlyWithValues) => {
     const list = [];
-    const seen = /* @__PURE__ */ new WeakSet();
+    const seen = new WeakSet();
     const walk = (x, path) => {
       var _a2, _b2, _c;
       if (seen.has(x)) {
@@ -319,9 +319,8 @@
       const desc = {
         value,
         enumerable,
-        // This is intentional to avoid copying with proxy-compare.
-        // It's still non-writable, so it avoids assigning a value.
-        configurable: true
+
+configurable: true
       };
       if (refSet.has(value)) {
         markToTrack(value, false);
@@ -362,11 +361,11 @@
       return true;
     }
   });
-  const proxyStateMap = /* @__PURE__ */ new WeakMap();
-  const refSet = /* @__PURE__ */ new WeakSet();
-  const snapCache = /* @__PURE__ */ new WeakMap();
-  const versionHolder = [1, 1];
-  const proxyCache = /* @__PURE__ */ new WeakMap();
+  const proxyStateMap = new WeakMap();
+  const refSet = new WeakSet();
+  const snapCache = new WeakMap();
+  const versionHolder = [1];
+  const proxyCache = new WeakMap();
   let objectIs = Object.is;
   let newProxy = (target, handler) => new Proxy(target, handler);
   let canProxy = canProxyDefault;
@@ -381,16 +380,16 @@
       return found;
     }
     let version2 = versionHolder[0];
-    const listeners = /* @__PURE__ */ new Set();
+    const listeners = new Set();
     const notifyUpdate = (op, nextVersion = ++versionHolder[0]) => {
       if (version2 !== nextVersion) {
-        version2 = nextVersion;
+        checkVersion = version2 = nextVersion;
         listeners.forEach((listener) => listener(op, nextVersion));
       }
     };
-    let checkVersion = versionHolder[1];
-    const ensureVersion = (nextCheckVersion = ++versionHolder[1]) => {
-      if (checkVersion !== nextCheckVersion && !listeners.size) {
+    let checkVersion = version2;
+    const ensureVersion = (nextCheckVersion = versionHolder[0]) => {
+      if (checkVersion !== nextCheckVersion) {
         checkVersion = nextCheckVersion;
         propProxyStates.forEach(([propProxyState]) => {
           const propVersion = propProxyState[1](nextCheckVersion);
@@ -406,7 +405,7 @@
       newOp[1] = [prop, ...newOp[1]];
       notifyUpdate(newOp, nextVersion);
     };
-    const propProxyStates = /* @__PURE__ */ new Map();
+    const propProxyStates = new Map();
     const addPropListener = (prop, propValue) => {
       const propProxyState = !refSet.has(propValue) && proxyStateMap.get(propValue);
       if (propProxyState) {
@@ -520,11 +519,11 @@
     require$$0.useDebugValue(pathList.current);
   };
   const condUseAffectedDebugValue = useAffectedDebugValue;
-  const targetCache = /* @__PURE__ */ new WeakMap();
+  const targetCache = new WeakMap();
   function useSnapshot(proxyObject, options) {
     const notifyInSync = void 0;
     const affected = require$$0.useMemo(
-      () => proxyObject && /* @__PURE__ */ new WeakMap(),
+      () => proxyObject && new WeakMap(),
       [proxyObject]
     );
     const lastSnapshot = require$$0.useRef(void 0);
@@ -545,7 +544,7 @@
             lastSnapshot.current,
             nextSnapshot,
             affected,
-            /* @__PURE__ */ new WeakMap()
+new WeakMap()
           )) {
             return lastSnapshot.current;
           }
@@ -562,7 +561,7 @@
     if ((__vite_import_meta_env__ ? "production" : void 0) !== "production") {
       condUseAffectedDebugValue(currSnapshot, affected);
     }
-    const proxyCache2 = require$$0.useMemo(() => /* @__PURE__ */ new WeakMap(), []);
+    const proxyCache2 = require$$0.useMemo(() => new WeakMap(), []);
     return createProxy(currSnapshot, affected, proxyCache2, targetCache);
   }
   var u8 = Uint8Array, u16 = Uint16Array, i32 = Int32Array;
@@ -596,11 +595,9 @@
     5,
     5,
     0,
-    /* unused */
+0,
     0,
-    0,
-    /* impossible */
-    0
+0
   ]);
   var fdeb = new u8([
     0,
@@ -633,8 +630,7 @@
     12,
     13,
     13,
-    /* unused */
-    0,
+0,
     0
   ]);
   var clim = new u8([16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15]);
@@ -696,8 +692,8 @@
   var fdt = new u8(32);
   for (var i = 0; i < 32; ++i)
     fdt[i] = 5;
-  var flm = /* @__PURE__ */ hMap(flt, 9);
-  var fdm = /* @__PURE__ */ hMap(fdt, 5);
+  var flm = hMap(flt, 9);
+  var fdm = hMap(fdt, 5);
   var shft = function(p) {
     return (p + 7) / 8 | 0;
   };
@@ -721,8 +717,7 @@
     "filename too long",
     "stream finishing",
     "invalid zip data"
-    // determined by unknown compression method
-  ];
+];
   var err = function(ind, msg, nt) {
     var e = new Error(msg || ec[ind]);
     e.code = ind;
@@ -930,8 +925,8 @@
     wbits16(out, p, lm[256]);
     return p + ll[256];
   };
-  var deo = /* @__PURE__ */ new i32([65540, 131080, 131088, 131104, 262176, 1048704, 1048832, 2114560, 2117632]);
-  var et = /* @__PURE__ */ new u8(0);
+  var deo = new i32([65540, 131080, 131088, 131104, 262176, 1048704, 1048832, 2114560, 2117632]);
+  var et = new u8(0);
   var dflt = function(dat, lvl, plvl, pre, post, st) {
     var s = st.z || dat.length;
     var o = new u8(pre + s + 5 * (1 + Math.ceil(s / 7e3)) + post);
@@ -1033,7 +1028,7 @@
     }
     return slc(o, 0, pre + shft(pos) + post);
   };
-  var crct = /* @__PURE__ */ (function() {
+  var crct = (function() {
     var t = new Int32Array(256);
     for (var i = 0; i < 256; ++i) {
       var c = i, k = 9;
@@ -1099,8 +1094,8 @@
       }
     }
   };
-  var te = typeof TextEncoder != "undefined" && /* @__PURE__ */ new TextEncoder();
-  var td = typeof TextDecoder != "undefined" && /* @__PURE__ */ new TextDecoder();
+  var te = typeof TextEncoder != "undefined" && new TextEncoder();
+  var td = typeof TextDecoder != "undefined" && new TextDecoder();
   var tds = 0;
   try {
     td.decode(et, { stream: true });
@@ -1313,14 +1308,14 @@
     return FileSaver_min$1.exports;
   }
   var FileSaver_minExports = requireFileSaver_min();
-  var _GM_xmlhttpRequest = /* @__PURE__ */ (() => typeof GM_xmlhttpRequest != "undefined" ? GM_xmlhttpRequest : void 0)();
-  var _unsafeWindow = /* @__PURE__ */ (() => typeof unsafeWindow != "undefined" ? unsafeWindow : void 0)();
+  var _GM_xmlhttpRequest = (() => typeof GM_xmlhttpRequest != "undefined" ? GM_xmlhttpRequest : void 0)();
+  var _unsafeWindow = (() => typeof unsafeWindow != "undefined" ? unsafeWindow : void 0)();
   class AbstractAdapter {
     generateGallery() {
       throw new Error(`生成Gallery方法未实现`);
     }
   }
-  var TaskStatus = /* @__PURE__ */ ((TaskStatus2) => {
+  var TaskStatus = ((TaskStatus2) => {
     TaskStatus2[TaskStatus2["Pending"] = 0] = "Pending";
     TaskStatus2[TaskStatus2["Running"] = 1] = "Running";
     TaskStatus2[TaskStatus2["Success"] = 2] = "Success";
@@ -1426,6 +1421,58 @@
       };
     }
   }
+  const REGEX_EVAL = /window\["\\x65\\x76\\x61\\x6c"\]\((.*)\)/;
+  const REGEX_IMG_DATA = /SMH\.imgData\(({.*})\)\.preInit\(\);/;
+  class ManHuaGuiAdapter extends AbstractAdapter {
+    async getImageData() {
+      const script = window.document.querySelector("body > script:not([src])")?.innerText;
+      if (script === void 0) {
+        throw new Error("");
+      }
+      let matched = REGEX_EVAL.exec(script);
+      if (matched === null) {
+        throw new Error("");
+      }
+      const packed = matched[1];
+      window.eval(`manhuagui_image_data = ${packed}`);
+      matched = REGEX_IMG_DATA.exec(manhuagui_image_data);
+      if (matched === null) {
+        throw new Error("");
+      }
+      const json = matched[1];
+      const imgData = JSON.parse(json);
+      return imgData;
+    }
+    async generateGallery() {
+      const smh = _unsafeWindow.SMH;
+      const currentHost = smh.picserv.getCurHost();
+      const pictureServer = smh.picserv.getHostName(currentHost);
+      const imgData = await this.getImageData();
+      console.info(imgData);
+      const galleryId = `mhg-${imgData.bid}`;
+      const tasks = {};
+      const sl = "";
+      imgData.files.forEach((file, index) => {
+        const name = `${index + 1}`.padStart(3, "0");
+        const taskId = `${galleryId}-${name}`;
+        const uri = `${imgData.path}/${file}${sl}`;
+        const url = smh.utils.getPath(pictureServer, uri);
+        const task = {
+          id: taskId,
+          url,
+          name,
+          status: TaskStatus.Pending,
+          referer: "https://www.manhuagui.com/"
+        };
+        tasks[taskId] = task;
+      });
+      return {
+        id: galleryId,
+        name: `${imgData.bname}-${imgData.cname}`,
+        tasks
+      };
+    }
+  }
   const URL_REGEX = /aid-(\d+)\.html/;
   class WnacgAdapter extends AbstractAdapter {
     async generateGallery() {
@@ -1466,8 +1513,10 @@
       return gallery;
     }
   }
+  const indexLess$5 = ".mgpk-button{padding:5px 10px 1px}";
+  importCSS(indexLess$5);
   const Button = ({ children, onClick }) => {
-    return /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "mgpk-button", onClick, children });
+    return jsxRuntimeExports.jsx("button", { className: "mgpk-button", onClick, children });
   };
   const Flex = (props) => {
     const {
@@ -1481,7 +1530,7 @@
       style,
       onClick
     } = props;
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    return jsxRuntimeExports.jsx(
       "div",
       {
         className,
@@ -1504,7 +1553,7 @@
     height: 16
   };
   const IconDown = ({ style = DefaultStyle }) => {
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    return jsxRuntimeExports.jsx(
       "svg",
       {
         viewBox: "0 0 1024 1024",
@@ -1514,7 +1563,7 @@
         width: "200",
         height: "200",
         style,
-        children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        children: jsxRuntimeExports.jsx(
           "path",
           {
             d: "M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3 0.1-12.7-6.4-12.7z",
@@ -1525,7 +1574,7 @@
     );
   };
   const IconDownload = ({ style = DefaultStyle }) => {
-    return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    return jsxRuntimeExports.jsxs(
       "svg",
       {
         viewBox: "0 0 1024 1024",
@@ -1536,14 +1585,14 @@
         height: "200",
         style,
         children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
+jsxRuntimeExports.jsx(
             "path",
             {
               d: "M505.7 661c3.2 4.1 9.4 4.1 12.6 0l112-141.7c4.1-5.2 0.4-12.9-6.3-12.9h-74.1V168c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v338.3H400c-6.7 0-10.4 7.7-6.3 12.9l112 141.8z",
               "p-id": "8937"
             }
           ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
+jsxRuntimeExports.jsx(
             "path",
             {
               d: "M878 626h-60c-4.4 0-8 3.6-8 8v154H214V634c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v198c0 17.7 14.3 32 32 32h684c17.7 0 32-14.3 32-32V634c0-4.4-3.6-8-8-8z",
@@ -1555,7 +1604,7 @@
     );
   };
   const IconSave = ({ style = DefaultStyle }) => {
-    return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    return jsxRuntimeExports.jsxs(
       "svg",
       {
         viewBox: "0 0 1024 1024",
@@ -1566,14 +1615,14 @@
         height: "200",
         style,
         children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
+jsxRuntimeExports.jsx(
             "path",
             {
               d: "M296 392h64v64h-64zM296 582v160h128V582h-64v-62h-64v62z m80 48v64h-32v-64h32zM360 328h64v64h-64zM296 264h64v64h-64zM360 456h64v64h-64zM360 200h64v64h-64z",
               "p-id": "9085"
             }
           ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
+jsxRuntimeExports.jsx(
             "path",
             {
               d: "M854.6 288.6L639.4 73.4c-6-6-14.1-9.4-22.6-9.4H192c-17.7 0-32 14.3-32 32v832c0 17.7 14.3 32 32 32h640c17.7 0 32-14.3 32-32V311.3c0-8.5-3.4-16.7-9.4-22.7zM790.2 326H602V137.8L790.2 326z m1.8 562H232V136h64v64h64v-64h174v216c0 23.2 18.8 42 42 42h216v494z",
@@ -1585,7 +1634,7 @@
     );
   };
   const IconUp = ({ style = DefaultStyle }) => {
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    return jsxRuntimeExports.jsx(
       "svg",
       {
         viewBox: "0 0 1024 1024",
@@ -1595,7 +1644,7 @@
         width: "200",
         height: "200",
         style,
-        children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        children: jsxRuntimeExports.jsx(
           "path",
           {
             d: "M890.5 755.3L537.9 269.2c-12.8-17.6-39-17.6-51.7 0L133.5 755.3c-3.8 5.3-0.1 12.7 6.5 12.7h75c5.1 0 9.9-2.5 12.9-6.6L512 369.8l284.1 391.6c3 4.1 7.8 6.6 12.9 6.6h75c6.5 0 10.3-7.4 6.5-12.7z",
@@ -1605,6 +1654,8 @@
       }
     );
   };
+  const indexLess$4 = ".progress-bar{border:1px solid gray}.progress-bar .blocks{width:100%}.progress-bar .blocks .progress-block-pending{background-color:#dadada}.progress-bar .blocks .progress-block-running{background-color:#165dff}.progress-bar .blocks .progress-block-success{background-color:#00b42a}.progress-bar .blocks .progress-block-error{background-color:#f53f3f}";
+  importCSS(indexLess$4);
   const ProgressBar = ({
     flex = 1,
     height = 20,
@@ -1623,7 +1674,7 @@
       const statusName = getStatusName(status);
       if (percent >= 100) {
         blocks.push(
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
+jsxRuntimeExports.jsx(
             Flex,
             {
               className: `progress-block-${statusName}`,
@@ -1634,7 +1685,7 @@
         );
       } else if (percent > 0 && percent < 100) {
         blocks.push(
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
+jsxRuntimeExports.jsx(
             Flex,
             {
               className: `progress-block-${statusName}`,
@@ -1644,7 +1695,7 @@
           )
         );
         blocks.push(
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
+jsxRuntimeExports.jsx(
             Flex,
             {
               className: `progress-block-pending`,
@@ -1655,7 +1706,7 @@
         );
       } else {
         blocks.push(
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
+jsxRuntimeExports.jsx(
             Flex,
             {
               className: `progress-block-pending`,
@@ -1675,7 +1726,7 @@
           succ++;
         }
         const statusName = getStatusName(status2);
-        return /* @__PURE__ */ jsxRuntimeExports.jsx(
+        return jsxRuntimeExports.jsx(
           Flex,
           {
             className: `progress-block progress-block-${statusName}`,
@@ -1690,9 +1741,9 @@
         text = `${succ}/${total} (${percent.toFixed(2)}%)`;
       }
     }
-    return /* @__PURE__ */ jsxRuntimeExports.jsxs(Flex, { className: "progress-bar", direction: "column", flex, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Flex, { className: "blocks", style: { height }, children: blocks }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
+    return jsxRuntimeExports.jsxs(Flex, { className: "progress-bar", direction: "column", flex, children: [
+jsxRuntimeExports.jsx(Flex, { className: "blocks", style: { height }, children: blocks }),
+jsxRuntimeExports.jsx(
         Flex,
         {
           className: "text",
@@ -1719,12 +1770,10 @@
     return size;
   };
   const state = proxy({
-    // #region data
-    gallery: void 0,
+gallery: void 0,
     status: void 0,
-    // #endregion
-    // #region computed
-    get tasks() {
+
+get tasks() {
       const results = [];
       if (this.gallery !== void 0) {
         const tasks = this.gallery.tasks;
@@ -1761,13 +1810,14 @@
       }
       return amounts;
     }
-    // #endregion
-  });
+});
+  const indexLess$3 = ".task-view .task-file-name{width:40px;-webkit-user-select:none;user-select:none}";
+  importCSS(indexLess$3);
   const TaskView = ({ task }) => {
     const { id, name, status, total, loaded } = task;
-    return /* @__PURE__ */ jsxRuntimeExports.jsxs(Flex, { className: "task-view", gap: 8, align: "center", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Flex, { className: "task-name", justify: "end", children: name }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
+    return jsxRuntimeExports.jsxs(Flex, { className: "task-view", gap: 8, align: "center", children: [
+jsxRuntimeExports.jsx(Flex, { className: "task-name", justify: "end", children: name }),
+jsxRuntimeExports.jsx(
         ProgressBar,
         {
           className: "task-progress-bar",
@@ -1780,12 +1830,16 @@
       )
     ] });
   };
+  const indexLess$2 = ".task-list{padding-right:2px;overflow-x:hidden;overflow-y:scroll}.task-list::-webkit-scrollbar{width:2px}.task-list::-webkit-scrollbar-thumb{background-color:#0006}.task-list::-webkit-scrollbar-track{background-color:#0000001a}";
+  importCSS(indexLess$2);
   const TaskList = ({ tasks = [], style }) => {
     const taskViews = tasks.map((task) => {
-      return /* @__PURE__ */ jsxRuntimeExports.jsx(TaskView, { task }, `task-${task.id}`);
+      return jsxRuntimeExports.jsx(TaskView, { task }, `task-${task.id}`);
     });
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(Flex, { className: "task-list", direction: "column", gap: 4, style, children: taskViews });
+    return jsxRuntimeExports.jsx(Flex, { className: "task-list", direction: "column", gap: 4, style, children: taskViews });
   };
+  const indexLess$1 = ".task-filter{border:1px solid gray;border-radius:0;font-size:12px}.task-filter .task-filter-item{padding:3px;border-left:1px solid gray;-webkit-user-select:none;user-select:none}.task-filter .task-filter-item:first-child{border-left:unset}.task-filter .task-filter-item-all-active{background:linear-gradient(to right,#dadada,#165dff,#f53f3f,#00b42a);color:#fff}.task-filter .task-filter-item-pending-active{background-color:#dadada;color:#000}.task-filter .task-filter-item-running-active{background-color:#165dff;color:#fff}.task-filter .task-filter-item-error-active{background-color:#f53f3f;color:#fff}.task-filter .task-filter-item-success-active{background-color:#00b42a;color:#fff}";
+  importCSS(indexLess$1);
   const TaskStatusList = [
     TaskStatus.Pending,
     TaskStatus.Running,
@@ -1802,7 +1856,7 @@
       if (status === s) {
         classNames.push(`task-filter-item-${statusName}-active`);
       }
-      return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      return jsxRuntimeExports.jsxs(
         Flex,
         {
           className: classNames.join(" "),
@@ -1818,8 +1872,8 @@
         `${s}`
       );
     });
-    return /* @__PURE__ */ jsxRuntimeExports.jsxs(Flex, { className: "task-filter", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
+    return jsxRuntimeExports.jsxs(Flex, { className: "task-filter", children: [
+jsxRuntimeExports.jsx(
         Flex,
         {
           className: [
@@ -1837,13 +1891,13 @@
       items
     ] });
   };
-  const version = "1.8.4";
+  const version = "1.9.0";
   function RadioGroup({ value, items = [], onChange }) {
     const radios = items.map(
       ({ value: radioValue, element }) => {
         const children = element ?? `${radioValue}`;
         const backgroundColor = value === radioValue ? "rgba(128, 128, 128, 0.3)" : void 0;
-        return /* @__PURE__ */ jsxRuntimeExports.jsx(
+        return jsxRuntimeExports.jsx(
           Flex,
           {
             flex: 1,
@@ -1863,8 +1917,10 @@
         );
       }
     );
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(Flex, { flex: 1, children: radios });
+    return jsxRuntimeExports.jsx(Flex, { flex: 1, children: radios });
   }
+  const indexLess = ".task-panel{position:fixed;width:400px;top:8px;right:8px;background-color:#ffffffe6;border:solid 1px rgba(127,127,127,.8);border-radius:5px;padding:8px;font-size:16px;font-weight:400;color:#000}";
+  importCSS(indexLess);
   const files = {};
   const TaskPanel = (props) => {
     const windowSize = useWindowSize();
@@ -1872,7 +1928,7 @@
     const panelHeight = windowSize.height - 2 * (margin + padding + border);
     const [minimized, setMinimized] = require$$0.useState(false);
     const snap = useSnapshot(state);
-    const sizeToggleIcon = minimized ? /* @__PURE__ */ jsxRuntimeExports.jsx(IconDown, {}) : /* @__PURE__ */ jsxRuntimeExports.jsx(IconUp, {});
+    const sizeToggleIcon = minimized ? jsxRuntimeExports.jsx(IconDown, {}) : jsxRuntimeExports.jsx(IconUp, {});
     function onDownloadAllClick() {
       console.debug(`点击下载按钮`);
       for (const task of snap.tasks) {
@@ -2018,6 +2074,9 @@
           case "www.wnacg.com":
             adapter = new WnacgAdapter();
             break;
+          case "www.manhuagui.com":
+            adapter = new ManHuaGuiAdapter();
+            break;
         }
         if (adapter !== void 0) {
           console.info(`正在生成gallery`);
@@ -2029,9 +2088,9 @@
     require$$0.useEffect(() => {
       init();
     }, []);
-    /* @__PURE__ */ jsxRuntimeExports.jsx(TaskFilter, { status: snap.status, onChange: onTaskFilterChange });
-    const hidable = minimized ? null : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
+jsxRuntimeExports.jsx(TaskFilter, { status: snap.status, onChange: onTaskFilterChange });
+    const hidable = minimized ? null : jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+jsxRuntimeExports.jsx(
         RadioGroup,
         {
           value: state.status,
@@ -2063,7 +2122,7 @@
           }
         }
       ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
+jsxRuntimeExports.jsx(
         TaskList,
         {
           tasks: state.filtered,
@@ -2073,7 +2132,7 @@
         }
       )
     ] });
-    return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    return jsxRuntimeExports.jsxs(
       Flex,
       {
         className: "task-panel",
@@ -2087,12 +2146,12 @@
           height: minimized ? void 0 : panelHeight
         },
         children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(Flex, { className: "buttons-row", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(Flex, { className: "buttons-left", justify: "start", gap: 8, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { className: "btn-download", onClick: onDownloadAllClick, children: /* @__PURE__ */ jsxRuntimeExports.jsx(IconDownload, {}) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { className: "btn-save", onClick: onSaveClick, children: /* @__PURE__ */ jsxRuntimeExports.jsx(IconSave, {}) })
+jsxRuntimeExports.jsxs(Flex, { className: "buttons-row", children: [
+jsxRuntimeExports.jsxs(Flex, { className: "buttons-left", justify: "start", gap: 8, children: [
+jsxRuntimeExports.jsx(Button, { className: "btn-download", onClick: onDownloadAllClick, children: jsxRuntimeExports.jsx(IconDownload, {}) }),
+jsxRuntimeExports.jsx(Button, { className: "btn-save", onClick: onSaveClick, children: jsxRuntimeExports.jsx(IconSave, {}) })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+jsxRuntimeExports.jsxs(
               Flex,
               {
                 className: "buttons-right",
@@ -2101,13 +2160,13 @@
                 align: "center",
                 gap: 8,
                 children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: version }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { className: "btn-toggle", onClick: onToggleClick, children: sizeToggleIcon })
+jsxRuntimeExports.jsx("span", { children: version }),
+jsxRuntimeExports.jsx(Button, { className: "btn-toggle", onClick: onToggleClick, children: sizeToggleIcon })
                 ]
               }
             )
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Flex, { className: "total-progress-row", align: "center", gap: 8, children: /* @__PURE__ */ jsxRuntimeExports.jsx(ProgressBar, { flex: 1, statusList: state.statusList }) }),
+jsxRuntimeExports.jsx(Flex, { className: "total-progress-row", align: "center", gap: 8, children: jsxRuntimeExports.jsx(ProgressBar, { flex: 1, statusList: state.statusList }) }),
           hidable
         ]
       }
@@ -2117,6 +2176,6 @@
   root.className = "app";
   root.id = "mgpk";
   document.body.append(root);
-  ReactDOM.createRoot(root).render(/* @__PURE__ */ jsxRuntimeExports.jsx(TaskPanel, { margin: 8, padding: 8 }));
+  ReactDOM.createRoot(root).render( jsxRuntimeExports.jsx(TaskPanel, { margin: 8, padding: 8 }));
 
 })(React, ReactDOM);
