@@ -1,10 +1,17 @@
+import { downloadZip, makeZip } from "client-zip";
+// import { zipSync } from "fflate";
+import { saveAs } from "file-saver";
 import { HTMLAttributes, useEffect, useState } from "react";
 import { useSnapshot } from "valtio";
-import { zipSync } from "fflate";
-import { saveAs } from "file-saver";
 import { GM_xmlhttpRequest, unsafeWindow } from "$";
 
-import { Adapter, TelegraphAdapter, NHentaiNetAdapter, WnacgAdapter, ManHuaGuiAdapter } from "@/adapters";
+import {
+  Adapter,
+  TelegraphAdapter,
+  WnacgAdapter,
+  ManHuaGuiAdapter,
+  NHentaiNetApiAdapter,
+} from "@/adapters";
 import Button from "@/components/button";
 import Flex from "@/components/flex";
 import { IconDown, IconDownload, IconSave, IconUp } from "@/components/icon";
@@ -20,6 +27,7 @@ import RadioGroup from "../radio/group";
 import "./index.less";
 
 const files: Record<string, Uint8Array> = {};
+// const blobs: Blob[] = [];
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   margin?: number;
@@ -45,16 +53,26 @@ const TaskPanel: React.FC<Props> = (props) => {
     }
   }
 
-  function onSaveClick() {
+  async function onSaveClick() {
     console.debug(`点击保存按钮`);
-    if (snap.gallery !== undefined) {
-      const zipBytes = zipSync(files);
-      const zipBlob = new Blob([zipBytes], {
-        type: "application/zip",
-      });
-      const zipName = `${snap.gallery.name}.cbz`;
-      saveAs(zipBlob, zipName);
+    if (snap.gallery === undefined) {
+      console.warn("gallery不存在");
+      return;
     }
+
+    const inputs = [];
+    for (const fileName in files) {
+      const file = files[fileName];
+      inputs.push({
+        name: fileName,
+        input: file,
+      });
+    }
+
+    const zipBlob = await downloadZip(inputs).blob();
+
+    const zipName = `${snap.gallery.name}.cbz`;
+    saveAs(zipBlob, zipName);
   }
 
   function onToggleClick() {
@@ -78,9 +96,7 @@ const TaskPanel: React.FC<Props> = (props) => {
       headers,
       responseType: "blob",
       onprogress: (event) => {
-        console.info(
-          `任务 ${task.id} 下载进度更新：${event.loaded} / ${event.total}`
-        );
+        console.info(`任务 ${task.id} 下载进度更新：${event.loaded} / ${event.total}`);
         updateTask({
           id: task.id,
           status: TaskStatus.Running,
@@ -91,13 +107,11 @@ const TaskPanel: React.FC<Props> = (props) => {
       onload: async (event) => {
         const blob = event.response;
         const url = event.finalUrl;
-        console.info(
-          `任务 ${task.id} 下载完成`, {
-            size: blob.size,
-            type: blob.type,
-            url,
-          }
-        );
+        console.info(`任务 ${task.id} 下载完成`, {
+          size: blob.size,
+          type: blob.type,
+          url,
+        });
 
         if (event.status === 200) {
           updateTask({
@@ -109,10 +123,10 @@ const TaskPanel: React.FC<Props> = (props) => {
           const buffer = await blob.arrayBuffer();
 
           let extName: string | undefined = undefined;
-          const slash = url.lastIndexOf('/');
+          const slash = url.lastIndexOf("/");
           if (slash > 0) {
             const fileName = url.substring(slash + 1);
-            const dot = fileName.lastIndexOf('.');
+            const dot = fileName.lastIndexOf(".");
             if (dot > 0) {
               extName = fileName.substring(dot + 1);
             }
@@ -140,7 +154,7 @@ const TaskPanel: React.FC<Props> = (props) => {
           }
           if (extName === undefined) {
             console.warn("无法从blob获取扩展名", blob.type);
-            extName = 'jpg';
+            extName = "jpg";
           }
 
           const fileName = `${task.name}.${extName}`;
@@ -185,7 +199,7 @@ const TaskPanel: React.FC<Props> = (props) => {
           adapter = new TelegraphAdapter();
           break;
         case "nhentai.net":
-          adapter = new NHentaiNetAdapter();
+          adapter = new NHentaiNetApiAdapter();
           break;
         case "www.wnacg.com":
           adapter = new WnacgAdapter();
@@ -207,9 +221,7 @@ const TaskPanel: React.FC<Props> = (props) => {
     init();
   }, []);
 
-  const filter = (
-    <TaskFilter status={snap.status} onChange={onTaskFilterChange} />
-  );
+  const filter = <TaskFilter status={snap.status} onChange={onTaskFilterChange} />;
 
   const hidable = minimized ? null : (
     <>
@@ -273,13 +285,7 @@ const TaskPanel: React.FC<Props> = (props) => {
             <IconSave />
           </Button>
         </Flex>
-        <Flex
-          className="buttons-right"
-          flex={1}
-          justify="end"
-          align="center"
-          gap={8}
-        >
+        <Flex className="buttons-right" flex={1} justify="end" align="center" gap={8}>
           <span>{version}</span>
           <Button className="btn-toggle" onClick={onToggleClick}>
             {sizeToggleIcon}

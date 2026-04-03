@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Manga Packer R
 // @namespace    com.undsf.tmus.mgpk
-// @version      1.9.0
+// @version      1.10.0
 // @author       Arathi of Nebnizilla
 // @icon         https://vitejs.dev/logo.svg
 // @homepageURL  https://github.com/Arathi/manga-packer-r
@@ -24,7 +24,7 @@
 (function (require$$0, require$$0$1) {
   'use strict';
 
-  const d=new Set;const importCSS = async e=>{d.has(e)||(d.add(e),(t=>{typeof GM_addStyle=="function"?GM_addStyle(t):document.head.appendChild(document.createElement("style")).append(t);})(e));};
+  const d$1=new Set;const importCSS = async e=>{d$1.has(e)||(d$1.add(e),(t=>{typeof GM_addStyle=="function"?GM_addStyle(t):(document.head||document.documentElement).appendChild(document.createElement("style")).append(t);})(e));};
 
   var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
   function getDefaultExportFromCjs(x) {
@@ -32,30 +32,21 @@
   }
   var jsxRuntime = { exports: {} };
   var reactJsxRuntime_production_min = {};
-  /**
-   * @license React
-   * react-jsx-runtime.production.min.js
-   *
-   * Copyright (c) Facebook, Inc. and its affiliates.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE file in the root directory of this source tree.
-   */
   var hasRequiredReactJsxRuntime_production_min;
   function requireReactJsxRuntime_production_min() {
     if (hasRequiredReactJsxRuntime_production_min) return reactJsxRuntime_production_min;
     hasRequiredReactJsxRuntime_production_min = 1;
-    var f = require$$0, k = Symbol.for("react.element"), l = Symbol.for("react.fragment"), m = Object.prototype.hasOwnProperty, n = f.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner, p = { key: true, ref: true, __self: true, __source: true };
-    function q(c, a, g) {
-      var b, d = {}, e = null, h = null;
-      void 0 !== g && (e = "" + g);
-      void 0 !== a.key && (e = "" + a.key);
-      void 0 !== a.ref && (h = a.ref);
-      for (b in a) m.call(a, b) && !p.hasOwnProperty(b) && (d[b] = a[b]);
-      if (c && c.defaultProps) for (b in a = c.defaultProps, a) void 0 === d[b] && (d[b] = a[b]);
-      return { $$typeof: k, type: c, key: e, ref: h, props: d, _owner: n.current };
+    var f2 = require$$0, k = Symbol.for("react.element"), l2 = Symbol.for("react.fragment"), m = Object.prototype.hasOwnProperty, n2 = f2.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner, p2 = { key: true, ref: true, __self: true, __source: true };
+    function q(c, a2, g2) {
+      var b2, d2 = {}, e2 = null, h2 = null;
+      void 0 !== g2 && (e2 = "" + g2);
+      void 0 !== a2.key && (e2 = "" + a2.key);
+      void 0 !== a2.ref && (h2 = a2.ref);
+      for (b2 in a2) m.call(a2, b2) && !p2.hasOwnProperty(b2) && (d2[b2] = a2[b2]);
+      if (c && c.defaultProps) for (b2 in a2 = c.defaultProps, a2) void 0 === d2[b2] && (d2[b2] = a2[b2]);
+      return { $$typeof: k, type: c, key: e2, ref: h2, props: d2, _owner: n2.current };
     }
-    reactJsxRuntime_production_min.Fragment = l;
+    reactJsxRuntime_production_min.Fragment = l2;
     reactJsxRuntime_production_min.jsx = q;
     reactJsxRuntime_production_min.jsxs = q;
     return reactJsxRuntime_production_min;
@@ -84,6 +75,251 @@
   }
   var clientExports = requireClient();
   const ReactDOM = getDefaultExportFromCjs(clientExports);
+  "stream" in Blob.prototype || Object.defineProperty(Blob.prototype, "stream", { value() {
+    return new Response(this).body;
+  } }), "setBigUint64" in DataView.prototype || Object.defineProperty(DataView.prototype, "setBigUint64", { value(e2, n2, t2) {
+    const i2 = Number(0xffffffffn & n2), r2 = Number(n2 >> 32n);
+    this.setUint32(e2 + (t2 ? 0 : 4), i2, t2), this.setUint32(e2 + (t2 ? 4 : 0), r2, t2);
+  } });
+  var e = (e2) => new DataView(new ArrayBuffer(e2)), n = (e2) => new Uint8Array(e2.buffer || e2), t = (e2) => new TextEncoder().encode(String(e2)), i = (e2) => Math.min(4294967295, Number(e2)), r = (e2) => Math.min(65535, Number(e2));
+  function o(e2, i2, r2) {
+    void 0 === i2 || i2 instanceof Date || (i2 = new Date(i2));
+    const o2 = void 0 !== e2;
+    if (r2 || (r2 = o2 ? 436 : 509), e2 instanceof File) return { isFile: o2, t: i2 || new Date(e2.lastModified), bytes: e2.stream(), mode: r2 };
+    if (e2 instanceof Response) return { isFile: o2, t: i2 || new Date(e2.headers.get("Last-Modified") || Date.now()), bytes: e2.body, mode: r2 };
+    if (void 0 === i2) i2 = new Date();
+    else if (isNaN(i2)) throw new Error("Invalid modification date.");
+    if (!o2) return { isFile: o2, t: i2, mode: r2 };
+    if ("string" == typeof e2) return { isFile: o2, t: i2, bytes: t(e2), mode: r2 };
+    if (e2 instanceof Blob) return { isFile: o2, t: i2, bytes: e2.stream(), mode: r2 };
+    if (e2 instanceof Uint8Array || e2 instanceof ReadableStream) return { isFile: o2, t: i2, bytes: e2, mode: r2 };
+    if (e2 instanceof ArrayBuffer || ArrayBuffer.isView(e2)) return { isFile: o2, t: i2, bytes: n(e2), mode: r2 };
+    if (Symbol.asyncIterator in e2) return { isFile: o2, t: i2, bytes: f(e2[Symbol.asyncIterator]()), mode: r2 };
+    throw new TypeError("Unsupported input format.");
+  }
+  function f(e2, n2 = e2) {
+    return new ReadableStream({ async pull(n3) {
+      let t2 = 0;
+      for (; n3.desiredSize > t2; ) {
+        const i2 = await e2.next();
+        if (!i2.value) {
+          n3.close();
+          break;
+        }
+        {
+          const e3 = a(i2.value);
+          n3.enqueue(e3), t2 += e3.byteLength;
+        }
+      }
+    }, cancel(e3) {
+      n2.throw?.(e3);
+    } });
+  }
+  function a(e2) {
+    return "string" == typeof e2 ? t(e2) : e2 instanceof Uint8Array ? e2 : n(e2);
+  }
+  function s(e2, i2, r2) {
+    let [o2, f2] = (function(e3) {
+      return e3 ? e3 instanceof Uint8Array ? [e3, 1] : ArrayBuffer.isView(e3) || e3 instanceof ArrayBuffer ? [n(e3), 1] : [t(e3), 0] : [void 0, 0];
+    })(i2);
+    if (e2 instanceof File) return { i: d(o2 || t(e2.name)), o: BigInt(e2.size), u: f2 };
+    if (e2 instanceof Response) {
+      const n2 = e2.headers.get("content-disposition"), i3 = n2 && n2.match(/;\s*filename\*?\s*=\s*(?:UTF-\d+''|)["']?([^;"'\r\n]*)["']?(?:;|$)/i), a2 = i3 && i3[1] || e2.url && new URL(e2.url).pathname.split("/").findLast(Boolean), s2 = a2 && decodeURIComponent(a2), u2 = r2 || +e2.headers.get("content-length");
+      return { i: d(o2 || t(s2)), o: BigInt(u2), u: f2 };
+    }
+    return o2 = d(o2, void 0 !== e2 || void 0 !== r2), "string" == typeof e2 ? { i: o2, o: BigInt(t(e2).length), u: f2 } : e2 instanceof Blob ? { i: o2, o: BigInt(e2.size), u: f2 } : e2 instanceof ArrayBuffer || ArrayBuffer.isView(e2) ? { i: o2, o: BigInt(e2.byteLength), u: f2 } : { i: o2, o: u(e2, r2), u: f2 };
+  }
+  function u(e2, n2) {
+    return n2 > -1 ? BigInt(n2) : e2 ? void 0 : 0n;
+  }
+  function d(e2, n2 = 1) {
+    if (!e2 || e2.every(((c) => 47 === c))) throw new Error("The file must have a name.");
+    if (n2) for (; 47 === e2[e2.length - 1]; ) e2 = e2.subarray(0, -1);
+    else 47 !== e2[e2.length - 1] && (e2 = new Uint8Array([...e2, 47]));
+    return e2;
+  }
+  var l = new Uint32Array(256);
+  for (let e2 = 0; e2 < 256; ++e2) {
+    let n2 = e2;
+    for (let e3 = 0; e3 < 8; ++e3) n2 = n2 >>> 1 ^ (1 & n2 && 3988292384);
+    l[e2] = n2;
+  }
+  function y(e2, n2 = 0) {
+    n2 = ~n2;
+    for (var t2 = 0, i2 = e2.length; t2 < i2; t2++) n2 = n2 >>> 8 ^ l[255 & n2 ^ e2[t2]];
+    return ~n2 >>> 0;
+  }
+  function w(e2, n2, t2 = 0) {
+    const i2 = e2.getSeconds() >> 1 | e2.getMinutes() << 5 | e2.getHours() << 11, r2 = e2.getDate() | e2.getMonth() + 1 << 5 | e2.getFullYear() - 1980 << 9;
+    n2.setUint16(t2, i2, 1), n2.setUint16(t2 + 2, r2, 1);
+  }
+  function B({ i: e2, u: n2 }, t2) {
+    return 8 * (!n2 || (t2 ?? (function(e3) {
+      try {
+        b.decode(e3);
+      } catch {
+        return 0;
+      }
+      return 1;
+    })(e2)));
+  }
+  var b = new TextDecoder("utf8", { fatal: 1 });
+  function p(t2, i2 = 0) {
+    const r2 = e(30);
+    return r2.setUint32(0, 1347093252), r2.setUint32(4, 754976768 | i2), w(t2.t, r2, 10), r2.setUint16(26, t2.i.length, 1), n(r2);
+  }
+  async function* g(e2) {
+    let { bytes: n2 } = e2;
+    if ("then" in n2 && (n2 = await n2), n2 instanceof Uint8Array) yield n2, e2.l = y(n2, 0), e2.o = BigInt(n2.length);
+    else {
+      e2.o = 0n;
+      const t2 = n2.getReader();
+      for (; ; ) {
+        const { value: n3, done: i2 } = await t2.read();
+        if (i2) break;
+        e2.l = y(n3, e2.l), e2.o += BigInt(n3.length), yield n3;
+      }
+    }
+  }
+  function I(t2, r2) {
+    const o2 = e(16 + (r2 ? 8 : 0));
+    return o2.setUint32(0, 1347094280), o2.setUint32(4, t2.isFile ? t2.l : 0, 1), r2 ? (o2.setBigUint64(8, t2.o, 1), o2.setBigUint64(16, t2.o, 1)) : (o2.setUint32(8, i(t2.o), 1), o2.setUint32(12, i(t2.o), 1)), n(o2);
+  }
+  function v(t2, r2, o2 = 0, f2 = 0) {
+    const a2 = e(46);
+    return a2.setUint32(0, 1347092738), a2.setUint32(4, 755182848), a2.setUint16(8, 2048 | o2), w(t2.t, a2, 12), a2.setUint32(16, t2.isFile ? t2.l : 0, 1), a2.setUint32(20, i(t2.o), 1), a2.setUint32(24, i(t2.o), 1), a2.setUint16(28, t2.i.length, 1), a2.setUint16(30, f2, 1), a2.setUint16(40, t2.mode | (t2.isFile ? 32768 : 16384), 1), a2.setUint32(42, i(r2), 1), n(a2);
+  }
+  function h(t2, i2, r2) {
+    const o2 = e(r2);
+    return o2.setUint16(0, 1, 1), o2.setUint16(2, r2 - 4, 1), 16 & r2 && (o2.setBigUint64(4, t2.o, 1), o2.setBigUint64(12, t2.o, 1)), o2.setBigUint64(r2 - 8, i2, 1), n(o2);
+  }
+  function D(e2) {
+    return e2 instanceof File || e2 instanceof Response ? [[e2], [e2]] : [[e2.input, e2.name, e2.size], [e2.input, e2.lastModified, e2.mode]];
+  }
+  var S = (e2) => (function(e3) {
+    let n2 = BigInt(22), t2 = 0n, i2 = 0;
+    for (const r2 of e3) {
+      if (!r2.i) throw new Error("Every file must have a non-empty name.");
+      if (void 0 === r2.o) throw new Error(`Missing size for file "${new TextDecoder().decode(r2.i)}".`);
+      const e4 = r2.o >= 0xffffffffn, o2 = t2 >= 0xffffffffn;
+      t2 += BigInt(46 + r2.i.length + (e4 && 8)) + r2.o, n2 += BigInt(r2.i.length + 46 + (12 * o2 | 28 * e4)), i2 || (i2 = e4);
+    }
+    return (i2 || t2 >= 0xffffffffn) && (n2 += BigInt(76)), n2 + t2;
+  })((function* (e3) {
+    for (const n2 of e3) yield s(...D(n2)[0]);
+  })(e2));
+  function A(e2, n2 = {}) {
+    const t2 = { "Content-Type": "application/zip", "Content-Disposition": "attachment" };
+    return ("bigint" == typeof n2.length || Number.isInteger(n2.length)) && n2.length > 0 && (t2["Content-Length"] = String(n2.length)), n2.metadata && (t2["Content-Length"] = String(S(n2.metadata))), new Response(N(e2, n2), { headers: t2 });
+  }
+  function N(t2, a2 = {}) {
+    const u2 = (function(e2) {
+      const n2 = e2[Symbol.iterator in e2 ? Symbol.iterator : Symbol.asyncIterator]();
+      return { async next() {
+        const e3 = await n2.next();
+        if (e3.done) return e3;
+        const [t3, i2] = D(e3.value);
+        return { done: 0, value: Object.assign(o(...i2), s(...t3)) };
+      }, throw: n2.throw?.bind(n2), [Symbol.asyncIterator]() {
+        return this;
+      } };
+    })(t2);
+    return f((async function* (t3, o2) {
+      const f2 = [];
+      let a3 = 0n, s2 = 0n, u3 = 0;
+      for await (const e2 of t3) {
+        const n2 = B(e2, o2.buffersAreUTF8);
+        yield p(e2, n2), yield new Uint8Array(e2.i), e2.isFile && (yield* g(e2));
+        const t4 = e2.o >= 0xffffffffn, i2 = 12 * (a3 >= 0xffffffffn) | 28 * t4;
+        yield I(e2, t4), f2.push(v(e2, a3, n2, i2)), f2.push(e2.i), i2 && f2.push(h(e2, a3, i2)), t4 && (a3 += 8n), s2++, a3 += BigInt(46 + e2.i.length) + e2.o, u3 || (u3 = t4);
+      }
+      let d2 = 0n;
+      for (const e2 of f2) yield e2, d2 += BigInt(e2.length);
+      if (u3 || a3 >= 0xffffffffn) {
+        const t4 = e(76);
+        t4.setUint32(0, 1347094022), t4.setBigUint64(4, BigInt(44), 1), t4.setUint32(12, 755182848), t4.setBigUint64(24, s2, 1), t4.setBigUint64(32, s2, 1), t4.setBigUint64(40, d2, 1), t4.setBigUint64(48, a3, 1), t4.setUint32(56, 1347094023), t4.setBigUint64(64, a3 + d2, 1), t4.setUint32(72, 1, 1), yield n(t4);
+      }
+      const l2 = e(22);
+      l2.setUint32(0, 1347093766), l2.setUint16(8, r(s2), 1), l2.setUint16(10, r(s2), 1), l2.setUint32(12, i(d2), 1), l2.setUint32(16, i(a3), 1), yield n(l2);
+    })(u2, a2), u2);
+  }
+  var FileSaver_min$1 = { exports: {} };
+  var FileSaver_min = FileSaver_min$1.exports;
+  var hasRequiredFileSaver_min;
+  function requireFileSaver_min() {
+    if (hasRequiredFileSaver_min) return FileSaver_min$1.exports;
+    hasRequiredFileSaver_min = 1;
+    (function(module, exports$1) {
+      (function(a2, b2) {
+        b2();
+      })(FileSaver_min, function() {
+        function b2(a3, b3) {
+          return "undefined" == typeof b3 ? b3 = { autoBom: false } : "object" != typeof b3 && (console.warn("Deprecated: Expected third argument to be a object"), b3 = { autoBom: !b3 }), b3.autoBom && /^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(a3.type) ? new Blob(["\uFEFF", a3], { type: a3.type }) : a3;
+        }
+        function c(a3, b3, c2) {
+          var d3 = new XMLHttpRequest();
+          d3.open("GET", a3), d3.responseType = "blob", d3.onload = function() {
+            g2(d3.response, b3, c2);
+          }, d3.onerror = function() {
+            console.error("could not download file");
+          }, d3.send();
+        }
+        function d2(a3) {
+          var b3 = new XMLHttpRequest();
+          b3.open("HEAD", a3, false);
+          try {
+            b3.send();
+          } catch (a4) {
+          }
+          return 200 <= b3.status && 299 >= b3.status;
+        }
+        function e2(a3) {
+          try {
+            a3.dispatchEvent(new MouseEvent("click"));
+          } catch (c2) {
+            var b3 = document.createEvent("MouseEvents");
+            b3.initMouseEvent("click", true, true, window, 0, 0, 0, 80, 20, false, false, false, false, 0, null), a3.dispatchEvent(b3);
+          }
+        }
+        var f2 = "object" == typeof window && window.window === window ? window : "object" == typeof self && self.self === self ? self : "object" == typeof commonjsGlobal && commonjsGlobal.global === commonjsGlobal ? commonjsGlobal : void 0, a2 = f2.navigator && /Macintosh/.test(navigator.userAgent) && /AppleWebKit/.test(navigator.userAgent) && !/Safari/.test(navigator.userAgent), g2 = f2.saveAs || ("object" != typeof window || window !== f2 ? function() {
+        } : "download" in HTMLAnchorElement.prototype && !a2 ? function(b3, g3, h2) {
+          var i2 = f2.URL || f2.webkitURL, j = document.createElement("a");
+          g3 = g3 || b3.name || "download", j.download = g3, j.rel = "noopener", "string" == typeof b3 ? (j.href = b3, j.origin === location.origin ? e2(j) : d2(j.href) ? c(b3, g3, h2) : e2(j, j.target = "_blank")) : (j.href = i2.createObjectURL(b3), setTimeout(function() {
+            i2.revokeObjectURL(j.href);
+          }, 4e4), setTimeout(function() {
+            e2(j);
+          }, 0));
+        } : "msSaveOrOpenBlob" in navigator ? function(f3, g3, h2) {
+          if (g3 = g3 || f3.name || "download", "string" != typeof f3) navigator.msSaveOrOpenBlob(b2(f3, h2), g3);
+          else if (d2(f3)) c(f3, g3, h2);
+          else {
+            var i2 = document.createElement("a");
+            i2.href = f3, i2.target = "_blank", setTimeout(function() {
+              e2(i2);
+            });
+          }
+        } : function(b3, d3, e3, g3) {
+          if (g3 = g3 || open("", "_blank"), g3 && (g3.document.title = g3.document.body.innerText = "downloading..."), "string" == typeof b3) return c(b3, d3, e3);
+          var h2 = "application/octet-stream" === b3.type, i2 = /constructor/i.test(f2.HTMLElement) || f2.safari, j = /CriOS\/[\d]+/.test(navigator.userAgent);
+          if ((j || h2 && i2 || a2) && "undefined" != typeof FileReader) {
+            var k = new FileReader();
+            k.onloadend = function() {
+              var a3 = k.result;
+              a3 = j ? a3 : a3.replace(/^data:[^;]*;/, "data:attachment/file;"), g3 ? g3.location.href = a3 : location = a3, g3 = null;
+            }, k.readAsDataURL(b3);
+          } else {
+            var l2 = f2.URL || f2.webkitURL, m = l2.createObjectURL(b3);
+            g3 ? g3.location = m : location.href = m, g3 = null, setTimeout(function() {
+              l2.revokeObjectURL(m);
+            }, 4e4);
+          }
+        });
+        f2.saveAs = g2.saveAs = g2, module.exports = g2;
+      });
+    })(FileSaver_min$1);
+    return FileSaver_min$1.exports;
+  }
+  var FileSaver_minExports = requireFileSaver_min();
   const TRACK_MEMO_SYMBOL = Symbol();
   const GET_ORIGINAL_SYMBOL = Symbol();
   const AFFECTED_PROPERTY = "a";
@@ -203,7 +439,7 @@ obj
   const isAllOwnKeysChanged = (prevObj, nextObj) => {
     const prevKeys = Reflect.ownKeys(prevObj);
     const nextKeys = Reflect.ownKeys(nextObj);
-    return prevKeys.length !== nextKeys.length || prevKeys.some((k, i) => k !== nextKeys[i]);
+    return prevKeys.length !== nextKeys.length || prevKeys.some((k, i2) => k !== nextKeys[i2]);
   };
   const isChanged = (prevObj, nextObj, affected, cache, isEqual = Object.is) => {
     if (isEqual(prevObj, nextObj)) {
@@ -262,7 +498,7 @@ obj
     const list = [];
     const seen = new WeakSet();
     const walk = (x, path) => {
-      var _a2, _b2, _c;
+      var _a, _b, _c;
       if (seen.has(x)) {
         return;
       }
@@ -271,7 +507,7 @@ obj
       }
       const used = isObject$1(x) && affected.get(getOriginalObject(x));
       if (used) {
-        (_a2 = used[HAS_KEY_PROPERTY]) === null || _a2 === void 0 ? void 0 : _a2.forEach((key) => {
+        (_a = used[HAS_KEY_PROPERTY]) === null || _a === void 0 ? void 0 : _a.forEach((key) => {
           const segment = `:has(${String(key)})`;
           list.push(path ? [...path, segment] : [segment]);
         });
@@ -279,7 +515,7 @@ obj
           const segment = ":ownKeys";
           list.push(path ? [...path, segment] : [segment]);
         } else {
-          (_b2 = used[HAS_OWN_KEY_PROPERTY]) === null || _b2 === void 0 ? void 0 : _b2.forEach((key) => {
+          (_b = used[HAS_OWN_KEY_PROPERTY]) === null || _b === void 0 ? void 0 : _b.forEach((key) => {
             const segment = `:hasOwn(${String(key)})`;
             list.push(path ? [...path, segment] : [segment]);
           });
@@ -336,11 +572,11 @@ configurable: true
   };
   const createHandlerDefault = (isInitializing, addPropListener, removePropListener, notifyUpdate) => ({
     deleteProperty(target, prop) {
-      const prevValue = Reflect.get(target, prop);
+      Reflect.get(target, prop);
       removePropListener(prop);
       const deleted = Reflect.deleteProperty(target, prop);
       if (deleted) {
-        notifyUpdate(["delete", [prop], prevValue]);
+        notifyUpdate(void 0);
       }
       return deleted;
     },
@@ -357,7 +593,7 @@ configurable: true
       const nextValue = !proxyStateMap.has(value) && canProxy(value) ? proxy(value) : value;
       addPropListener(prop, nextValue);
       Reflect.set(target, prop, nextValue, receiver);
-      notifyUpdate(["set", [prop], value, prevValue]);
+      notifyUpdate(void 0);
       return true;
     }
   });
@@ -401,8 +637,11 @@ configurable: true
       return version2;
     };
     const createPropListener = (prop) => (op, nextVersion) => {
-      const newOp = [...op];
-      newOp[1] = [prop, ...newOp[1]];
+      let newOp;
+      if (op) {
+        newOp = [...op];
+        newOp[1] = [prop, ...newOp[1]];
+      }
       notifyUpdate(newOp, nextVersion);
     };
     const propProxyStates = new Map();
@@ -421,11 +660,11 @@ configurable: true
       }
     };
     const removePropListener = (prop) => {
-      var _a2;
+      var _a;
       const entry = propProxyStates.get(prop);
       if (entry) {
         propProxyStates.delete(prop);
-        (_a2 = entry[1]) == null ? void 0 : _a2.call(entry);
+        (_a = entry[1]) == null ? void 0 : _a.call(entry);
       }
     };
     const addListener = (listener) => {
@@ -485,7 +724,9 @@ configurable: true
     const addListener = proxyState[2];
     let isListenerActive = false;
     const listener = (op) => {
-      ops.push(op);
+      if (op) {
+        ops.push(op);
+      }
       if (!promise) {
         promise = Promise.resolve().then(() => {
           promise = void 0;
@@ -548,7 +789,7 @@ new WeakMap()
           )) {
             return lastSnapshot.current;
           }
-        } catch (e) {
+        } catch (e2) {
         }
         return nextSnapshot;
       },
@@ -564,750 +805,6 @@ new WeakMap()
     const proxyCache2 = require$$0.useMemo(() => new WeakMap(), []);
     return createProxy(currSnapshot, affected, proxyCache2, targetCache);
   }
-  var u8 = Uint8Array, u16 = Uint16Array, i32 = Int32Array;
-  var fleb = new u8([
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    1,
-    1,
-    1,
-    1,
-    2,
-    2,
-    2,
-    2,
-    3,
-    3,
-    3,
-    3,
-    4,
-    4,
-    4,
-    4,
-    5,
-    5,
-    5,
-    5,
-    0,
-0,
-    0,
-0
-  ]);
-  var fdeb = new u8([
-    0,
-    0,
-    0,
-    0,
-    1,
-    1,
-    2,
-    2,
-    3,
-    3,
-    4,
-    4,
-    5,
-    5,
-    6,
-    6,
-    7,
-    7,
-    8,
-    8,
-    9,
-    9,
-    10,
-    10,
-    11,
-    11,
-    12,
-    12,
-    13,
-    13,
-0,
-    0
-  ]);
-  var clim = new u8([16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15]);
-  var freb = function(eb, start) {
-    var b = new u16(31);
-    for (var i = 0; i < 31; ++i) {
-      b[i] = start += 1 << eb[i - 1];
-    }
-    var r = new i32(b[30]);
-    for (var i = 1; i < 30; ++i) {
-      for (var j = b[i]; j < b[i + 1]; ++j) {
-        r[j] = j - b[i] << 5 | i;
-      }
-    }
-    return { b, r };
-  };
-  var _a = freb(fleb, 2), fl = _a.b, revfl = _a.r;
-  fl[28] = 258, revfl[258] = 28;
-  var _b = freb(fdeb, 0), revfd = _b.r;
-  var rev = new u16(32768);
-  for (var i = 0; i < 32768; ++i) {
-    var x = (i & 43690) >> 1 | (i & 21845) << 1;
-    x = (x & 52428) >> 2 | (x & 13107) << 2;
-    x = (x & 61680) >> 4 | (x & 3855) << 4;
-    rev[i] = ((x & 65280) >> 8 | (x & 255) << 8) >> 1;
-  }
-  var hMap = (function(cd, mb, r) {
-    var s = cd.length;
-    var i = 0;
-    var l = new u16(mb);
-    for (; i < s; ++i) {
-      if (cd[i])
-        ++l[cd[i] - 1];
-    }
-    var le = new u16(mb);
-    for (i = 1; i < mb; ++i) {
-      le[i] = le[i - 1] + l[i - 1] << 1;
-    }
-    var co;
-    {
-      co = new u16(s);
-      for (i = 0; i < s; ++i) {
-        if (cd[i]) {
-          co[i] = rev[le[cd[i] - 1]++] >> 15 - cd[i];
-        }
-      }
-    }
-    return co;
-  });
-  var flt = new u8(288);
-  for (var i = 0; i < 144; ++i)
-    flt[i] = 8;
-  for (var i = 144; i < 256; ++i)
-    flt[i] = 9;
-  for (var i = 256; i < 280; ++i)
-    flt[i] = 7;
-  for (var i = 280; i < 288; ++i)
-    flt[i] = 8;
-  var fdt = new u8(32);
-  for (var i = 0; i < 32; ++i)
-    fdt[i] = 5;
-  var flm = hMap(flt, 9);
-  var fdm = hMap(fdt, 5);
-  var shft = function(p) {
-    return (p + 7) / 8 | 0;
-  };
-  var slc = function(v, s, e) {
-    if (e == null || e > v.length)
-      e = v.length;
-    return new u8(v.subarray(s, e));
-  };
-  var ec = [
-    "unexpected EOF",
-    "invalid block type",
-    "invalid length/literal",
-    "invalid distance",
-    "stream finished",
-    "no stream handler",
-    ,
-    "no callback",
-    "invalid UTF-8 data",
-    "extra field too long",
-    "date not in range 1980-2099",
-    "filename too long",
-    "stream finishing",
-    "invalid zip data"
-];
-  var err = function(ind, msg, nt) {
-    var e = new Error(msg || ec[ind]);
-    e.code = ind;
-    if (Error.captureStackTrace)
-      Error.captureStackTrace(e, err);
-    if (!nt)
-      throw e;
-    return e;
-  };
-  var wbits = function(d, p, v) {
-    v <<= p & 7;
-    var o = p / 8 | 0;
-    d[o] |= v;
-    d[o + 1] |= v >> 8;
-  };
-  var wbits16 = function(d, p, v) {
-    v <<= p & 7;
-    var o = p / 8 | 0;
-    d[o] |= v;
-    d[o + 1] |= v >> 8;
-    d[o + 2] |= v >> 16;
-  };
-  var hTree = function(d, mb) {
-    var t = [];
-    for (var i = 0; i < d.length; ++i) {
-      if (d[i])
-        t.push({ s: i, f: d[i] });
-    }
-    var s = t.length;
-    var t2 = t.slice();
-    if (!s)
-      return { t: et, l: 0 };
-    if (s == 1) {
-      var v = new u8(t[0].s + 1);
-      v[t[0].s] = 1;
-      return { t: v, l: 1 };
-    }
-    t.sort(function(a, b) {
-      return a.f - b.f;
-    });
-    t.push({ s: -1, f: 25001 });
-    var l = t[0], r = t[1], i0 = 0, i1 = 1, i2 = 2;
-    t[0] = { s: -1, f: l.f + r.f, l, r };
-    while (i1 != s - 1) {
-      l = t[t[i0].f < t[i2].f ? i0++ : i2++];
-      r = t[i0 != i1 && t[i0].f < t[i2].f ? i0++ : i2++];
-      t[i1++] = { s: -1, f: l.f + r.f, l, r };
-    }
-    var maxSym = t2[0].s;
-    for (var i = 1; i < s; ++i) {
-      if (t2[i].s > maxSym)
-        maxSym = t2[i].s;
-    }
-    var tr = new u16(maxSym + 1);
-    var mbt = ln(t[i1 - 1], tr, 0);
-    if (mbt > mb) {
-      var i = 0, dt = 0;
-      var lft = mbt - mb, cst = 1 << lft;
-      t2.sort(function(a, b) {
-        return tr[b.s] - tr[a.s] || a.f - b.f;
-      });
-      for (; i < s; ++i) {
-        var i2_1 = t2[i].s;
-        if (tr[i2_1] > mb) {
-          dt += cst - (1 << mbt - tr[i2_1]);
-          tr[i2_1] = mb;
-        } else
-          break;
-      }
-      dt >>= lft;
-      while (dt > 0) {
-        var i2_2 = t2[i].s;
-        if (tr[i2_2] < mb)
-          dt -= 1 << mb - tr[i2_2]++ - 1;
-        else
-          ++i;
-      }
-      for (; i >= 0 && dt; --i) {
-        var i2_3 = t2[i].s;
-        if (tr[i2_3] == mb) {
-          --tr[i2_3];
-          ++dt;
-        }
-      }
-      mbt = mb;
-    }
-    return { t: new u8(tr), l: mbt };
-  };
-  var ln = function(n, l, d) {
-    return n.s == -1 ? Math.max(ln(n.l, l, d + 1), ln(n.r, l, d + 1)) : l[n.s] = d;
-  };
-  var lc = function(c) {
-    var s = c.length;
-    while (s && !c[--s])
-      ;
-    var cl = new u16(++s);
-    var cli = 0, cln = c[0], cls = 1;
-    var w = function(v) {
-      cl[cli++] = v;
-    };
-    for (var i = 1; i <= s; ++i) {
-      if (c[i] == cln && i != s)
-        ++cls;
-      else {
-        if (!cln && cls > 2) {
-          for (; cls > 138; cls -= 138)
-            w(32754);
-          if (cls > 2) {
-            w(cls > 10 ? cls - 11 << 5 | 28690 : cls - 3 << 5 | 12305);
-            cls = 0;
-          }
-        } else if (cls > 3) {
-          w(cln), --cls;
-          for (; cls > 6; cls -= 6)
-            w(8304);
-          if (cls > 2)
-            w(cls - 3 << 5 | 8208), cls = 0;
-        }
-        while (cls--)
-          w(cln);
-        cls = 1;
-        cln = c[i];
-      }
-    }
-    return { c: cl.subarray(0, cli), n: s };
-  };
-  var clen = function(cf, cl) {
-    var l = 0;
-    for (var i = 0; i < cl.length; ++i)
-      l += cf[i] * cl[i];
-    return l;
-  };
-  var wfblk = function(out, pos, dat) {
-    var s = dat.length;
-    var o = shft(pos + 2);
-    out[o] = s & 255;
-    out[o + 1] = s >> 8;
-    out[o + 2] = out[o] ^ 255;
-    out[o + 3] = out[o + 1] ^ 255;
-    for (var i = 0; i < s; ++i)
-      out[o + i + 4] = dat[i];
-    return (o + 4 + s) * 8;
-  };
-  var wblk = function(dat, out, final, syms, lf, df, eb, li, bs, bl, p) {
-    wbits(out, p++, final);
-    ++lf[256];
-    var _a2 = hTree(lf, 15), dlt = _a2.t, mlb = _a2.l;
-    var _b2 = hTree(df, 15), ddt = _b2.t, mdb = _b2.l;
-    var _c = lc(dlt), lclt = _c.c, nlc = _c.n;
-    var _d = lc(ddt), lcdt = _d.c, ndc = _d.n;
-    var lcfreq = new u16(19);
-    for (var i = 0; i < lclt.length; ++i)
-      ++lcfreq[lclt[i] & 31];
-    for (var i = 0; i < lcdt.length; ++i)
-      ++lcfreq[lcdt[i] & 31];
-    var _e = hTree(lcfreq, 7), lct = _e.t, mlcb = _e.l;
-    var nlcc = 19;
-    for (; nlcc > 4 && !lct[clim[nlcc - 1]]; --nlcc)
-      ;
-    var flen = bl + 5 << 3;
-    var ftlen = clen(lf, flt) + clen(df, fdt) + eb;
-    var dtlen = clen(lf, dlt) + clen(df, ddt) + eb + 14 + 3 * nlcc + clen(lcfreq, lct) + 2 * lcfreq[16] + 3 * lcfreq[17] + 7 * lcfreq[18];
-    if (bs >= 0 && flen <= ftlen && flen <= dtlen)
-      return wfblk(out, p, dat.subarray(bs, bs + bl));
-    var lm, ll, dm, dl;
-    wbits(out, p, 1 + (dtlen < ftlen)), p += 2;
-    if (dtlen < ftlen) {
-      lm = hMap(dlt, mlb), ll = dlt, dm = hMap(ddt, mdb), dl = ddt;
-      var llm = hMap(lct, mlcb);
-      wbits(out, p, nlc - 257);
-      wbits(out, p + 5, ndc - 1);
-      wbits(out, p + 10, nlcc - 4);
-      p += 14;
-      for (var i = 0; i < nlcc; ++i)
-        wbits(out, p + 3 * i, lct[clim[i]]);
-      p += 3 * nlcc;
-      var lcts = [lclt, lcdt];
-      for (var it = 0; it < 2; ++it) {
-        var clct = lcts[it];
-        for (var i = 0; i < clct.length; ++i) {
-          var len = clct[i] & 31;
-          wbits(out, p, llm[len]), p += lct[len];
-          if (len > 15)
-            wbits(out, p, clct[i] >> 5 & 127), p += clct[i] >> 12;
-        }
-      }
-    } else {
-      lm = flm, ll = flt, dm = fdm, dl = fdt;
-    }
-    for (var i = 0; i < li; ++i) {
-      var sym = syms[i];
-      if (sym > 255) {
-        var len = sym >> 18 & 31;
-        wbits16(out, p, lm[len + 257]), p += ll[len + 257];
-        if (len > 7)
-          wbits(out, p, sym >> 23 & 31), p += fleb[len];
-        var dst = sym & 31;
-        wbits16(out, p, dm[dst]), p += dl[dst];
-        if (dst > 3)
-          wbits16(out, p, sym >> 5 & 8191), p += fdeb[dst];
-      } else {
-        wbits16(out, p, lm[sym]), p += ll[sym];
-      }
-    }
-    wbits16(out, p, lm[256]);
-    return p + ll[256];
-  };
-  var deo = new i32([65540, 131080, 131088, 131104, 262176, 1048704, 1048832, 2114560, 2117632]);
-  var et = new u8(0);
-  var dflt = function(dat, lvl, plvl, pre, post, st) {
-    var s = st.z || dat.length;
-    var o = new u8(pre + s + 5 * (1 + Math.ceil(s / 7e3)) + post);
-    var w = o.subarray(pre, o.length - post);
-    var lst = st.l;
-    var pos = (st.r || 0) & 7;
-    if (lvl) {
-      if (pos)
-        w[0] = st.r >> 3;
-      var opt = deo[lvl - 1];
-      var n = opt >> 13, c = opt & 8191;
-      var msk_1 = (1 << plvl) - 1;
-      var prev = st.p || new u16(32768), head = st.h || new u16(msk_1 + 1);
-      var bs1_1 = Math.ceil(plvl / 3), bs2_1 = 2 * bs1_1;
-      var hsh = function(i2) {
-        return (dat[i2] ^ dat[i2 + 1] << bs1_1 ^ dat[i2 + 2] << bs2_1) & msk_1;
-      };
-      var syms = new i32(25e3);
-      var lf = new u16(288), df = new u16(32);
-      var lc_1 = 0, eb = 0, i = st.i || 0, li = 0, wi = st.w || 0, bs = 0;
-      for (; i + 2 < s; ++i) {
-        var hv = hsh(i);
-        var imod = i & 32767, pimod = head[hv];
-        prev[imod] = pimod;
-        head[hv] = imod;
-        if (wi <= i) {
-          var rem = s - i;
-          if ((lc_1 > 7e3 || li > 24576) && (rem > 423 || !lst)) {
-            pos = wblk(dat, w, 0, syms, lf, df, eb, li, bs, i - bs, pos);
-            li = lc_1 = eb = 0, bs = i;
-            for (var j = 0; j < 286; ++j)
-              lf[j] = 0;
-            for (var j = 0; j < 30; ++j)
-              df[j] = 0;
-          }
-          var l = 2, d = 0, ch_1 = c, dif = imod - pimod & 32767;
-          if (rem > 2 && hv == hsh(i - dif)) {
-            var maxn = Math.min(n, rem) - 1;
-            var maxd = Math.min(32767, i);
-            var ml = Math.min(258, rem);
-            while (dif <= maxd && --ch_1 && imod != pimod) {
-              if (dat[i + l] == dat[i + l - dif]) {
-                var nl = 0;
-                for (; nl < ml && dat[i + nl] == dat[i + nl - dif]; ++nl)
-                  ;
-                if (nl > l) {
-                  l = nl, d = dif;
-                  if (nl > maxn)
-                    break;
-                  var mmd = Math.min(dif, nl - 2);
-                  var md = 0;
-                  for (var j = 0; j < mmd; ++j) {
-                    var ti = i - dif + j & 32767;
-                    var pti = prev[ti];
-                    var cd = ti - pti & 32767;
-                    if (cd > md)
-                      md = cd, pimod = ti;
-                  }
-                }
-              }
-              imod = pimod, pimod = prev[imod];
-              dif += imod - pimod & 32767;
-            }
-          }
-          if (d) {
-            syms[li++] = 268435456 | revfl[l] << 18 | revfd[d];
-            var lin = revfl[l] & 31, din = revfd[d] & 31;
-            eb += fleb[lin] + fdeb[din];
-            ++lf[257 + lin];
-            ++df[din];
-            wi = i + l;
-            ++lc_1;
-          } else {
-            syms[li++] = dat[i];
-            ++lf[dat[i]];
-          }
-        }
-      }
-      for (i = Math.max(i, wi); i < s; ++i) {
-        syms[li++] = dat[i];
-        ++lf[dat[i]];
-      }
-      pos = wblk(dat, w, lst, syms, lf, df, eb, li, bs, i - bs, pos);
-      if (!lst) {
-        st.r = pos & 7 | w[pos / 8 | 0] << 3;
-        pos -= 7;
-        st.h = head, st.p = prev, st.i = i, st.w = wi;
-      }
-    } else {
-      for (var i = st.w || 0; i < s + lst; i += 65535) {
-        var e = i + 65535;
-        if (e >= s) {
-          w[pos / 8 | 0] = lst;
-          e = s;
-        }
-        pos = wfblk(w, pos + 1, dat.subarray(i, e));
-      }
-      st.i = s;
-    }
-    return slc(o, 0, pre + shft(pos) + post);
-  };
-  var crct = (function() {
-    var t = new Int32Array(256);
-    for (var i = 0; i < 256; ++i) {
-      var c = i, k = 9;
-      while (--k)
-        c = (c & 1 && -306674912) ^ c >>> 1;
-      t[i] = c;
-    }
-    return t;
-  })();
-  var crc = function() {
-    var c = -1;
-    return {
-      p: function(d) {
-        var cr = c;
-        for (var i = 0; i < d.length; ++i)
-          cr = crct[cr & 255 ^ d[i]] ^ cr >>> 8;
-        c = cr;
-      },
-      d: function() {
-        return ~c;
-      }
-    };
-  };
-  var dopt = function(dat, opt, pre, post, st) {
-    if (!st) {
-      st = { l: 1 };
-      if (opt.dictionary) {
-        var dict = opt.dictionary.subarray(-32768);
-        var newDat = new u8(dict.length + dat.length);
-        newDat.set(dict);
-        newDat.set(dat, dict.length);
-        dat = newDat;
-        st.w = dict.length;
-      }
-    }
-    return dflt(dat, opt.level == null ? 6 : opt.level, opt.mem == null ? st.l ? Math.ceil(Math.max(8, Math.min(13, Math.log(dat.length))) * 1.5) : 20 : 12 + opt.mem, pre, post, st);
-  };
-  var mrg = function(a, b) {
-    var o = {};
-    for (var k in a)
-      o[k] = a[k];
-    for (var k in b)
-      o[k] = b[k];
-    return o;
-  };
-  var wbytes = function(d, b, v) {
-    for (; v; ++b)
-      d[b] = v, v >>>= 8;
-  };
-  function deflateSync(data, opts) {
-    return dopt(data, opts || {}, 0, 0);
-  }
-  var fltn = function(d, p, t, o) {
-    for (var k in d) {
-      var val = d[k], n = p + k, op = o;
-      if (Array.isArray(val))
-        op = mrg(o, val[1]), val = val[0];
-      if (val instanceof u8)
-        t[n] = [val, op];
-      else {
-        t[n += "/"] = [new u8(0), op];
-        fltn(val, n, t, o);
-      }
-    }
-  };
-  var te = typeof TextEncoder != "undefined" && new TextEncoder();
-  var td = typeof TextDecoder != "undefined" && new TextDecoder();
-  var tds = 0;
-  try {
-    td.decode(et, { stream: true });
-    tds = 1;
-  } catch (e) {
-  }
-  function strToU8(str, latin1) {
-    var i;
-    if (te)
-      return te.encode(str);
-    var l = str.length;
-    var ar = new u8(str.length + (str.length >> 1));
-    var ai = 0;
-    var w = function(v) {
-      ar[ai++] = v;
-    };
-    for (var i = 0; i < l; ++i) {
-      if (ai + 5 > ar.length) {
-        var n = new u8(ai + 8 + (l - i << 1));
-        n.set(ar);
-        ar = n;
-      }
-      var c = str.charCodeAt(i);
-      if (c < 128 || latin1)
-        w(c);
-      else if (c < 2048)
-        w(192 | c >> 6), w(128 | c & 63);
-      else if (c > 55295 && c < 57344)
-        c = 65536 + (c & 1023 << 10) | str.charCodeAt(++i) & 1023, w(240 | c >> 18), w(128 | c >> 12 & 63), w(128 | c >> 6 & 63), w(128 | c & 63);
-      else
-        w(224 | c >> 12), w(128 | c >> 6 & 63), w(128 | c & 63);
-    }
-    return slc(ar, 0, ai);
-  }
-  var exfl = function(ex) {
-    var le = 0;
-    if (ex) {
-      for (var k in ex) {
-        var l = ex[k].length;
-        if (l > 65535)
-          err(9);
-        le += l + 4;
-      }
-    }
-    return le;
-  };
-  var wzh = function(d, b, f, fn, u, c, ce, co) {
-    var fl2 = fn.length, ex = f.extra, col = co && co.length;
-    var exl = exfl(ex);
-    wbytes(d, b, ce != null ? 33639248 : 67324752), b += 4;
-    if (ce != null)
-      d[b++] = 20, d[b++] = f.os;
-    d[b] = 20, b += 2;
-    d[b++] = f.flag << 1 | (c < 0 && 8), d[b++] = u && 8;
-    d[b++] = f.compression & 255, d[b++] = f.compression >> 8;
-    var dt = new Date(f.mtime == null ? Date.now() : f.mtime), y = dt.getFullYear() - 1980;
-    if (y < 0 || y > 119)
-      err(10);
-    wbytes(d, b, y << 25 | dt.getMonth() + 1 << 21 | dt.getDate() << 16 | dt.getHours() << 11 | dt.getMinutes() << 5 | dt.getSeconds() >> 1), b += 4;
-    if (c != -1) {
-      wbytes(d, b, f.crc);
-      wbytes(d, b + 4, c < 0 ? -c - 2 : c);
-      wbytes(d, b + 8, f.size);
-    }
-    wbytes(d, b + 12, fl2);
-    wbytes(d, b + 14, exl), b += 16;
-    if (ce != null) {
-      wbytes(d, b, col);
-      wbytes(d, b + 6, f.attrs);
-      wbytes(d, b + 10, ce), b += 14;
-    }
-    d.set(fn, b);
-    b += fl2;
-    if (exl) {
-      for (var k in ex) {
-        var exf = ex[k], l = exf.length;
-        wbytes(d, b, +k);
-        wbytes(d, b + 2, l);
-        d.set(exf, b + 4), b += 4 + l;
-      }
-    }
-    if (col)
-      d.set(co, b), b += col;
-    return b;
-  };
-  var wzf = function(o, b, c, d, e) {
-    wbytes(o, b, 101010256);
-    wbytes(o, b + 8, c);
-    wbytes(o, b + 10, c);
-    wbytes(o, b + 12, d);
-    wbytes(o, b + 16, e);
-  };
-  function zipSync(data, opts) {
-    if (!opts)
-      opts = {};
-    var r = {};
-    var files2 = [];
-    fltn(data, "", r, opts);
-    var o = 0;
-    var tot = 0;
-    for (var fn in r) {
-      var _a2 = r[fn], file = _a2[0], p = _a2[1];
-      var compression = p.level == 0 ? 0 : 8;
-      var f = strToU8(fn), s = f.length;
-      var com = p.comment, m = com && strToU8(com), ms = m && m.length;
-      var exl = exfl(p.extra);
-      if (s > 65535)
-        err(11);
-      var d = compression ? deflateSync(file, p) : file, l = d.length;
-      var c = crc();
-      c.p(file);
-      files2.push(mrg(p, {
-        size: file.length,
-        crc: c.d(),
-        c: d,
-        f,
-        m,
-        u: s != fn.length || m && com.length != ms,
-        o,
-        compression
-      }));
-      o += 30 + s + exl + l;
-      tot += 76 + 2 * (s + exl) + (ms || 0) + l;
-    }
-    var out = new u8(tot + 22), oe = o, cdl = tot - o;
-    for (var i = 0; i < files2.length; ++i) {
-      var f = files2[i];
-      wzh(out, f.o, f, f.f, f.u, f.c.length);
-      var badd = 30 + f.f.length + exfl(f.extra);
-      out.set(f.c, f.o + badd);
-      wzh(out, o, f, f.f, f.u, f.c.length, f.o, f.m), o += 16 + badd + (f.m ? f.m.length : 0);
-    }
-    wzf(out, o, files2.length, cdl, oe);
-    return out;
-  }
-  var FileSaver_min$1 = { exports: {} };
-  var FileSaver_min = FileSaver_min$1.exports;
-  var hasRequiredFileSaver_min;
-  function requireFileSaver_min() {
-    if (hasRequiredFileSaver_min) return FileSaver_min$1.exports;
-    hasRequiredFileSaver_min = 1;
-    (function(module, exports) {
-      (function(a, b) {
-        b();
-      })(FileSaver_min, function() {
-        function b(a2, b2) {
-          return "undefined" == typeof b2 ? b2 = { autoBom: false } : "object" != typeof b2 && (console.warn("Deprecated: Expected third argument to be a object"), b2 = { autoBom: !b2 }), b2.autoBom && /^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(a2.type) ? new Blob(["\uFEFF", a2], { type: a2.type }) : a2;
-        }
-        function c(a2, b2, c2) {
-          var d2 = new XMLHttpRequest();
-          d2.open("GET", a2), d2.responseType = "blob", d2.onload = function() {
-            g(d2.response, b2, c2);
-          }, d2.onerror = function() {
-            console.error("could not download file");
-          }, d2.send();
-        }
-        function d(a2) {
-          var b2 = new XMLHttpRequest();
-          b2.open("HEAD", a2, false);
-          try {
-            b2.send();
-          } catch (a3) {
-          }
-          return 200 <= b2.status && 299 >= b2.status;
-        }
-        function e(a2) {
-          try {
-            a2.dispatchEvent(new MouseEvent("click"));
-          } catch (c2) {
-            var b2 = document.createEvent("MouseEvents");
-            b2.initMouseEvent("click", true, true, window, 0, 0, 0, 80, 20, false, false, false, false, 0, null), a2.dispatchEvent(b2);
-          }
-        }
-        var f = "object" == typeof window && window.window === window ? window : "object" == typeof self && self.self === self ? self : "object" == typeof commonjsGlobal && commonjsGlobal.global === commonjsGlobal ? commonjsGlobal : void 0, a = f.navigator && /Macintosh/.test(navigator.userAgent) && /AppleWebKit/.test(navigator.userAgent) && !/Safari/.test(navigator.userAgent), g = f.saveAs || ("object" != typeof window || window !== f ? function() {
-        } : "download" in HTMLAnchorElement.prototype && !a ? function(b2, g2, h) {
-          var i = f.URL || f.webkitURL, j = document.createElement("a");
-          g2 = g2 || b2.name || "download", j.download = g2, j.rel = "noopener", "string" == typeof b2 ? (j.href = b2, j.origin === location.origin ? e(j) : d(j.href) ? c(b2, g2, h) : e(j, j.target = "_blank")) : (j.href = i.createObjectURL(b2), setTimeout(function() {
-            i.revokeObjectURL(j.href);
-          }, 4e4), setTimeout(function() {
-            e(j);
-          }, 0));
-        } : "msSaveOrOpenBlob" in navigator ? function(f2, g2, h) {
-          if (g2 = g2 || f2.name || "download", "string" != typeof f2) navigator.msSaveOrOpenBlob(b(f2, h), g2);
-          else if (d(f2)) c(f2, g2, h);
-          else {
-            var i = document.createElement("a");
-            i.href = f2, i.target = "_blank", setTimeout(function() {
-              e(i);
-            });
-          }
-        } : function(b2, d2, e2, g2) {
-          if (g2 = g2 || open("", "_blank"), g2 && (g2.document.title = g2.document.body.innerText = "downloading..."), "string" == typeof b2) return c(b2, d2, e2);
-          var h = "application/octet-stream" === b2.type, i = /constructor/i.test(f.HTMLElement) || f.safari, j = /CriOS\/[\d]+/.test(navigator.userAgent);
-          if ((j || h && i || a) && "undefined" != typeof FileReader) {
-            var k = new FileReader();
-            k.onloadend = function() {
-              var a2 = k.result;
-              a2 = j ? a2 : a2.replace(/^data:[^;]*;/, "data:attachment/file;"), g2 ? g2.location.href = a2 : location = a2, g2 = null;
-            }, k.readAsDataURL(b2);
-          } else {
-            var l = f.URL || f.webkitURL, m = l.createObjectURL(b2);
-            g2 ? g2.location = m : location.href = m, g2 = null, setTimeout(function() {
-              l.revokeObjectURL(m);
-            }, 4e4);
-          }
-        });
-        f.saveAs = g.saveAs = g, module.exports = g;
-      });
-    })(FileSaver_min$1);
-    return FileSaver_min$1.exports;
-  }
-  var FileSaver_minExports = requireFileSaver_min();
   var _GM_xmlhttpRequest = (() => typeof GM_xmlhttpRequest != "undefined" ? GM_xmlhttpRequest : void 0)();
   var _unsafeWindow = (() => typeof unsafeWindow != "undefined" ? unsafeWindow : void 0)();
   class AbstractAdapter {
@@ -1354,12 +851,12 @@ new WeakMap()
   class TelegraphAdapter extends AbstractAdapter {
     async generateGallery() {
       const { origin } = _unsafeWindow.location;
-      const { T: t } = _unsafeWindow;
+      const { T: t2 } = _unsafeWindow;
       const tasks = {};
       const imgs = _unsafeWindow.document.querySelectorAll("img");
       imgs.forEach((img, key) => {
         const pageNo = `${key + 1}`.padStart(3, "0");
-        const id = `${t.pageId}-${pageNo}`;
+        const id = `${t2.pageId}-${pageNo}`;
         const url = img.src;
         tasks[id] = {
           id,
@@ -1376,49 +873,48 @@ new WeakMap()
         throw new Error(`未获取到标题`);
       }
       return {
-        id: t.pageId,
+        id: t2.pageId,
         name: header.innerHTML,
         tasks
       };
     }
   }
-  class NHentaiNetAdapter extends AbstractAdapter {
+  const API_BASE_URL = "https://nhentai.net";
+  const PATH_PATTERN = new RegExp(`^/g/([0-9]+)`);
+  class NHentaiNetApiAdapter extends AbstractAdapter {
     async generateGallery() {
-      const { _gallery: nhGallery, _n_app: nhApp } = _unsafeWindow;
-      const tasks = {};
-      const mediaId = nhGallery.media_id;
-      const baseUrl = `https://${nhApp.options.image_cdn_urls[0]}`;
-      nhGallery.images.pages.forEach((image, index) => {
-        const pageNo = `${index + 1}`;
-        const id = `${nhGallery.id}-${pageNo.padStart(3, "0")}`;
-        let extName = ``;
-        switch (image.t) {
-          case "j":
-            extName = ".jpg";
-            break;
-          case "p":
-            extName = ".png";
-            break;
-          case "w":
-            extName = ".webp";
-            break;
-          default:
-            console.warn(`未知的图片文件类型：${image.t}`);
-            break;
-        }
-        const uri = `/galleries/${mediaId}/${pageNo}${extName}`;
-        tasks[id] = {
-          id,
-          url: `${baseUrl}${uri}`,
-          name: `${pageNo.padStart(3, "0")}`,
-          status: TaskStatus.Pending
-        };
-      });
+      let matches = PATH_PATTERN.exec(window.location.pathname);
+      if (matches == null) {
+        throw new Error("找不到gallery id");
+      }
+      const configResponse = await fetch(`${API_BASE_URL}/api/v2/config`);
+      const config = await configResponse.json();
+      console.info("图片服务器：", config.image_servers);
+      const id = Number.parseInt(matches[1], 10);
+      const galleryResponse = await fetch(`${API_BASE_URL}/api/v2/galleries/${id}`);
+      const gallery = await galleryResponse.json();
+      const name = gallery.title.english ?? gallery.title.japanese ?? `nhentai-${id}`;
+      const tasks = await this.generateTasks(config, gallery);
       return {
-        id: nhGallery.id,
-        name: nhGallery.title.japanese,
+        id,
+        name,
         tasks
       };
+    }
+    async generateTasks(config, gallery) {
+      const tasks = {};
+      const imageServer = config.image_servers[0];
+      for (let page of gallery.pages) {
+        const name = `${page.number}`.padStart(3, "0");
+        const id = `nh-${gallery.id}-${name}`;
+        tasks[id] = {
+          id,
+          url: `${imageServer}/${page.path}`,
+          name,
+          status: TaskStatus.Pending
+};
+      }
+      return tasks;
     }
   }
   const REGEX_EVAL = /window\["\\x65\\x76\\x61\\x6c"\]\((.*)\)/;
@@ -1492,12 +988,12 @@ new WeakMap()
         console.info("等待图片列表加载完成");
       }
       let imgList = _unsafeWindow.imglist;
-      for (let i = 0; i < imgList.length; i++) {
-        let pageNo = `${i + 1}`.padStart(3, "0");
+      for (let i2 = 0; i2 < imgList.length; i2++) {
+        let pageNo = `${i2 + 1}`.padStart(3, "0");
         let taskId = `${galleryId}-${pageNo}`;
         let task = {
           id: taskId,
-          url: imgList[i].url,
+          url: imgList[i2].url,
           name: pageNo,
           status: TaskStatus.Pending,
           referer: url
@@ -1790,10 +1286,10 @@ get tasks() {
       if (this.status === void 0 || this.status === TaskStatus.All) {
         return this.tasks;
       }
-      return this.tasks.filter((t) => t.status === this.status);
+      return this.tasks.filter((t2) => t2.status === this.status);
     },
     get statusList() {
-      const results = this.tasks.map((t) => t.status);
+      const results = this.tasks.map((t2) => t2.status);
       return results;
     },
     get statusAmounts() {
@@ -1847,13 +1343,13 @@ jsxRuntimeExports.jsx(
     TaskStatus.Success
   ];
   const TaskFilter = ({ status, onChange }) => {
-    const items = TaskStatusList.map((s) => {
-      const statusName = getStatusName(s);
+    const items = TaskStatusList.map((s2) => {
+      const statusName = getStatusName(s2);
       const classNames = [
         "task-filter-item",
         `task-filter-item-${statusName}`
       ];
-      if (status === s) {
+      if (status === s2) {
         classNames.push(`task-filter-item-${statusName}-active`);
       }
       return jsxRuntimeExports.jsxs(
@@ -1863,13 +1359,13 @@ jsxRuntimeExports.jsx(
           flex: 1,
           justify: "center",
           align: "center",
-          onClick: () => onChange(s),
+          onClick: () => onChange(s2),
           children: [
-            getStatusText(s),
+            getStatusText(s2),
             " (999)"
           ]
         },
-        `${s}`
+        `${s2}`
       );
     });
     return jsxRuntimeExports.jsxs(Flex, { className: "task-filter", children: [
@@ -1891,7 +1387,7 @@ jsxRuntimeExports.jsx(
       items
     ] });
   };
-  const version = "1.9.0";
+  const version = "1.10.0";
   function RadioGroup({ value, items = [], onChange }) {
     const radios = items.map(
       ({ value: radioValue, element }) => {
@@ -1937,16 +1433,23 @@ jsxRuntimeExports.jsx(
         }
       }
     }
-    function onSaveClick() {
+    async function onSaveClick() {
       console.debug(`点击保存按钮`);
-      if (snap.gallery !== void 0) {
-        const zipBytes = zipSync(files);
-        const zipBlob = new Blob([zipBytes], {
-          type: "application/zip"
-        });
-        const zipName = `${snap.gallery.name}.cbz`;
-        FileSaver_minExports.saveAs(zipBlob, zipName);
+      if (snap.gallery === void 0) {
+        console.warn("gallery不存在");
+        return;
       }
+      const inputs = [];
+      for (const fileName in files) {
+        const file = files[fileName];
+        inputs.push({
+          name: fileName,
+          input: file
+        });
+      }
+      const zipBlob = await A(inputs).blob();
+      const zipName = `${snap.gallery.name}.cbz`;
+      FileSaver_minExports.saveAs(zipBlob, zipName);
     }
     function onToggleClick() {
       console.debug(`切换 minimized = ${!minimized}`);
@@ -1967,9 +1470,7 @@ jsxRuntimeExports.jsx(
         headers,
         responseType: "blob",
         onprogress: (event) => {
-          console.info(
-            `任务 ${task.id} 下载进度更新：${event.loaded} / ${event.total}`
-          );
+          console.info(`任务 ${task.id} 下载进度更新：${event.loaded} / ${event.total}`);
           updateTask({
             id: task.id,
             status: TaskStatus.Running,
@@ -1980,14 +1481,11 @@ jsxRuntimeExports.jsx(
         onload: async (event) => {
           const blob = event.response;
           const url = event.finalUrl;
-          console.info(
-            `任务 ${task.id} 下载完成`,
-            {
-              size: blob.size,
-              type: blob.type,
-              url
-            }
-          );
+          console.info(`任务 ${task.id} 下载完成`, {
+            size: blob.size,
+            type: blob.type,
+            url
+          });
           if (event.status === 200) {
             updateTask({
               id: task.id,
@@ -2069,7 +1567,7 @@ jsxRuntimeExports.jsx(
             adapter = new TelegraphAdapter();
             break;
           case "nhentai.net":
-            adapter = new NHentaiNetAdapter();
+            adapter = new NHentaiNetApiAdapter();
             break;
           case "www.wnacg.com":
             adapter = new WnacgAdapter();
@@ -2151,20 +1649,10 @@ jsxRuntimeExports.jsxs(Flex, { className: "buttons-left", justify: "start", gap:
 jsxRuntimeExports.jsx(Button, { className: "btn-download", onClick: onDownloadAllClick, children: jsxRuntimeExports.jsx(IconDownload, {}) }),
 jsxRuntimeExports.jsx(Button, { className: "btn-save", onClick: onSaveClick, children: jsxRuntimeExports.jsx(IconSave, {}) })
             ] }),
-jsxRuntimeExports.jsxs(
-              Flex,
-              {
-                className: "buttons-right",
-                flex: 1,
-                justify: "end",
-                align: "center",
-                gap: 8,
-                children: [
+jsxRuntimeExports.jsxs(Flex, { className: "buttons-right", flex: 1, justify: "end", align: "center", gap: 8, children: [
 jsxRuntimeExports.jsx("span", { children: version }),
 jsxRuntimeExports.jsx(Button, { className: "btn-toggle", onClick: onToggleClick, children: sizeToggleIcon })
-                ]
-              }
-            )
+            ] })
           ] }),
 jsxRuntimeExports.jsx(Flex, { className: "total-progress-row", align: "center", gap: 8, children: jsxRuntimeExports.jsx(ProgressBar, { flex: 1, statusList: state.statusList }) }),
           hidable

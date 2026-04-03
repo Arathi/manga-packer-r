@@ -1,7 +1,7 @@
 {
   "name": "manga-packer-r",
+  "version": "1.10.0",
   "private": true,
-  "version": "1.9.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,22 +9,24 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "fflate": "^0.8.2",
+    "client-zip": "^2.5.0",
     "file-saver": "^2.0.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "valtio": "^2.1.8"
+    "valtio": "^2.3.1"
   },
   "devDependencies": {
     "@types/file-saver": "^2.0.7",
-    "@types/node": "^22.17.1",
-    "@types/react": "^18.3.23",
+    "@types/node": "^24.12.0",
+    "@types/react": "^18.3.28",
     "@types/react-dom": "^18.3.7",
-    "@vitejs/plugin-react": "^5.0.4",
-    "less": "^4.4.1",
-    "rollup-plugin-visualizer": "^6.0.3",
+    "@vitejs/plugin-react": "^5.2.0",
+    "less": "^4.6.4",
+    "oxfmt": "^0.43.0",
+    "oxlint": "^1.58.0",
+    "rollup-plugin-visualizer": "^6.0.11",
     "typescript": "~5.8.3",
-    "vite": "^7.1.7",
-    "vite-plugin-monkey": "^7.1.4"
+    "vite": "^7.3.1",
+    "vite-plugin-monkey": "^7.1.9"
   }
 }
