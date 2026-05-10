@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { unsafeWindow } from "$";
 
 export interface WindowSize {
   width: number;
@@ -8,15 +7,15 @@ export interface WindowSize {
 
 const useWindowSize = () => {
   const [size, setSize] = useState<WindowSize>({
-    width: unsafeWindow.innerWidth,
-    height: unsafeWindow.innerHeight,
+    width: window.innerWidth,
+    height: window.innerHeight,
   });
 
   useEffect(() => {
     addEventListener('resize', () => {
       setSize({
-        width: unsafeWindow.innerWidth,
-        height: unsafeWindow.innerHeight,
+        width: window.innerWidth,
+        height: window.innerHeight,
       });
     })
   }, []);

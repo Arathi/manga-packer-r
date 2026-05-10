@@ -61,7 +61,7 @@ export default class NHentaiNetApiAdapter extends AbstractAdapter {
     const id = Number.parseInt(matches[1], 10);
     const galleryResponse = await fetch(`${API_BASE_URL}/api/v2/galleries/${id}`);
     const gallery = await galleryResponse.json() as NHentaiGallery;
-    const name = gallery.title.english ?? gallery.title.japanese ?? `nhentai-${id}`;
+    const name = gallery.title.japanese ?? gallery.title.english ?? `nhentai-${id}`;
     const tasks = await this.generateTasks(config, gallery);
 
     return {

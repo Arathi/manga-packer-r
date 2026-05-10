@@ -1,9 +1,8 @@
 import { downloadZip, makeZip } from "client-zip";
-// import { zipSync } from "fflate";
 import { saveAs } from "file-saver";
 import { HTMLAttributes, useEffect, useState } from "react";
 import { useSnapshot } from "valtio";
-import { GM_xmlhttpRequest, unsafeWindow } from "$";
+import { GM } from "$";
 
 import {
   Adapter,
@@ -90,7 +89,7 @@ const TaskPanel: React.FC<Props> = (props) => {
     if (task.referer !== undefined) {
       headers.Referer = task.referer;
     }
-    GM_xmlhttpRequest({
+    GM.xmlHttpRequest({
       method: "GET",
       url: task.url,
       headers,
@@ -191,9 +190,9 @@ const TaskPanel: React.FC<Props> = (props) => {
 
   async function init() {
     if (snap.gallery === undefined) {
-      console.info("当前站点：", unsafeWindow.location.host);
+      console.info("当前站点：", location.host);
       let adapter: Adapter | undefined = undefined;
-      switch (unsafeWindow.location.host) {
+      switch (location.host) {
         case "telegra.ph":
         case "graph.org":
           adapter = new TelegraphAdapter();

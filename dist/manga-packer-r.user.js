@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Manga Packer R
 // @namespace    com.undsf.tmus.mgpk
-// @version      1.10.0
+// @version      1.10.1
 // @author       Arathi of Nebnizilla
 // @icon         https://vitejs.dev/logo.svg
 // @homepageURL  https://github.com/Arathi/manga-packer-r
@@ -16,8 +16,8 @@
 // @match        https://www.manhuagui.com/comic/*/*.html
 // @require      https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js
 // @require      https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js
+// @grant        GM.xmlHttpRequest
 // @grant        GM_addStyle
-// @grant        GM_xmlhttpRequest
 // @grant        unsafeWindow
 // ==/UserScript==
 
@@ -805,7 +805,7 @@ new WeakMap()
     const proxyCache2 = require$$0.useMemo(() => new WeakMap(), []);
     return createProxy(currSnapshot, affected, proxyCache2, targetCache);
   }
-  var _GM_xmlhttpRequest = (() => typeof GM_xmlhttpRequest != "undefined" ? GM_xmlhttpRequest : void 0)();
+  var _GM = (() => typeof GM != "undefined" ? GM : void 0)();
   var _unsafeWindow = (() => typeof unsafeWindow != "undefined" ? unsafeWindow : void 0)();
   class AbstractAdapter {
     generateGallery() {
@@ -893,7 +893,7 @@ new WeakMap()
       const id = Number.parseInt(matches[1], 10);
       const galleryResponse = await fetch(`${API_BASE_URL}/api/v2/galleries/${id}`);
       const gallery = await galleryResponse.json();
-      const name = gallery.title.english ?? gallery.title.japanese ?? `nhentai-${id}`;
+      const name = gallery.title.japanese ?? gallery.title.english ?? `nhentai-${id}`;
       const tasks = await this.generateTasks(config, gallery);
       return {
         id,
@@ -1252,14 +1252,14 @@ jsxRuntimeExports.jsx(
   };
   const useWindowSize = () => {
     const [size, setSize] = require$$0.useState({
-      width: _unsafeWindow.innerWidth,
-      height: _unsafeWindow.innerHeight
+      width: window.innerWidth,
+      height: window.innerHeight
     });
     require$$0.useEffect(() => {
       addEventListener("resize", () => {
         setSize({
-          width: _unsafeWindow.innerWidth,
-          height: _unsafeWindow.innerHeight
+          width: window.innerWidth,
+          height: window.innerHeight
         });
       });
     }, []);
@@ -1387,7 +1387,7 @@ jsxRuntimeExports.jsx(
       items
     ] });
   };
-  const version = "1.10.0";
+  const version = "1.10.1";
   function RadioGroup({ value, items = [], onChange }) {
     const radios = items.map(
       ({ value: radioValue, element }) => {
@@ -1464,7 +1464,7 @@ jsxRuntimeExports.jsx(
       if (task.referer !== void 0) {
         headers.Referer = task.referer;
       }
-      _GM_xmlhttpRequest({
+      _GM.xmlHttpRequest({
         method: "GET",
         url: task.url,
         headers,
@@ -1559,9 +1559,9 @@ jsxRuntimeExports.jsx(
     }
     async function init() {
       if (snap.gallery === void 0) {
-        console.info("当前站点：", _unsafeWindow.location.host);
+        console.info("当前站点：", location.host);
         let adapter = void 0;
-        switch (_unsafeWindow.location.host) {
+        switch (location.host) {
           case "telegra.ph":
           case "graph.org":
             adapter = new TelegraphAdapter();
