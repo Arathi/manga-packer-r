@@ -84,11 +84,12 @@ const TaskPanel: React.FC<Props> = (props) => {
   }
 
   function download(task: Task) {
-    console.debug(`任务 ${task.id} 开始下载：`, task.url);
     const headers: any = {};
     if (task.referer !== undefined) {
       headers.Referer = task.referer;
+      headers["User-Agent"] = navigator.userAgent;
     }
+    console.debug(`任务 ${task.id} 开始下载：`, task.url, headers);
     GM.xmlHttpRequest({
       method: "GET",
       url: task.url,

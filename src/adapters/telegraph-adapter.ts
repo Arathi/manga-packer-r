@@ -29,7 +29,7 @@ export default class TelegraphAdapter extends AbstractAdapter {
         url,
         status: TaskStatus.Pending,
         name: `${pageNo}`,
-        referer: origin,
+        referer: `${origin}/`,
       };
     });
 

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Manga Packer R
 // @namespace    com.undsf.tmus.mgpk
-// @version      1.10.1
+// @version      1.10.2
 // @author       Arathi of Nebnizilla
 // @icon         https://vitejs.dev/logo.svg
 // @homepageURL  https://github.com/Arathi/manga-packer-r
@@ -249,7 +249,7 @@
   function requireFileSaver_min() {
     if (hasRequiredFileSaver_min) return FileSaver_min$1.exports;
     hasRequiredFileSaver_min = 1;
-    (function(module, exports$1) {
+    (function(module, exports) {
       (function(a2, b2) {
         b2();
       })(FileSaver_min, function() {
@@ -568,7 +568,7 @@ configurable: true
       }
       Object.defineProperty(snap, key, desc);
     });
-    return Object.preventExtensions(snap);
+    return snap;
   };
   const createHandlerDefault = (isInitializing, addPropListener, removePropListener, notifyUpdate) => ({
     deleteProperty(target, prop) {
@@ -863,7 +863,7 @@ new WeakMap()
           url,
           status: TaskStatus.Pending,
           name: `${pageNo}`,
-          referer: origin
+          referer: `${origin}/`
         };
       });
       const header = _unsafeWindow.document.querySelector(
@@ -1387,7 +1387,7 @@ jsxRuntimeExports.jsx(
       items
     ] });
   };
-  const version = "1.10.1";
+  const version = "1.10.2";
   function RadioGroup({ value, items = [], onChange }) {
     const radios = items.map(
       ({ value: radioValue, element }) => {
@@ -1459,11 +1459,12 @@ jsxRuntimeExports.jsx(
       state.status = status;
     }
     function download(task) {
-      console.debug(`任务 ${task.id} 开始下载：`, task.url);
       const headers = {};
       if (task.referer !== void 0) {
         headers.Referer = task.referer;
+        headers["User-Agent"] = navigator.userAgent;
       }
+      console.debug(`任务 ${task.id} 开始下载：`, task.url, headers);
       _GM.xmlHttpRequest({
         method: "GET",
         url: task.url,
